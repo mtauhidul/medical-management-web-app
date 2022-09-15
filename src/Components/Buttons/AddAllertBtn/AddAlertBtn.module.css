@@ -1,0 +1,39 @@
+#AddAlertBtn {
+  left: 100px;
+  top: 1065px;
+  border-radius: 20px;
+  border: none;
+  color: var(--color1);
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#AddAlertBtn:hover > .plusIcon {
+  border: 2px solid var(--color1);
+  color: var(--color25);
+  border-radius: 50%;
+}
+
+#AddAlertBtn:hover {
+  font-weight: 500;
+}
+
+#AddAlertBtn:focus > .plusIcon {
+  outline: none;
+  border: 2px solid var(--color4);
+  border-radius: 50%;
+  color: var(--color25);
+}
+
+#AddAlertBtn:focus {
+  color: var(--color4);
+  outline: none;
+}

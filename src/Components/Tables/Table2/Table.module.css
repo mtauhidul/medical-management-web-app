@@ -1,0 +1,87 @@
+.tableContainer {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.tableContainer table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.5em;
+}
+
+.tableRow {
+  height: 70px;
+  width: calc((100vw - 4rem) * (21 / 9));
+  max-width: calc(800px * 9 / 21);
+  border: 5px solid transparent;
+  box-shadow: 0px 4px 20px rgba(178, 178, 233, 0.308);
+  border-radius: 20px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px auto;
+  border-left: none;
+  text-align: left;
+  font-size: 18px;
+}
+
+.tableRow:hover {
+  background-color: #d2eeeb;
+}
+
+.tableRow:hover .tdBtn {
+  border-bottom-right-radius: 20px;
+}
+
+.tableRow:hover .tdNumber {
+  border-top-left-radius: 20px;
+}
+
+.tdNumber div {
+  height: 70px !important;
+  width: 40px !important;
+  padding: 18px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -2px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 20px;
+  background-color: #6ac7be;
+  margin-right: 10px;
+}
+
+.roomList {
+  overflow: auto;
+}
+
+.roomList ul li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.circle div {
+  height: 42px;
+  width: 42px;
+  border-radius: 50%;
+}
+
+@media (min-width: 768px) {
+  .tableRow {
+    min-width: 600px;
+  }
+}
+
+#alertDelBtn {
+  color: var(--color1);
+  width: 30px;
+  font-size: 22px;
+  border: none;
+  background-color: transparent;
+}
+
+#alertDelBtn:hover {
+  color: var(--color17);
+}

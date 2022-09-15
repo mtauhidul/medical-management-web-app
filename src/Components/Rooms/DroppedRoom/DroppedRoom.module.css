@@ -1,0 +1,192 @@
+.topBtn {
+  background: none;
+  border: 1px solid transparent !important;
+  color: var(--color1) !important;
+  font-weight: 300;
+  width: 40px;
+  height: 36px;
+  background: none !important;
+  box-shadow: none !important;
+  padding: 0;
+}
+
+.topBtn svg {
+  -webkit-text-stroke: 1px white;
+}
+
+.roomCardTop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  top: 0 !important;
+  width: 170px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-top: -13px;
+}
+
+.roomNo {
+  font-weight: 500;
+  top: 0;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* .topBtn:hover {
+  color: #fff !important;
+  background: var(--color25) !important;
+  border: 1px solid var(--color1) !important;
+}
+
+.topBtn:active,
+.topBtn:focus {
+  background-color: var(--color1) !important;
+  color: #fff !important;
+} */
+
+.createRoom {
+  height: 100%;
+  max-height: 130px;
+  width: calc((100vw - 4rem) * (3 / 4));
+  max-width: calc(800px * 3 / 4);
+  margin: 0px 2% 2% 0px !important;
+  background: #fff;
+  border: 1px solid rgb(248, 250, 250);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color1);
+  font-weight: 500;
+  border-bottom-left-radius: 16px !important;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px !important;
+  border-bottom-right-radius: none !important;
+  box-shadow: 0 2.8px 2.2px rgba(141, 140, 140, 0.034),
+    0 6.7px 5.3px rgba(134, 134, 134, 0.048),
+    0 12.5px 10px rgba(138, 137, 137, 0.06),
+    0 22.3px 17.9px rgba(124, 124, 124, 0.072),
+    0 41.8px 33.4px rgba(116, 115, 115, 0.086),
+    0 100px 80px rgba(136, 134, 134, 0.12);
+}
+
+/* button styles !!!YOU NEED THEM !!!ALSO YOU NEED TO ADD FONTWESOME */
+.effect {
+  text-align: center;
+  position: relative;
+  text-decoration: none;
+  background: var(--color1);
+  color: var(--color2);
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0em;
+  padding: 0px;
+  width: 42px;
+  height: 42px;
+  border-radius: 20px;
+  overflow: auto;
+  border: none;
+  outline: none;
+}
+
+/* effect4 styles */
+
+.roomNo {
+  border-radius: 20px;
+  border: none;
+  background: var(--color1);
+  color: var(--color2);
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 42px;
+  height: 42px;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+}
+
+.effect.effect4 {
+  transition: all 0.2s linear 0s;
+}
+
+.effect.effect4:before {
+  content: "\f055";
+  font-family: FontAwesome;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 30px;
+  transform: scale(0, 1);
+  transition: all 0.2s linear 0s;
+}
+
+.effect.effect4:hover {
+  text-indent: -9999px;
+  background: var(--color1);
+  color: #fff;
+}
+
+.effect.effect4:hover:before {
+  transform: scale(1, 1);
+  text-indent: 0;
+}
+
+.effect.effect4::active {
+  background: var(--color1);
+  color: #fff;
+}
+
+.effect.effect4::focus {
+  background: var(--color1);
+  color: #fff;
+}
+
+.roomCardTop {
+  width: 100%;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .createRoom {
+    max-width: 110px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .createRoom {
+    min-width: 120px;
+    max-width: 120px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .createRoom {
+    min-width: 140px;
+    max-width: 140px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .createRoom {
+    min-width: 170px;
+    max-width: 170px;
+  }
+}

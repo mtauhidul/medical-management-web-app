@@ -1,0 +1,38 @@
+.SaveBtn {
+  height: 40px;
+  max-width: 100%;
+  min-width: 110px;
+  left: 100px;
+  top: 1065px;
+  border-radius: 20px;
+  padding: 11px, 41px, 11px, 41px;
+  background-color: var(--color1);
+  border: none;
+  color: var(--color3);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+
+.SaveBtn:hover {
+  background-color: var(--color25);
+  border: 2px solid var(--color1);
+  color: var(--color3);
+}
+
+.SaveBtn:focus {
+  outline: none;
+  background-color: var(--color25);
+  border: 2px solid var(--color4);
+  color: var(--color4);
+}
+
+@media screen and (max-width: 575px) {
+  .SaveBtn {
+    width: 980% !important;
+  }
+}

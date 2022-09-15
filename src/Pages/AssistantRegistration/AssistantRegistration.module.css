@@ -1,0 +1,108 @@
+.ReceptionistLoginContainer {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: var(--color14);
+}
+
+.ReceptionistLoginWrapper {
+  max-width: 480px;
+  height: auto;
+  background: var(--color5);
+  padding: 50px 60px;
+}
+
+.ReceptionistLoginWrapper {
+  position: relative;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 0, 0, 0.1) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.ReceptionistLoginWrapper:before,
+.ReceptionistLoginWrapper:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  top: 10px;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  -moz-border-radius: 100px / 10px;
+  border-radius: 100px / 10px;
+}
+
+.ReceptionistLoginWrapper:after {
+  right: 10px;
+  left: auto;
+  -webkit-transform: skew(8deg) rotate(3deg);
+  -moz-transform: skew(8deg) rotate(3deg);
+  -ms-transform: skew(8deg) rotate(3deg);
+  -o-transform: skew(8deg) rotate(3deg);
+  transform: skew(8deg) rotate(3deg);
+}
+
+.ReceptionistLoginWrapper input {
+  width: 320px;
+  height: 44px;
+  font-size: 20px;
+  font: 700;
+  margin: 15px auto;
+  border: 1px solid var(--color3);
+  border-radius: 2px;
+  padding-left: 10px;
+}
+
+.ReceptionistLoginWrapper input[type="submit"] {
+  cursor: pointer;
+  width: 332px;
+}
+
+.ReceptionistLoginWrapper input:hover,
+.ReceptionistLoginWrapper input:focus {
+  background-color: #ccc;
+  outline: none;
+}
+
+/* media query for responsive */
+@media screen and (max-width: 520px) {
+  .ReceptionistLoginWrapper {
+    max-width: 420px;
+    padding: 40px 40px;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .ReceptionistLoginWrapper {
+    max-width: 378px;
+    padding: 30px 20px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .ReceptionistLoginWrapper {
+    max-width: 320px;
+    padding: 20px 20px;
+  }
+  .ReceptionistLoginWrapper input {
+    width: 100%;
+  }
+
+  .ReceptionistLoginWrapper input[type="submit"] {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 324px) {
+  .ReceptionistLoginWrapper {
+    max-width: 300px;
+    padding: 10px 10px;
+  }
+}

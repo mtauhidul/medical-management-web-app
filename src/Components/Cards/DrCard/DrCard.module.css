@@ -1,0 +1,112 @@
+.iconBtn button {
+  border: none;
+  background-color: transparent;
+  margin: 6px;
+  padding: 5px;
+  font-size: 18px;
+  color: #6ac7be;
+  cursor: pointer;
+}
+
+.iconBtn button:hover {
+  color: #1f7d74;
+}
+
+.tableContainer {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.tableContainer table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.5em;
+}
+
+.tableRow {
+  min-height: 56px;
+  border: 1px solid transparent;
+  box-shadow: 0px 4px 20px rgba(178, 178, 233, 0.308);
+  border-radius: 20px 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 5px 10px 5px 0px;
+}
+
+.tableRow:hover {
+  background-color: #d2eeeb;
+}
+
+.tableRow:hover .tdBtn {
+  border-bottom-right-radius: 20px;
+}
+
+.tableRow:hover .tdNumber {
+  border-top-left-radius: 20px;
+}
+
+.tdNumber div {
+  width: 40px !important;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -2px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 20px;
+  background-color: #6ac7be;
+  margin-right: 5px;
+  line-height: 56px;
+  min-height: 56px;
+  object-fit: cover;
+  height: 100%;
+}
+
+.roomList {
+  overflow: auto;
+}
+
+.roomList ul li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.innerRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 112%;
+  text-align: left;
+}
+
+.innerRow td {
+  width: 100% !important;
+}
+
+@media (max-width: 900px) {
+  .innerRow {
+    display: flex;
+    flex-direction: column !important;
+    margin-right: auto !important;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    padding-left: 10px;
+  }
+
+  .innerRow td {
+    padding: 5px 0px;
+  }
+
+  .tableRow {
+    height: 160px;
+  }
+
+  .tdNumber div {
+    height: 160px;
+  }
+}

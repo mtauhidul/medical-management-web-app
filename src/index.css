@@ -1,0 +1,133 @@
+body {
+  margin: 0;
+  background: var(--color3);
+  font-family: "Poppins", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* Default CSS Stylings ( Global ) */
+
+/* Header Sizes */
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+h4 {
+  font-size: 14px;
+}
+
+h5 {
+  font-size: 12px;
+}
+
+/* Default Colors */
+
+:root {
+  --color1: #6ac7be;
+  --color2: #212121;
+  --color3: #f6f6ff;
+  --color4: #212155;
+  --color5: #dadada;
+  --color6: #969696;
+  --color7: #8484d8;
+  --color8: #fdbfaa;
+  --color9: #f2d775;
+  --color10: #63bff2;
+  --color11: #939dff;
+  --color12: #74c386;
+  --color13: #fc6666;
+  --color14: #dddddd;
+  --color15: #8484d8;
+  --color16: #487d36;
+  --color17: #1f7d74;
+  --color18: #3742ab;
+  --color19: #f8fb66;
+  --color20: #78f275;
+  --color21: #ee5897;
+  --color22: #fa700c;
+  --color23: #e485f3;
+  --color24: #86e8ee;
+  --color25: #a8d7d5;
+}
+
+.container,
+.container-fluid,
+.container-md {
+  margin: 0;
+  padding: 0;
+}
+
+.react-responsive-modal-modal {
+  max-width: 800px;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  background: #ffffff;
+  box-shadow: 0 12px 15px 0 rgb(0 0 0 / 25%);
+  margin: 1.2rem;
+  padding: 2rem 1.2rem 0.8rem 1.5rem;
+  position: relative;
+  overflow-y: auto;
+  min-width: 420px;
+  border-radius: 12px;
+}
+
+.react-responsive-modal-modal h4 {
+  text-align: center;
+  font-size: 20px;
+}
+
+.row {
+  margin: 0px;
+}
+
+li {
+  list-style: none;
+}
+
+@media (min-width: 767px) and (max-width: 1024px) {
+  .react-responsive-modal-root {
+    width: 100vw !important;
+    max-width: 480px;
+    height: auto;
+    top: 10%;
+    padding: 10px;
+  }
+
+  .react-responsive-modal-modal {
+    min-width: 0;
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .react-responsive-modal-root {
+    width: 100vw !important;
+    max-width: 480px;
+    height: auto;
+    top: 10%;
+    padding: 10px;
+  }
+
+  .react-responsive-modal-modal {
+    min-width: 0;
+    margin-left: 0;
+    width: 100%;
+  }
+}

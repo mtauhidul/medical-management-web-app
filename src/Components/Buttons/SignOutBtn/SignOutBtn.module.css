@@ -1,0 +1,41 @@
+#SignOutBtn {
+  height: 50px;
+  width: 172px;
+  left: 1008px;
+  top: 1133px;
+  border-radius: 20px;
+  padding: 11px, 41px, 11px, 41px;
+  border: none;
+  background-color: transparent;
+  color: var(--color7);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0em;
+
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 2px solid transparent;
+}
+
+.plusIcon {
+  color: var(--color7);
+}
+
+#SignOutBtn:hover {
+  border: 2px solid var(--color1);
+}
+
+#SignOutBtn:focus {
+  color: var(--color4);
+  outline: none;
+  border: 2px solid var(--color4);
+}
+
+#SignOutBtn:focus > .plusIcon {
+  color: var(--color4);
+}

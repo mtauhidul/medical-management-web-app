@@ -1,0 +1,690 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "/Users/mirtauhidulislam/CODE_ROOT/PROJECTS/care-sync",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2021-06-21 20:27:37",
+            "filesum": 103,
+            "codesum": 17521,
+            "commentsum": 312,
+            "blanksum": 4003,
+            "statistics": {
+                ".css": {
+                    "code": 2609,
+                    "comment": 48,
+                    "blank": 311
+                },
+                "": {
+                    "code": 88,
+                    "comment": 2,
+                    "blank": 7
+                },
+                ".js": {
+                    "code": 137,
+                    "comment": 52,
+                    "blank": 25
+                },
+                ".svg": {
+                    "code": 1,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".json": {
+                    "code": 108,
+                    "comment": 0,
+                    "blank": 3
+                },
+                ".html": {
+                    "code": 29,
+                    "comment": 24,
+                    "blank": 2
+                },
+                ".txt": {
+                    "code": 3,
+                    "comment": 1,
+                    "blank": 0
+                },
+                ".jsx": {
+                    "code": 2728,
+                    "comment": 133,
+                    "blank": 245
+                },
+                ".md": {
+                    "code": 38,
+                    "comment": 12,
+                    "blank": 32
+                },
+                ".lock": {
+                    "code": 11780,
+                    "comment": 40,
+                    "blank": 3378
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": ".env"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": ".eslintignore"
+                },
+                {
+                    "blank": 1,
+                    "code": 50,
+                    "comment": 1,
+                    "filename": ".eslintrc"
+                },
+                {
+                    "blank": 6,
+                    "code": 37,
+                    "comment": 1,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "craco.config.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 83,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "filename": "public/favicon.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 2,
+                    "code": 29,
+                    "comment": 24,
+                    "filename": "public/index.html"
+                },
+                {
+                    "filename": "public/logo192.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "public/logo512.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "public/manifest.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 1,
+                    "filename": "public/robots.txt"
+                },
+                {
+                    "blank": 32,
+                    "code": 38,
+                    "comment": 12,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 13,
+                    "code": 29,
+                    "comment": 44,
+                    "filename": "src/API/Api.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "src/API/firebase.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 55,
+                    "comment": 1,
+                    "filename": "src/App.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "src/Assets/plus-solid.svg"
+                },
+                {
+                    "blank": 2,
+                    "code": 17,
+                    "comment": 1,
+                    "filename": "src/Components/Buttons/AddAllertBtn/AddAlertBtn.jsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/AddAllertBtn/AddAlertBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/AddBtn/AddBtn.jsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/AddBtn/AddBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/ConnectBtn/ConnectBtn.jsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/ConnectBtn/ConnectBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/DeleteBtn/DeleteBtn.jsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/DeleteBtn/DeleteBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/DisconnectBtn/DisconnectBtn.jsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 30,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/DisconnectBtn/DisconnectBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/RBtn/RBtn.jsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/RBtn/RBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/ResetBtn/ResetBtn.jsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/ResetBtn/ResetBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 1,
+                    "filename": "src/Components/Buttons/SaveBtn/SaveBtn.jsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/SaveBtn/SaveBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/SignOutBtn/SignOutBtn.jsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 36,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/SignOutBtn/SignOutBtn.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/StopBtn/StopBtn.jsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "src/Components/Buttons/StopBtn/StopBtn.module.css"
+                },
+                {
+                    "blank": 5,
+                    "code": 55,
+                    "comment": 5,
+                    "filename": "src/Components/Cards/AssistantsCard/AssistantsCard.jsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 93,
+                    "comment": 0,
+                    "filename": "src/Components/Cards/AssistantsCard/AssistantsCard.module.css"
+                },
+                {
+                    "blank": 8,
+                    "code": 99,
+                    "comment": 7,
+                    "filename": "src/Components/Cards/AssistantsCard/Connect.jsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 58,
+                    "comment": 4,
+                    "filename": "src/Components/Cards/DashCard/DashCard.jsx"
+                },
+                {
+                    "blank": 21,
+                    "code": 217,
+                    "comment": 13,
+                    "filename": "src/Components/Cards/DashCard/DashCard.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 15,
+                    "comment": 1,
+                    "filename": "src/Components/Cards/DashCard/MyStopWatch.jsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 100,
+                    "comment": 12,
+                    "filename": "src/Components/Cards/DrCard/DrCard.jsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 93,
+                    "comment": 0,
+                    "filename": "src/Components/Cards/DrCard/DrCard.module.css"
+                },
+                {
+                    "blank": 5,
+                    "code": 52,
+                    "comment": 5,
+                    "filename": "src/Components/Cards/RecepCard/RecepCard.jsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 93,
+                    "comment": 0,
+                    "filename": "src/Components/Cards/RecepCard/RecepCard.module.css"
+                },
+                {
+                    "blank": 7,
+                    "code": 101,
+                    "comment": 8,
+                    "filename": "src/Components/Cards/RoomCard/RoomCard.jsx"
+                },
+                {
+                    "blank": 16,
+                    "code": 160,
+                    "comment": 13,
+                    "filename": "src/Components/Cards/RoomCard/RoomCard.module.css"
+                },
+                {
+                    "blank": 1,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "src/Components/Fields/InputEmail/InputEmail.jsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "src/Components/Fields/InputEmail/InputEmail.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": "src/Components/Fields/InputNum/InputNum.jsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "src/Components/Fields/InputNum/InputNum.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": "src/Components/Fields/InputText/InputText.jsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "src/Components/Fields/InputText/InputText.module.css"
+                },
+                {
+                    "blank": 6,
+                    "code": 78,
+                    "comment": 6,
+                    "filename": "src/Components/Rooms/DroppedRoom/DroppedRoom.jsx"
+                },
+                {
+                    "blank": 16,
+                    "code": 160,
+                    "comment": 13,
+                    "filename": "src/Components/Rooms/DroppedRoom/DroppedRoom.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src/Components/Rooms/Room/Room.jsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 79,
+                    "comment": 0,
+                    "filename": "src/Components/Rooms/Room/Room.module.css"
+                },
+                {
+                    "blank": 6,
+                    "code": 65,
+                    "comment": 0,
+                    "filename": "src/Components/Tables/Table2/Table.module.css"
+                },
+                {
+                    "blank": 4,
+                    "code": 43,
+                    "comment": 3,
+                    "filename": "src/Components/Tables/Table2/Table2.jsx"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src/Components/Tables/Table2/Table2.module.css"
+                },
+                {
+                    "blank": 1,
+                    "code": 10,
+                    "comment": 1,
+                    "filename": "src/ErrorFallback.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 83,
+                    "comment": 3,
+                    "filename": "src/index.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 14,
+                    "comment": 3,
+                    "filename": "src/index.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 42,
+                    "comment": 1,
+                    "filename": "src/MainRouter/MainRouter.jsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 114,
+                    "comment": 3,
+                    "filename": "src/Menus/SideMenus/Alerts.jsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "src/Menus/SideMenus/Alerts.module.css"
+                },
+                {
+                    "blank": 9,
+                    "code": 144,
+                    "comment": 6,
+                    "filename": "src/Menus/SideMenus/Dashboard.jsx"
+                },
+                {
+                    "blank": 11,
+                    "code": 89,
+                    "comment": 0,
+                    "filename": "src/Menus/SideMenus/Dashboard.module.css"
+                },
+                {
+                    "blank": 9,
+                    "code": 83,
+                    "comment": 4,
+                    "filename": "src/Menus/SideMenus/Doctors.jsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "src/Menus/SideMenus/DrSequence.jsx"
+                },
+                {
+                    "blank": 23,
+                    "code": 217,
+                    "comment": 24,
+                    "filename": "src/Menus/SideMenus/Sequence.jsx"
+                },
+                {
+                    "blank": 24,
+                    "code": 219,
+                    "comment": 1,
+                    "filename": "src/Menus/SideMenus/Sequence.module.css"
+                },
+                {
+                    "blank": 8,
+                    "code": 124,
+                    "comment": 2,
+                    "filename": "src/Menus/SideMenus/Stuff.jsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "src/Menus/SideMenus/Stuff.module.css"
+                },
+                {
+                    "blank": 9,
+                    "code": 90,
+                    "comment": 3,
+                    "filename": "src/Menus/TabMenus/Assistants.jsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "src/Menus/TabMenus/Doctors.jsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 78,
+                    "comment": 3,
+                    "filename": "src/Menus/TabMenus/Receptionists.jsx"
+                },
+                {
+                    "blank": 16,
+                    "code": 148,
+                    "comment": 6,
+                    "filename": "src/Modals/Add/Add.jsx"
+                },
+                {
+                    "blank": 6,
+                    "code": 46,
+                    "comment": 3,
+                    "filename": "src/Modals/Del/Del.jsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 94,
+                    "comment": 5,
+                    "filename": "src/Modals/ModalComponent/App.jsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src/Modals/ModalComponent/ModalBuiltIn.css"
+                },
+                {
+                    "blank": 8,
+                    "code": 102,
+                    "comment": 3,
+                    "filename": "src/Modals/ModalComponent/ModalComponent.jsx"
+                },
+                {
+                    "blank": 11,
+                    "code": 68,
+                    "comment": 0,
+                    "filename": "src/Modals/ModalComponent/ModalComponent.module.css"
+                },
+                {
+                    "blank": 16,
+                    "code": 144,
+                    "comment": 0,
+                    "filename": "src/Modals/Styles/Modal.Module.css"
+                },
+                {
+                    "blank": 17,
+                    "code": 150,
+                    "comment": 5,
+                    "filename": "src/Modals/Update/Update.jsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 1,
+                    "filename": "src/Modals/Validator/Validator.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 50,
+                    "comment": 2,
+                    "filename": "src/Pages/AdminLogin/AdminLogin.jsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 96,
+                    "comment": 1,
+                    "filename": "src/Pages/AdminLogin/AdminLogin.module.css"
+                },
+                {
+                    "blank": 4,
+                    "code": 51,
+                    "comment": 2,
+                    "filename": "src/Pages/AssistantRegistration/AssistantRegistration.jsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 95,
+                    "comment": 1,
+                    "filename": "src/Pages/AssistantRegistration/AssistantRegistration.module.css"
+                },
+                {
+                    "blank": 11,
+                    "code": 281,
+                    "comment": 6,
+                    "filename": "src/Pages/ControlPanel/ControlPanel.jsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 88,
+                    "comment": 0,
+                    "filename": "src/Pages/ControlPanel/ControlPanel.module.css"
+                },
+                {
+                    "blank": 4,
+                    "code": 40,
+                    "comment": 1,
+                    "filename": "src/Pages/DoctorRegistration/DoctorRegistration.jsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 100,
+                    "comment": 1,
+                    "filename": "src/Pages/DoctorRegistration/DoctorRegistration.module.css"
+                },
+                {
+                    "blank": 2,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "src/Pages/Home/Home.jsx"
+                },
+                {
+                    "blank": 10,
+                    "code": 78,
+                    "comment": 1,
+                    "filename": "src/Pages/Home/Home.module.css"
+                },
+                {
+                    "blank": 4,
+                    "code": 34,
+                    "comment": 1,
+                    "filename": "src/Pages/ReceptionistLogin/ReceptionistLogin.jsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 95,
+                    "comment": 1,
+                    "filename": "src/Pages/ReceptionistLogin/ReceptionistLogin.module.css"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src/reportWebVitals.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "test.jsx"
+                },
+                {
+                    "blank": 3378,
+                    "code": 11780,
+                    "comment": 40,
+                    "filename": "yarn.lock"
+                }
+            ]
+        }
+    ]
+}

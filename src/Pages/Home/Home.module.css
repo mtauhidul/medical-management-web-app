@@ -1,0 +1,89 @@
+.homeContainer {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: var(--color14);
+}
+
+.homeWrapper {
+  background: var(--color5);
+  padding: 50px 100px;
+}
+
+.homeWrapper {
+  position: relative;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 0, 0, 0.1) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.homeWrapper:before,
+.homeWrapper:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  top: 10px;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  -moz-border-radius: 100px / 10px;
+  border-radius: 100px / 10px;
+}
+
+.homeWrapper:after {
+  right: 10px;
+  left: auto;
+  -webkit-transform: skew(8deg) rotate(3deg);
+  -moz-transform: skew(8deg) rotate(3deg);
+  -ms-transform: skew(8deg) rotate(3deg);
+  -o-transform: skew(8deg) rotate(3deg);
+  transform: skew(8deg) rotate(3deg);
+}
+
+.homeWrapper button {
+  width: 280px;
+  height: 44px;
+  font-size: 20px;
+  font: 700;
+  margin: 15px auto;
+  border: 1px solid var(--color3);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.homeWrapper button:hover,
+.homeWrapper button:focus {
+  background-color: #ccc;
+}
+
+/* media query for responsive */
+@media screen and (max-width: 500px) {
+  .homeWrapper {
+    padding: 50px 50px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .homeWrapper {
+    padding: 30px 30px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .homeWrapper {
+    padding: 15px 15px;
+  }
+}
+
+@media screen and (max-width: 324px) {
+  .homeWrapper button {
+    width: 100%;
+  }
+}
