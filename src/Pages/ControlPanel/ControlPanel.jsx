@@ -6,6 +6,7 @@
 import {
   faBell,
   faColumns,
+  faFileMedical,
   faStethoscope,
   faWaveSquare,
 } from '@fortawesome/free-solid-svg-icons';
@@ -35,6 +36,7 @@ import Alerts from '../../Menus/SideMenus/Alerts';
 import AssistantDashboard from '../../Menus/SideMenus/AssistantDashboard';
 import Dashboard from '../../Menus/SideMenus/Dashboard';
 import Doctors from '../../Menus/SideMenus/Doctors';
+import Patients from '../../Menus/SideMenus/Patients';
 import Sequence from '../../Menus/SideMenus/Sequence';
 import Stuff from '../../Menus/SideMenus/Stuff';
 import DoctorsSelf from '../../Menus/TabMenus/DoctorsSelf';
@@ -110,7 +112,7 @@ function ControlPanel(props) {
       <List>
         <div style={{ width: drawerWidth }} className={styles.sideBar}>
           <div className={styles.logo}>
-            <h1>Logo</h1>
+            <h1>Care Sync</h1>
           </div>
           <div className={styles.nav}>
             <ul className={styles.navList}>
@@ -168,6 +170,22 @@ function ControlPanel(props) {
                       />
                     </span>{' '}
                     Resources
+                  </Link>
+                </li>
+              )}
+              {url.includes('admin') && (
+                <li
+                  style={{ paddingLeft: '5px' }}
+                  onClick={() => onCLickToggle()}>
+                  <Link to={`${url}/patients`}>
+                    <span>
+                      <FontAwesomeIcon
+                        className={styles.plusIcon}
+                        icon={faFileMedical}
+                        size='2x'
+                      />
+                    </span>{' '}
+                    Patients
                   </Link>
                 </li>
               )}
@@ -255,6 +273,11 @@ function ControlPanel(props) {
           <Switch>
             <Route path={`${path}/sequence`}>
               <Sequence drList={drList} />
+            </Route>
+          </Switch>
+          <Switch>
+            <Route path={`${path}/patients`}>
+              <Patients />
             </Route>
           </Switch>
           <Switch>
