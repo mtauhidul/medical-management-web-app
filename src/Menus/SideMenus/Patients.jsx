@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../API/firebase';
+import MyTable from '../../Components/Tables/Table2/MyTable';
 
 const Patients = () => {
   const [files, setFiles] = useState([]);
@@ -23,13 +24,8 @@ const Patients = () => {
   }, []);
 
   return (
-    <div style={{ textAlign: 'center', paddingTop: '50px' }}>
-      <h1>Under Development</h1>
-      <ul>
-        {files.map((file) => {
-          return <li key={file.id}>{file.id}</li>;
-        })}
-      </ul>
+    <div>
+      <MyTable files={files} />
     </div>
   );
 };
