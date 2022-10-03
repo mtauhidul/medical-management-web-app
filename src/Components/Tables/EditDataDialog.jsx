@@ -3,15 +3,10 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
 
 export default function EditDialog({
@@ -21,12 +16,15 @@ export default function EditDialog({
   editableData,
   setEditableData,
 }) {
+  console.log(
+    "🚀 ~ file: EditDataDialog.jsx ~ line 19 ~ setEditableData",
+    editableData
+  );
+  const { others } = editableData;
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditableData((prev) => ({ ...prev, [name]: value }));
   };
-
-  editableData && console.log(editableData);
 
   return (
     <Dialog
@@ -37,28 +35,76 @@ export default function EditDialog({
       aria-describedby="scroll-dialog-description"
     >
       <DialogTitle id="scroll-dialog-title">
-        {editableData &&
+        {others &&
           `${editableData?.others?.Appointment_created_by.value}'s appointment`}
       </DialogTitle>
       <DialogContent dividers={scroll === "paper"}>
-        <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
+        {others && (
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-              <h6 className="header6">Patient Name</h6>
-              <FormControl sx={{ mt: 1, mb: 2, width: "100%" }}>
-                <TextField
-                  required
-                  name="name"
-                  placeholder="Enter Patient Name"
-                  id="outlined-required"
-                />
-              </FormControl>
+              {Object.entries(editableData?.others)
+                .slice(0, 31)
+                .sort()
+                .map((key, value) => {
+                  return (
+                    <Box
+                      key={value}
+                      style={{
+                        marginBottom: "1.5rem",
+                      }}
+                    >
+                      <h6
+                        style={{
+                          whiteSpace: "nowrap",
+                          fontSize: "0.8rem",
+                        }}
+                      >
+                        {key[1]?.name}
+                      </h6>
+                      <TextField
+                        fullWidth
+                        name={key[0]}
+                        id="outlined-required"
+                        value={editableData?.others[key[0]]?.value}
+                        onChange={handleChange}
+                      />
+                    </Box>
+                  );
+                })}
             </Grid>
-            <Grid item xs={12} md={6}></Grid>
+            <Grid item xs={12} md={6}>
+              {Object.entries(editableData?.others)
+                .slice(31, 72)
+                .sort()
+                .map((key, value) => {
+                  return (
+                    <Box
+                      key={value}
+                      style={{
+                        marginBottom: "1.5rem",
+                      }}
+                    >
+                      <h6
+                        style={{
+                          whiteSpace: "nowrap",
+                          fontSize: "0.8rem",
+                        }}
+                      >
+                        {key[1]?.name}
+                      </h6>
+                      <TextField
+                        fullWidth
+                        name={key[0]}
+                        id="outlined-required"
+                        value={editableData?.others[key[0]]?.value}
+                        onChange={handleChange}
+                      />
+                    </Box>
+                  );
+                })}
+            </Grid>
           </Grid>
-
-          {/* {JSON.stringify(editableData.others)} */}
-        </DialogContentText>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>

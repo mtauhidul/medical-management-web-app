@@ -20,7 +20,7 @@ export default function MyTable({ files }) {
           <TableRow>
             {data &&
               data.length > 0 &&
-              Object.entries(data[0]).map((key, value) => {
+              Object.entries(data[0]).map((key) => {
                 return (
                   <TableCell
                     key={key}

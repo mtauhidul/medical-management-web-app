@@ -92,7 +92,6 @@ const DateTable = ({ files }) => {
             {files
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, i) => {
-                console.log(row);
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                     <TableCell
