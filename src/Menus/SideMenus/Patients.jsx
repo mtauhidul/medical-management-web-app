@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { db } from '../../API/firebase';
-import MyTable from '../../Components/Tables/Table2/MyTable';
+import React, { useEffect, useState } from "react";
+import { db } from "../../API/firebase";
+import DateTable from "../../Components/Tables";
+// import MyTable from "../../Components/Tables/Table2/MyTable";
 
 const Patients = () => {
   const [files, setFiles] = useState([]);
 
   const getPatients = async () => {
-    const patientsRef = db.collection('kiosk');
+    const patientsRef = await db.collection("kiosk");
 
     patientsRef.onSnapshot((querySnapshot) => {
       const patientsList = [];
@@ -23,11 +24,7 @@ const Patients = () => {
     getPatients();
   }, []);
 
-  return (
-    <div>
-      <MyTable files={files} />
-    </div>
-  );
+  return <DateTable files={files} />;
 };
 
 export default Patients;

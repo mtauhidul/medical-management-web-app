@@ -6,15 +6,16 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@material-ui/core';
-import * as React from 'react';
-import data from '../../../Assets/data';
+} from "@material-ui/core";
+import * as React from "react";
+import data from "../../../Assets/data";
 
 export default function MyTable({ files }) {
   console.log(files);
+
   return (
     <TableContainer component={Paper}>
-      <Table style={{ minWidth: 650 }} aria-label='simple table'>
+      <Table style={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             {data &&
@@ -24,27 +25,31 @@ export default function MyTable({ files }) {
                   <TableCell
                     key={key}
                     style={{
-                      whiteSpace: 'nowrap',
-                      textOverflow: 'ellipsis',
-                      fontWeight: key[1].priority ? 'bold' : 'normal',
-                    }}>
-                    {key[0]?.split('_').join(' ')}
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      fontWeight: key[1].priority ? "bold" : "normal",
+                    }}
+                  >
+                    {key[0]?.split("_").join(" ")}
                   </TableCell>
                 );
               })}
           </TableRow>
         </TableHead>
+
         <TableBody>
           {data.map((row) => (
             <TableRow
               key={row.name}
-              style={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              style={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
               {Object.keys(row).map((key) => (
                 <TableCell
                   style={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
-                  key={key}>
+                  key={key}
+                >
                   {row[key]?.value || row[key]}
                 </TableCell>
               ))}
