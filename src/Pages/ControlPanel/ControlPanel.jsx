@@ -29,6 +29,7 @@ import {
   Switch,
   useHistory,
   useRouteMatch,
+  matchPath,
 } from "react-router-dom";
 import useViewportSizes from "use-viewport-sizes";
 import SignOutBtn from "../../Components/Buttons/SignOutBtn/SignOutBtn";
@@ -82,9 +83,9 @@ const useStyles = makeStyles((theme) => ({
 function ControlPanel(props) {
   const [vpWidth, vpHeight] = useViewportSizes();
   const { path, url } = useRouteMatch();
-  const [drList, setDrList] = useState([]);
-
   const history = useHistory();
+
+  const [drList, setDrList] = useState([]);
 
   const { window } = props;
   const classes = useStyles();
@@ -103,8 +104,69 @@ function ControlPanel(props) {
 
   const logOut = () => {
     sessionStorage.clear();
-    location.reload();
+    history.push("/");
+    // location.reload();
   };
+
+  const navList = [
+    {
+      name: "Dashboard",
+      url: `${url}/dashboard`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faColumns}
+          size="2x"
+          className={`${url}/dashboard` ? styles.activeIcon : styles.plusIcon}
+        />
+      ),
+    },
+    {
+      name: "Roles",
+      url: `${url}/stuff/doctors`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faStethoscope}
+          size="2x"
+          className={
+            `${url}/stuff/doctors` ? styles.activeIcon : styles.plusIcon
+          }
+        />
+      ),
+    },
+    {
+      name: "Alerts",
+      url: `${url}/alerts`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faBell}
+          size="2x"
+          className={`${url}/alerts` ? styles.activeIcon : styles.plusIcon}
+        />
+      ),
+    },
+    {
+      name: "Resources",
+      url: `${url}/sequence`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faWaveSquare}
+          size="2x"
+          className={`${url}/sequence` ? styles.activeIcon : styles.plusIcon}
+        />
+      ),
+    },
+    {
+      name: "Patients",
+      url: `${url}/patients`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faFileMedical}
+          size="2x"
+          className={`${url}/patients` ? styles.activeIcon : styles.plusIcon}
+        />
+      ),
+    },
+  ];
 
   const drawer = (
     <div>
@@ -117,22 +179,24 @@ function ControlPanel(props) {
           </div>
           <div className={styles.nav}>
             <ul className={styles.navList}>
-              {url.includes("admin") && (
+              {navList.map((item) => (
                 <li onClick={() => onCLickToggle()}>
-                  <Link to={`${url}/dashboard`}>
-                    <span>
-                      <FontAwesomeIcon
-                        className={styles.plusIcon}
-                        icon={faColumns}
-                        size="2x"
-                      />
-                    </span>{" "}
-                    Dashboard
+                  <Link
+                    to={item.url}
+                    className={
+                      matchPath(location.pathname, {
+                        path: `${item.url}`,
+                        exact: true,
+                      }) && styles.active
+                    }
+                  >
+                    <span>{item.Icon}</span>
+                    <span className={styles.navText}>{item.name}</span>
                   </Link>
                 </li>
-              )}
+              ))}
 
-              {url.includes("admin") && (
+              {/* {url.includes("admin") && (
                 <li onClick={() => onCLickToggle()}>
                   <Link to={`${url}/stuff/doctors`}>
                     <span>
@@ -145,8 +209,8 @@ function ControlPanel(props) {
                     Roles
                   </Link>
                 </li>
-              )}
-              {url.includes("admin") && (
+              )} */}
+              {/* {url.includes("admin") && (
                 <li onClick={() => onCLickToggle()}>
                   <Link to={`${url}/alerts`}>
                     <span>
@@ -159,8 +223,8 @@ function ControlPanel(props) {
                     Alerts
                   </Link>
                 </li>
-              )}
-              {url.includes("admin") && (
+              )} */}
+              {/* {url.includes("admin") && (
                 <li onClick={() => onCLickToggle()}>
                   <Link to={`${url}/sequence`}>
                     <span>
@@ -173,16 +237,31 @@ function ControlPanel(props) {
                     Resources
                   </Link>
                 </li>
-              )}
-              {url.includes("admin") && (
+              )} */}
+              {/* {url.includes("admin") && (
                 <li
                   style={{ paddingLeft: "5px" }}
                   onClick={() => onCLickToggle()}
                 >
-                  <Link to={`${url}/patients`}>
+                  <Link
+                    to={`${url}/patients`}
+                    className={
+                      matchPath(location.pathname, {
+                        path: `${url}/patients`,
+                        exact: true,
+                      }) && styles.active
+                    }
+                  >
                     <span>
                       <FontAwesomeIcon
-                        className={styles.plusIcon}
+                        className={
+                          matchPath(location.pathname, {
+                            path: `${url}/patients`,
+                            exact: true,
+                          })
+                            ? styles.activeIcon
+                            : styles.plusIcon
+                        }
                         icon={faFileMedical}
                         size="2x"
                       />
@@ -190,7 +269,7 @@ function ControlPanel(props) {
                     Patients
                   </Link>
                 </li>
-              )}
+              )} */}
             </ul>
           </div>
           <div className={styles.signOutBtn}>

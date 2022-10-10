@@ -75,6 +75,13 @@
   margin-bottom: 5px;
 }
 
+.active {
+  background: var(--color1);
+}
+.activeIcon {
+  color: var(--color3) !important;
+}
+
 .nav a:focus,
 .nav a:active {
   background: var(--color1);
