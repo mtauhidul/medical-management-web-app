@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../API/firebase";
 import DateTable from "../../Components/Tables";
+import PatientsInfo from "../../Pages/PatientsInfo";
 // import MyTable from "../../Components/Tables/Table2/MyTable";
 
 const Patients = () => {
   const [files, setFiles] = useState([]);
+  const [isHover, setIsHover] = useState(false);
 
   const getPatients = async () => {
     const patientsRef = await db.collection("kiosk");
@@ -24,7 +26,7 @@ const Patients = () => {
     getPatients();
   }, []);
 
-  return <DateTable files={files} />;
+  return <PatientsInfo isHover={isHover} setIsHover={setIsHover} />;
 };
 
 export default Patients;
