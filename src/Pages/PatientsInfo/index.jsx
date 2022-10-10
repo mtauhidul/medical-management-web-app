@@ -19,7 +19,7 @@ const PatientsInfo = () => {
   const uploadFile = (e) => {
     const file = e.target.files[0];
 
-    if (file.name.split(".")[1] !== "xlsx" || "xls")
+    if (file.name.split(".")[1] !== "xlsx")
       return toast.error("Please upload a valid file");
 
     const patientData = readXlsxFile(file).then((rows) => {
@@ -75,7 +75,7 @@ const PatientsInfo = () => {
               ?.sort((a, b) => new Date(b.date) - new Date(a.date))
               .map((item, index) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                     <Info item={item} />
                   </Grid>
                 );
