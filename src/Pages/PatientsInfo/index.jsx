@@ -15,6 +15,10 @@ import { usePatientInformationContext } from "../../context/PatientsInformationC
 const PatientsInfo = () => {
   const fileRef = React.useRef();
   const { patientsInfo, setPatientsInfo } = usePatientInformationContext();
+  console.log(
+    "🚀 ~ file: index.jsx ~ line 18 ~ PatientsInfo ~ patientsInfo",
+    patientsInfo
+  );
 
   const uploadFile = (e) => {
     const file = e.target.files[0];

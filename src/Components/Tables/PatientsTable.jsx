@@ -12,16 +12,6 @@ import IconButton from "@material-ui/core/IconButton";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import styles from "./PatientsTable.module.scss";
-import { useParams } from "react-router-dom";
-import { usePatientInformationContext } from "../../context/PatientsInformationContext";
-
-const convertTime = (time) => {
-  return new Date(time).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
 
 const headerData = [
   "Appointment Date",
@@ -81,7 +71,6 @@ const PatientsTable = ({ patientData }) => {
                 ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                    {console.log("row", row)}
                     <TableCell
                       style={{
                         whiteSpace: "nowrap",
