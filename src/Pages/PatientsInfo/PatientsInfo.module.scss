@@ -5,6 +5,11 @@
     justify-content: flex-end;
   }
 
+  .hovered {
+    text-decoration: none;
+    color: inherit;
+  }
+
   ._data_box {
     justify-content: center !important;
     border: 2px solid #e5e5e5;

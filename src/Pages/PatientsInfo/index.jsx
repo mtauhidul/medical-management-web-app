@@ -9,10 +9,12 @@ import * as FaIcons from "react-icons/fa";
 
 import styles from "./PatientsInfo.module.scss";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { usePatientInformationContext } from "../../context/PatientsInformationContext";
 
 const PatientsInfo = () => {
   const fileRef = React.useRef();
-  const [data, setData] = React.useState([]);
+  const { patientsInfo, setPatientsInfo } = usePatientInformationContext();
 
   const uploadFile = (e) => {
     const file = e.target.files[0];
@@ -28,7 +30,7 @@ const PatientsInfo = () => {
     });
 
     patientData.then((data) => {
-      setData((prevData) => {
+      setPatientsInfo((prevData) => {
         return [...prevData, data];
       });
     });
@@ -66,8 +68,8 @@ const PatientsInfo = () => {
           }}
         >
           <Grid container spacing={3}>
-            {data
-              .sort((a, b) => new Date(b.date) - new Date(a.date))
+            {patientsInfo
+              ?.sort((a, b) => new Date(b.date) - new Date(a.date))
               .map((item, index) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} key={index}>
@@ -85,26 +87,27 @@ const PatientsInfo = () => {
 export default PatientsInfo;
 
 const Info = ({ item }) => {
-  const [hovered, setHovered] = React.useState(true);
+  const [hovered, setHovered] = React.useState(false);
+  const slug = item.date.split("/").join("-").split(" ").join("&");
 
   return (
-    <Box
-      className={`${styles._box} ${styles._data_box}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {hovered ? (
-        <>
-          <h3 className={styles.hovered}>
+    <Link to={`/admin/patients/${slug}`} className={styles.hovered}>
+      <Box
+        className={`${styles._box} ${styles._data_box}`}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        {hovered ? (
+          <h3>
             <FaIcons.FaEye /> View
           </h3>
-        </>
-      ) : (
-        <>
-          <h3>{new Date(item.date).toLocaleDateString()}</h3>
-          <p style={{ color: "blue" }}>{item.patients.length}</p>
-        </>
-      )}
-    </Box>
+        ) : (
+          <>
+            <h3>{new Date(item.date).toLocaleDateString()}</h3>
+            <p style={{ color: "blue" }}>{item.patients.length}</p>
+          </>
+        )}
+      </Box>
+    </Link>
   );
 };

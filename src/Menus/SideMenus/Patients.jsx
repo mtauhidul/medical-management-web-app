@@ -6,7 +6,6 @@ import PatientsInfo from "../../Pages/PatientsInfo";
 
 const Patients = () => {
   const [files, setFiles] = useState([]);
-  const [isHover, setIsHover] = useState(false);
 
   const getPatients = async () => {
     const patientsRef = await db.collection("kiosk");
@@ -26,7 +25,7 @@ const Patients = () => {
     getPatients();
   }, []);
 
-  return <PatientsInfo isHover={isHover} setIsHover={setIsHover} />;
+  return <PatientsInfo />;
 };
 
 export default Patients;

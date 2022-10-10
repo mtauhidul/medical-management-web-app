@@ -16,10 +16,6 @@ export default function EditDialog({
   editableData,
   setEditableData,
 }) {
-  console.log(
-    "🚀 ~ file: EditDataDialog.jsx ~ line 19 ~ setEditableData",
-    editableData
-  );
   const { others } = editableData;
 
   const handleChange = (e) => {
