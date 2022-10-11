@@ -1,0 +1,9 @@
+._wrapper {
+  overflow-x: auto;
+
+  ._table_head {
+    background-color: var(--color10);
+    font-weight: 600;
+    min-height: 100px !important;
+  }
+}

@@ -1,9 +1,10 @@
 /* eslint-disable import/no-cycle */
-import { createContext, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { Toaster } from 'react-hot-toast';
-import ErrorFallback from './ErrorFallback';
-import MainRouter from './MainRouter';
+import { createContext, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { Toaster } from "react-hot-toast";
+import PatientsInformationProvider from "./context/PatientsInformationContext";
+import ErrorFallback from "./ErrorFallback";
+import MainRouter from "./MainRouter";
 
 export const ApiContext = createContext();
 export const GlobalContext = createContext();
@@ -18,33 +19,33 @@ const App = () => {
   const [loggedInUser, setLoggedInUser] = useState({});
   const [globalData, updateGlobalData] = useState({});
   const [auth, setAuth] = useState({
-    provider: '',
-    collection: '',
-    address: '',
+    provider: "",
+    collection: "",
+    address: "",
   });
   const [info, setInfo] = useState({});
   const [mod, setMod] = useState({});
   const [header, setHeader] = useState([
     {
-      name: '',
-      email: '',
-      phone: '',
+      name: "",
+      email: "",
+      phone: "",
     },
     {
-      bg: '',
-      border: '',
+      bg: "",
+      border: "",
     },
     {
-      id: '',
+      id: "",
     },
     {
-      type: '',
-      collection: '',
-      document: '',
-      method: '',
+      type: "",
+      collection: "",
+      document: "",
+      method: "",
     },
     {
-      modal: '',
+      modal: "",
     },
   ]);
 
@@ -57,7 +58,8 @@ const App = () => {
         FallbackComponent={ErrorFallback}
         onReset={() => {
           document.location.reload(true);
-        }}>
+        }}
+      >
         <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
           <ApiContext.Provider value={[header, setHeader]}>
             <GlobalContext.Provider value={[globalData, updateGlobalData]}>
@@ -65,7 +67,9 @@ const App = () => {
                 <ModalContext.Provider value={[mod, setMod]}>
                   <AuthContext.Provider value={[auth, setAuth]}>
                     <patientsContext.Provider value={[patients, setPatients]}>
-                      <MainRouter />
+                      <PatientsInformationProvider>
+                        <MainRouter />
+                      </PatientsInformationProvider>
                     </patientsContext.Provider>
                   </AuthContext.Provider>
                 </ModalContext.Provider>
