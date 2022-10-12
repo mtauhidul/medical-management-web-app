@@ -14,27 +14,51 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { usePatientInformationContext } from "../../context/PatientsInformationContext";
 
-const listOfMonth = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+// const listOfMonth = [
+//   "January",
+//   "February",
+//   "March",
+//   "April",
+//   "May",
+//   "June",
+//   "July",
+//   "August",
+//   "September",
+//   "October",
+//   "November",
+//   "December",
+// ];
+
+// export const years = Array.from(
+//   Array(new Date().getFullYear() - 1949),
+//   (_, i) => (i + 1950).toString()
+// );
 
 const PatientsInfo = () => {
+  const year = new Date().getFullYear();
+  const listOfMonthWithYear = [
+    `January ${year}`,
+    `February ${year}`,
+    `March ${year}`,
+    `April ${year}`,
+    `May ${year}`,
+    `June ${year}`,
+    `July ${year}`,
+    `August ${year}`,
+    `September ${year}`,
+    `October ${year}`,
+    `November ${year}`,
+    `December ${year}`,
+  ];
+
+  const currentMonthAndYear = new Date().toLocaleString("default", {
+    month: "long",
+    year: "numeric",
+  });
+
   const fileRef = React.useRef();
   const { patientsInfo, setPatientsInfo } = usePatientInformationContext();
-  const [month, setMonth] = React.useState(
-    new Date().toLocaleString("default", { month: "long" })
-  );
+  const [filteredBy, setFilteredBy] = React.useState(currentMonthAndYear);
   const [filteredData, setFilteredData] = React.useState([]);
 
   const uploadFile = (e) => {
@@ -64,11 +88,14 @@ const PatientsInfo = () => {
     fileRef.current.click();
   };
 
-  const filteredByMonth = (selectedMonth) => {
+  const filteredByMonthAndYear = (selectedMonthAndYear) => {
     const filteredData = patientsInfo.filter((item) => {
-      const date = new Date(item.date);
-      const monthName = date.toLocaleString("default", { month: "long" });
-      return monthName === month || selectedMonth;
+      const MonthAndYear = new Date(item.date).toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      });
+
+      return MonthAndYear === filteredBy || selectedMonthAndYear;
     });
 
     setFilteredData(filteredData);
@@ -80,8 +107,8 @@ const PatientsInfo = () => {
   };
 
   React.useEffect(() => {
-    filteredByMonth();
-  }, [month, patientsInfo]);
+    filteredByMonthAndYear();
+  }, [filteredBy, patientsInfo]);
 
   return (
     <section className={styles._wrapper}>
@@ -124,9 +151,9 @@ const PatientsInfo = () => {
                   disabled={patientsInfo.length === 0}
                   labelId="demo-simple-select-helper-label"
                   id="demo-simple-select-helper"
-                  value={month}
-                  label={month}
-                  onChange={(e) => setMonth(e.target.value)}
+                  value={filteredBy}
+                  label={filteredBy}
+                  onChange={(e) => setFilteredBy(e.target.value)}
                   style={{
                     width: "100%",
                     border: "1px solid #000000",
@@ -134,7 +161,7 @@ const PatientsInfo = () => {
                     backgroundColor: "inherit",
                   }}
                 >
-                  {listOfMonth.map((month, index) => {
+                  {listOfMonthWithYear.map((month, index) => {
                     return (
                       <MenuItem
                         key={index}
@@ -142,7 +169,7 @@ const PatientsInfo = () => {
                         style={{
                           backgroundColor: "inherit",
                         }}
-                        onClick={() => filteredByMonth(month)}
+                        onClick={() => filteredByMonthAndYear(month)}
                       >
                         {month}
                       </MenuItem>
