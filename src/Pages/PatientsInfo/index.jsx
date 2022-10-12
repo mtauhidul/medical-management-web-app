@@ -208,7 +208,7 @@ const PatientsInfo = () => {
                   fontSize: "2rem",
                 }}
               />{" "}
-              This month has no information
+              This month has not patient information
             </h1>
           )}
 

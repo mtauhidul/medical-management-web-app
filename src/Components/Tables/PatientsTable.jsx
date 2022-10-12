@@ -39,7 +39,7 @@ const PatientsTable = ({ patientData }) => {
 
   const { setPatientsInfo } = usePatientInformationContext();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(7);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -230,7 +230,13 @@ const PatientsTable = ({ patientData }) => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[7, 15, 25, { label: "All", value: -1 }]}
+                rowsPerPageOptions={[
+                  5,
+                  10,
+                  20,
+                  50,
+                  { label: "All", value: -1 },
+                ]}
                 colSpan={colSpan}
                 count={patientData?.patients?.length}
                 rowsPerPage={rowsPerPage}
