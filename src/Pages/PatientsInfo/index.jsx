@@ -14,26 +14,6 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { usePatientInformationContext } from "../../context/PatientsInformationContext";
 
-// const listOfMonth = [
-//   "January",
-//   "February",
-//   "March",
-//   "April",
-//   "May",
-//   "June",
-//   "July",
-//   "August",
-//   "September",
-//   "October",
-//   "November",
-//   "December",
-// ];
-
-// export const years = Array.from(
-//   Array(new Date().getFullYear() - 1949),
-//   (_, i) => (i + 1950).toString()
-// );
-
 const PatientsInfo = () => {
   const year = new Date().getFullYear();
   const listOfMonthWithYear = [
