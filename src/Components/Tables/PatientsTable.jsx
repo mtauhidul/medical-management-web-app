@@ -52,6 +52,11 @@ const PatientsTable = ({ patientData }) => {
 
   const editData = (idx) => {
     const getPatientData = patientData.patients[idx];
+
+    console.log(
+      "🚀 ~ file: PatientsTable.jsx ~ line 55 ~ editData ~ getPatientData",
+      getPatientData
+    );
   };
 
   const removeData = (idx) => {
