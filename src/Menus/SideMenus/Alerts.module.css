@@ -1,0 +1,31 @@
+.tableRow {
+  height: 70px;
+  width: calc((100vw - 4rem) * (21 / 9));
+  max-width: calc(850px * 9 / 21);
+  margin: 0 auto;
+}
+
+#alertsContainer {
+  margin-top: 2vw !important;
+}
+
+
+
+@media (min-width: 768px) {
+  .tableRow {
+    min-width: 600px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tableRow {
+    margin-left: auto !important;
+    margin-right: 30px !important;
+  }
+}
+
+@media (max-width: 599px) {
+  #alertsContainer {
+    margin-top: 20vw !important;
+  }
+}

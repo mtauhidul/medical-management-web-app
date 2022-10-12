@@ -1,0 +1,47 @@
+._wrapper {
+  ._box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hovered {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  ._icon_box {
+    position: absolute;
+    top: -10px;
+    right: -8px;
+    z-index: 22;
+
+    ._icon {
+      font-size: 20px;
+      opacity: 0.6;
+      cursor: pointer;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 1;
+      }
+    }
+  }
+
+  ._data_box {
+    justify-content: center !important;
+    border: 2px solid #e5e5e5;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 60px;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: var(--color25);
+      border: 2px solid var(--color1);
+      cursor: pointer;
+      color: #fff;
+      transform: scale(1.05);
+    }
+  }
+}

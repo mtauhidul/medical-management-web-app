@@ -1,0 +1,88 @@
+.room {
+  width: 210px;
+  height: 190px;
+  margin: 12.5% auto;
+  box-shadow: 0px 4px 20px rgba(26, 36, 83, 0.12);
+  border-radius: 16px;
+  border-bottom-right-radius: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  border: 2px solid transparent;
+}
+
+.room:hover,
+room:focus,
+room:active {
+  border: 2px solid var(--color22);
+}
+
+.roomTop {
+  height: 23%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.roomTopLeft {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.roomNo {
+  background: var(--color25);
+  height: 100%;
+  width: 70px;
+  font-size: 20px;
+  font-weight: 500;
+  border-bottom-right-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roomTopRight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  color: var(--color22);
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.roomCenter {
+  height: 57%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.liveAlert {
+  font-size: 42px;
+  font-weight: 500;
+  background: rgba(242, 215, 117, 0.19);
+  width: 80px;
+  height: 80px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--color9);
+  color: var(--color22);
+}
+
+.roomBottom {
+  width: 100%;
+  text-align: center;
+}
+
+.roomBottom select {
+  border: none;
+  font-size: 17px;
+  font-weight: 500;
+  outline: none;
+}

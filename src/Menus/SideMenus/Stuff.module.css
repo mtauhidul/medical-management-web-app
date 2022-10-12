@@ -1,0 +1,36 @@
+.tabLinks li a {
+  color: var(--color4);
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 5px;
+}
+
+.tabLinks li a:hover,
+.tabLinks li a:focus,
+.tabLinks li a:active {
+  color: var(--color1);
+  border-color: var(--color1);
+  transition: 0.3s;
+}
+
+.button_wrapper {
+  margin-left: auto;
+}
+
+.stuff_container {
+  margin-top: -45px;
+}
+
+@media screen and (max-width: 767px) {
+  .stuff_container {
+    padding: 0 !important;
+  }
+  .stuff_wrapper {
+    margin-top: 50px !important ;
+  }
+  .button_wrapper {
+    justify-content: center !important;
+  }
+}

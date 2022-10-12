@@ -1,0 +1,8 @@
+.react-responsive-modal-modal {
+  border-radius: 15px;
+}
+@media only screen and (max-width: 420px) {
+  .react-responsive-modal-modal {
+    display: block;
+  }
+}

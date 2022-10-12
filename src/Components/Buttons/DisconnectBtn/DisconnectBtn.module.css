@@ -1,0 +1,33 @@
+#DisconnectBtn {
+    height: 46px;
+    width: 174px;
+    left: 1214px;
+    top: 1081px;
+    border-radius: 20px;
+    border-top-right-radius: 0;
+    padding: 11px, 41px, 11px, 41px;
+    background-color: var(--color1);
+    border: none;
+    color: var(--color3);
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: center;
+
+}
+
+#DisconnectBtn:hover {
+    background-color: var(--color25);
+    border: 2px solid var(--color1);
+    color: var(--color3);
+}
+
+#DisconnectBtn:focus {
+    outline: none;
+    background-color: var(--color25);
+    border: 2px solid var(--color4);
+    color: var(--color4);
+}

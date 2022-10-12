@@ -1,0 +1,13 @@
+.iconBtn button {
+  border: none;
+  background-color: transparent;
+  margin: 6px;
+  padding: 5px;
+  font-size: 18px;
+  color: #6ac7be;
+  cursor: pointer;
+}
+
+.iconBtn button:hover {
+  color: #1f7d74;
+}

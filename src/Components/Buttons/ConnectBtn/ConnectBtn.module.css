@@ -1,0 +1,39 @@
+#ConnectBtn {
+    height: 46px;
+    width: 172px;
+    left: 1215px;
+    top: 1211px;
+    border-radius: 20px;
+    padding: 11px, 41px, 11px, 41px;
+    border-top-right-radius: 0;
+    background-color: var(--color3);
+    border: none;
+    color: var(--color1);
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0em;
+
+    text-align: center;
+    align-items: center;
+
+    border: 2px solid var(--color1);
+
+}
+
+#ConnectBtn:hover {
+    background-color: var(--color25);
+    border: 2px solid var(--color1);
+    color: var(--color3);
+    font-weight: 500;
+}
+
+#ConnectBtn:focus {
+    outline: none;
+    border: 2px solid var(--color4);
+    color: var(--color4);
+    background-color: var(--color25);
+
+}
