@@ -28,6 +28,10 @@ const headerData = [
   "Appointment Facility Name",
   "Appointment Provider Name",
   "Resource Provider Name",
+  "Arr Time",
+  "Duration",
+  "Room",
+  "Status",
 ];
 
 const PatientsTable = ({ patientData }) => {
