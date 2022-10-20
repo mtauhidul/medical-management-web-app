@@ -18,9 +18,9 @@ const Header = ({ patientData }) => {
   };
 
   const next = () => {
-    const index = patientsInfo.findIndex(
-      (data) => data.date === patientData.date
-    );
+    const index = patientsInfo
+      ?.sort((a, b) => new Date(b.date) - new Date(a.date))
+      .findIndex((data) => data.date === patientData.date);
     const nextIndex = index + 1;
     const nextData = patientsInfo[nextIndex];
 
@@ -31,9 +31,9 @@ const Header = ({ patientData }) => {
   };
 
   const prev = () => {
-    const index = patientsInfo.findIndex(
-      (data) => data.date === patientData.date
-    );
+    const index = patientsInfo
+      ?.sort((a, b) => new Date(b.date) - new Date(a.date))
+      .findIndex((data) => data.date === patientData.date);
     const prevIndex = index - 1;
     const prevData = patientsInfo[prevIndex];
     const slug = prevData.date.split("/").join("-").split(" ").join("&");
@@ -44,9 +44,9 @@ const Header = ({ patientData }) => {
 
   // disabled button when it'll the first or last data
   const isDisabled = (type) => {
-    const index = patientsInfo.findIndex(
-      (data) => data.date === patientData.date
-    );
+    const index = patientsInfo
+      ?.sort((a, b) => new Date(b.date) - new Date(a.date))
+      .findIndex((data) => data.date === patientData.date);
     if (type === "next") {
       return index === patientsInfo.length - 1;
     } else if (type === "prev") {
@@ -74,7 +74,7 @@ const Header = ({ patientData }) => {
               pointerEvents: "none",
             }}
           >
-            {new Date(patientData?.date).toLocaleString()}
+            {new Date(patientData?.date).toLocaleDateString()}
           </span>{" "}
           <IconButton onClick={next} disabled={isDisabled("next")}>
             <MdOutlineArrowForwardIos />

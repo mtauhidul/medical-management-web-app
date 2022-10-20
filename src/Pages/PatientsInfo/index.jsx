@@ -81,8 +81,10 @@ const PatientsInfo = () => {
     setFilteredData(filteredData);
   };
 
-  const removeData = (index) => {
-    const filteredData = patientsInfo.filter((item, i) => i !== index);
+  const removeData = (info) => {
+    const filteredData = patientsInfo.filter((item) => {
+      return item.date !== info.date;
+    });
     setPatientsInfo(filteredData);
   };
 
@@ -243,7 +245,7 @@ const Info = ({ item, removeData, index }) => {
     >
       <Box className={styles._icon_box}>
         <MdIcons.MdCancel
-          onClick={() => removeData(index)}
+          onClick={() => removeData(item)}
           className={styles._icon}
           title="Remove"
         />
