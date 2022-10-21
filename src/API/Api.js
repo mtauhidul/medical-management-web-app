@@ -159,7 +159,6 @@ export async function getKioskData() {
 
 // Add data to patientsData collection
 export async function addPatientsData(data) {
-  console.log(data);
   const ref = db.collection('patientsData');
   if (data) {
     try {
@@ -186,4 +185,19 @@ export async function getPatientsData() {
     data.push({ id: doc.id, ...doc.data() });
   });
   return data;
+}
+
+// Remove all data from patientsData
+export async function removeAllPatientsData(id) {
+  const ref = db.collection('patientsData');
+  try {
+    const response = await ref.doc(id).delete();
+    if (response === undefined) {
+      toast.dismiss();
+      toast.success('Deleted successfully');
+    }
+  } catch (error) {
+    toast.dismiss();
+    toast.error(error.message);
+  }
 }

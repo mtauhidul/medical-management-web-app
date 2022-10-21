@@ -11,7 +11,11 @@ import readXlsxFile from 'read-excel-file';
 
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import { addPatientsData, getPatientsData } from '../../API/Api';
+import {
+  addPatientsData,
+  getPatientsData,
+  removeAllPatientsData,
+} from '../../API/Api';
 import { usePatientInformationContext } from '../../context/PatientsInformationContext';
 import styles from './PatientsInfo.module.scss';
 
@@ -91,7 +95,7 @@ const PatientsInfo = () => {
     patientData.then(async (data) => {
       data.patients.map(async (patient) => {
         // console.log(patient);
-        const response = await addPatientsData({
+        await addPatientsData({
           date: data.date,
           data: patient,
         });
@@ -117,12 +121,14 @@ const PatientsInfo = () => {
     const newArray = [];
 
     const specificData = targetData.map((data) => data.data);
+    const ids = targetData.map((data) => data.id);
 
     // console.log({ specificData });
 
     const newObject = {
       date: targetData[0]?.date,
       patients: specificData,
+      ids: ids,
     };
 
     newArray.push(newObject);
@@ -132,11 +138,8 @@ const PatientsInfo = () => {
 
   // console.log({ filteredData });
 
-  const removeData = (info) => {
-    const filteredData = patientsInfo.filter((item) => {
-      return item.date !== info.date;
-    });
-    setPatientsInfo(filteredData);
+  const removeData = async (info) => {
+    info.ids.map(async (id) => await removeAllPatientsData(id));
   };
 
   React.useEffect(() => {
@@ -225,7 +228,7 @@ const PatientsInfo = () => {
           style={{
             marginTop: '2rem',
           }}>
-          {patientsInfo.length === 0 && (
+          {!filteredData && (
             <h1
               style={{
                 textAlign: 'center',
@@ -258,7 +261,7 @@ const PatientsInfo = () => {
           )}
 
           <Grid container spacing={3}>
-            {filteredData.length !== 0 &&
+            {filteredData[0] &&
               filteredData
                 ?.sort((a, b) => new Date(b.date) - new Date(a.date))
                 .map((item, index) => {
