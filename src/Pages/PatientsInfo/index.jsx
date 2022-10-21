@@ -11,6 +11,7 @@ import readXlsxFile from 'read-excel-file';
 
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { addPatientsData, getPatientsData } from '../../API/Api';
 import { usePatientInformationContext } from '../../context/PatientsInformationContext';
 import styles from './PatientsInfo.module.scss';
 
@@ -55,11 +56,26 @@ const PatientsInfo = () => {
   const { patientsInfo, setPatientsInfo } = usePatientInformationContext();
   const [filteredBy, setFilteredBy] = React.useState(currentMonthAndYear);
   const [filteredData, setFilteredData] = React.useState([]);
+  const [initialData, setInitialData] = React.useState([]);
+
+  const getAllPatientsData = async () => {
+    const response = await getPatientsData();
+    if (response) {
+      setInitialData(response);
+      toast.success('Data fetched successfully');
+    } else {
+      toast.error('Something went wrong');
+    }
+  };
+
+  React.useEffect(() => {
+    getAllPatientsData();
+  }, []);
 
   const uploadFile = (e) => {
     const file = e.target.files[0];
 
-    if (file.name.split('.')[1] !== 'xlsx')
+    if (file.name?.split('.')[1] !== 'xlsx')
       return toast.error('Please upload a valid file');
 
     const patientData = readXlsxFile(file).then((rows) => {
@@ -72,11 +88,17 @@ const PatientsInfo = () => {
       return patientsTodaysData;
     });
 
-    patientData.then((data) => {
-      setPatientsInfo((prevData) => {
-        return [...prevData, data];
+    patientData.then(async (data) => {
+      data.patients.map(async (patient) => {
+        // console.log(patient);
+        const response = await addPatientsData({
+          date: data.date,
+          data: patient,
+        });
+        // console.log(response.id);
       });
     });
+    getAllPatientsData();
   };
 
   const getData = () => {
@@ -84,16 +106,31 @@ const PatientsInfo = () => {
   };
 
   const filteredByMonthAndYear = (selectedMonthAndYear) => {
-    const filteredData = patientsInfo.filter((item) => {
-      const getMonth = months[item.date.split(', ')[0].split('/')[1] - 1];
-      const getYear = item.date.split(', ')[0].split('/')[2];
+    const targetData = initialData.filter((item) => {
+      const getMonth = months[item.date?.split(', ')[0].split('/')[1] - 1];
+      const getYear = item.date?.split(', ')[0].split('/')[2];
       let MonthAndYear = `${getMonth} ${getYear}`;
 
       return MonthAndYear === filteredBy || selectedMonthAndYear;
     });
 
-    setFilteredData(filteredData);
+    const newArray = [];
+
+    const specificData = targetData.map((data) => data.data);
+
+    // console.log({ specificData });
+
+    const newObject = {
+      date: targetData[0]?.date,
+      patients: specificData,
+    };
+
+    newArray.push(newObject);
+    setPatientsInfo(newArray);
+    setFilteredData(newArray);
   };
+
+  // console.log({ filteredData });
 
   const removeData = (info) => {
     const filteredData = patientsInfo.filter((item) => {
@@ -104,7 +141,7 @@ const PatientsInfo = () => {
 
   React.useEffect(() => {
     filteredByMonthAndYear();
-  }, [filteredBy, patientsInfo]);
+  }, [filteredBy, initialData]);
 
   return (
     <section className={styles._wrapper}>
@@ -221,15 +258,16 @@ const PatientsInfo = () => {
           )}
 
           <Grid container spacing={3}>
-            {filteredData
-              ?.sort((a, b) => new Date(b.date) - new Date(a.date))
-              .map((item, index) => {
-                return (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                    <Info index={index} item={item} removeData={removeData} />
-                  </Grid>
-                );
-              })}
+            {filteredData.length !== 0 &&
+              filteredData
+                ?.sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map((item, index) => {
+                  return (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                      <Info index={index} item={item} removeData={removeData} />
+                    </Grid>
+                  );
+                })}
           </Grid>
         </Box>
       </Container>
@@ -241,7 +279,7 @@ export default PatientsInfo;
 
 const Info = ({ item, removeData, index }) => {
   const [hovered, setHovered] = React.useState(false);
-  const slug = item.date.split('/').join('-').split(' ').join('&');
+  const slug = item.date?.split('/').join('-').split(' ').join('&');
 
   return (
     <Box
@@ -266,8 +304,8 @@ const Info = ({ item, removeData, index }) => {
             </h3>
           ) : (
             <>
-              <h3>{item.date.split(', ')[0]}</h3>
-              <p style={{ color: 'blue' }}>{item.patients.length}</p>
+              <h3>{item.date?.split(', ')[0]}</h3>
+              <p style={{ color: 'blue' }}>{item.patients?.length}</p>
             </>
           )}
         </Box>

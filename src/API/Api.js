@@ -156,3 +156,34 @@ export async function getKioskData() {
 //             db.collection('dashboard').doc(data.docId).update({ rooms: objects });
 //         });
 // }
+
+// Add data to patientsData collection
+export async function addPatientsData(data) {
+  console.log(data);
+  const ref = db.collection('patientsData');
+  if (data) {
+    try {
+      const response = await ref.add(data);
+      if (response) {
+        toast.dismiss();
+        toast.success('Data added successfully');
+        return response;
+      }
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message);
+      return error;
+    }
+  }
+}
+
+// Get all data from patientsData collection
+export async function getPatientsData() {
+  const ref = db.collection('patientsData');
+  const snapshot = await ref.get();
+  const data = [];
+  snapshot.forEach((doc) => {
+    data.push({ id: doc.id, ...doc.data() });
+  });
+  return data;
+}
