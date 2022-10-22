@@ -30,6 +30,7 @@
     "react-hot-toast": "^2.0.0",
     "react-icons": "^4.2.0",
     "react-intl": "^5.15.8",
+    "react-loader-spinner": "^5.3.4",
     "react-modal": "^3.13.1",
     "react-pro-sidebar": "^0.6.0",
     "react-responsive-modal": "^6.1.0",

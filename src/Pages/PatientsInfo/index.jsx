@@ -10,6 +10,7 @@ import * as MdIcons from 'react-icons/md';
 import readXlsxFile from 'read-excel-file';
 
 import toast from 'react-hot-toast';
+import { LineWave } from 'react-loader-spinner';
 import { Link } from 'react-router-dom';
 import {
   addPatientsData,
@@ -61,12 +62,12 @@ const PatientsInfo = () => {
   const [filteredBy, setFilteredBy] = React.useState(currentMonthAndYear);
   const [filteredData, setFilteredData] = React.useState([]);
   const [initialData, setInitialData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   const getAllPatientsData = async () => {
     const response = await getPatientsData();
     if (response) {
       setInitialData(response);
-      toast.success('Data fetched successfully');
     } else {
       toast.error('Something went wrong');
     }
@@ -152,7 +153,13 @@ const PatientsInfo = () => {
     filteredByMonthAndYear();
   }, [filteredBy, initialData]);
 
-  console.log(filteredData);
+  React.useEffect(() => {
+    if (initialData) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  }, []);
 
   return (
     <section className={styles._wrapper}>
@@ -236,7 +243,23 @@ const PatientsInfo = () => {
           style={{
             marginTop: '2rem',
           }}>
-          {!filteredData[0]?.date && (
+          {loading && (
+            <Box sx={{ marginLeft: '38%' }}>
+              <LineWave
+                height='300'
+                width='300'
+                color='#212155'
+                ariaLabel='line-wave'
+                wrapperStyle={{}}
+                wrapperClass=''
+                visible={true}
+                firstLineColor=''
+                middleLineColor=''
+                lastLineColor=''
+              />
+            </Box>
+          )}
+          {!filteredData[0]?.date && !loading && (
             <h1
               style={{
                 textAlign: 'center',
@@ -254,6 +277,7 @@ const PatientsInfo = () => {
 
           <Grid container spacing={3}>
             {filteredData[0]?.date &&
+              !loading &&
               filteredData
                 ?.sort((a, b) => new Date(b.date) - new Date(a.date))
                 .map((item, index) => {
