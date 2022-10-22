@@ -158,7 +158,7 @@ const PatientsInfo = () => {
     if (initialData) {
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 1500);
     }
   }, []);
 
