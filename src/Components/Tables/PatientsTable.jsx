@@ -38,7 +38,7 @@ const PatientsTable = ({ patientData }) => {
   const desktop = useMediaQuery('(min-width: 1200px)');
   const tablet = useMediaQuery('(max-width:1200px)');
   const mobile = useMediaQuery('(max-width:600px)');
-  const colSpan = desktop ? 6 : tablet ? 4 : mobile ? 2 : 5;
+  const colSpan = desktop ? 7 : tablet ? 4 : mobile ? 2 : 5;
 
   console.log(patientData);
 
@@ -134,23 +134,18 @@ const PatientsTable = ({ patientData }) => {
                         whiteSpace: 'nowrap',
                       }}
                       align='center'>
-                      {new Date(row[0]).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                      })}
+                      {new Date(row[0].seconds * 1000).toLocaleDateString(
+                        'en-US'
+                      )}
                     </TableCell>
                     <TableCell
                       style={{
                         whiteSpace: 'nowrap',
                       }}
                       align='center'>
-                      {new Date(row[1]).toLocaleTimeString('en-US', {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        second: 'numeric',
-                        hour12: true,
-                      })}
+                      {new Date(row[1].seconds * 1000).toLocaleDateString(
+                        'en-US'
+                      ) || '-'}
                     </TableCell>
                     <TableCell
                       style={{
@@ -214,6 +209,34 @@ const PatientsTable = ({ patientData }) => {
                       }}
                       align='center'>
                       {row[45]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      -
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      -
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      -
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      -
                     </TableCell>
                   </TableRow>
                 ))}
