@@ -139,12 +139,20 @@ const PatientsInfo = () => {
   // console.log({ filteredData });
 
   const removeData = async (info) => {
-    info.ids.map(async (id) => await removeAllPatientsData(id));
+    info.ids.map(async (id) => {
+      const response = await removeAllPatientsData(id);
+      if (response) {
+        setPatientsInfo([]);
+        setFilteredData([]);
+      }
+    });
   };
 
   React.useEffect(() => {
     filteredByMonthAndYear();
   }, [filteredBy, initialData]);
+
+  console.log(filteredData);
 
   return (
     <section className={styles._wrapper}>
@@ -228,7 +236,7 @@ const PatientsInfo = () => {
           style={{
             marginTop: '2rem',
           }}>
-          {!filteredData && (
+          {!filteredData[0]?.date && (
             <h1
               style={{
                 textAlign: 'center',
@@ -240,28 +248,12 @@ const PatientsInfo = () => {
                   fontSize: '2rem',
                 }}
               />{' '}
-              There has no information
-            </h1>
-          )}
-
-          {filteredData.length === 0 && patientsInfo.length >= 1 && (
-            <h1
-              style={{
-                textAlign: 'center',
-                marginTop: '5rem',
-              }}>
-              <FaIcons.FaExclamationTriangle
-                style={{
-                  color: '#F7C110',
-                  fontSize: '2rem',
-                }}
-              />{' '}
-              This month has not patient information
+              No information available
             </h1>
           )}
 
           <Grid container spacing={3}>
-            {filteredData[0] &&
+            {filteredData[0]?.date &&
               filteredData
                 ?.sort((a, b) => new Date(b.date) - new Date(a.date))
                 .map((item, index) => {

@@ -195,6 +195,7 @@ export async function removeAllPatientsData(id) {
     if (response === undefined) {
       toast.dismiss();
       toast.success('Deleted successfully');
+      return true;
     }
   } catch (error) {
     toast.dismiss();
