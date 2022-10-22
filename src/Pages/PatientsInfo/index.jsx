@@ -99,6 +99,11 @@ const PatientsInfo = () => {
         await addPatientsData({
           date: data.date,
           data: patient,
+          arrTime: '',
+          duration: '',
+          room: '',
+          status: '',
+          kiosk: {},
         });
         // console.log(response.id);
       });
@@ -121,15 +126,11 @@ const PatientsInfo = () => {
 
     const newArray = [];
 
-    const specificData = targetData.map((data) => data.data);
-    const ids = targetData.map((data) => data.id);
-
     // console.log({ specificData });
 
     const newObject = {
       date: targetData[0]?.date,
-      patients: specificData,
-      ids: ids,
+      patients: targetData,
     };
 
     newArray.push(newObject);
@@ -259,6 +260,7 @@ const PatientsInfo = () => {
               />
             </Box>
           )}
+          {console.log({ filteredData })}
           {!filteredData[0]?.date && !loading && (
             <h1
               style={{
