@@ -40,7 +40,7 @@ const Dashboard = () => {
           dr: item?.dr,
           email: item?.email,
           phone: item?.phone,
-          count: item?.count,
+          count: item?.count.length,
           role: item?.role,
           rooms: item?.rooms,
           id: doc.id,
@@ -124,7 +124,7 @@ const Dashboard = () => {
                     color: '#FC7E55',
                     fontWeight: 'bold',
                     fontSize: '30px',
-                    marginTop: '-9px',
+                    margin: '-9px 10px 10px 10px',
                   }}>
                   {doc.count}
                 </p>
