@@ -140,7 +140,10 @@ const DashCard = (props) => {
                 )}
               </div>
               <div>
-                <div className={styles.wrapper}>{room.alert || 'Empty'}</div>
+                <div className={styles.wrapper}>
+                  {room.alert || 'Empty'} <br />{' '}
+                  <small style={{ color: 'blue' }}>Patient Name</small>{' '}
+                </div>
               </div>
             </Card.Body>
           </Card>

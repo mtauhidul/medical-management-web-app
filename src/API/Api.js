@@ -81,8 +81,42 @@ export async function addAlert(data) {
 
       // Update complete array with update copy of element we have
       // created in local javascript variable.
-      // console.log(objects);
+      console.log(objects);
       db.collection('dashboard').doc(data.docId).update({ rooms: objects });
+
+      const setRoomForPatient = async () => {
+        const response = await db.collection('dashboard').doc(data.docId).get();
+
+        const allPatients = response.data().count;
+
+        const emptyPatient = allPatients.find((p) => p.room === '');
+
+        if (emptyPatient) {
+          emptyPatient.room = objectToupdate.id;
+
+          db.collection('dashboard')
+            .doc(data.docId)
+            .update({ count: allPatients });
+
+          const patientToUpdate = await db
+            .collection('patientsData')
+            .doc(emptyPatient.id)
+            .get();
+
+          console.log(patientToUpdate.data());
+
+          // patientToUpdate.data().room = emptyPatient.room;
+          // patientToUpdate.data().status = 'Patient Ready';
+          db.collection('patientsData')
+            .doc(emptyPatient.id)
+            .update({ room: emptyPatient.room, status: 'Patient Ready' });
+        } else {
+          console.log('No empty patient');
+        }
+      };
+      if (data.alert === 'Patient Ready') {
+        setRoomForPatient();
+      }
     });
 }
 
@@ -110,6 +144,7 @@ export async function toggleEmergency(data) {
       // Update complete array with update copy of element we have
       // created in local javascript variable.
       // console.log(objects);
+
       db.collection('dashboard').doc(data.docId).update({ rooms: objects });
     });
 }
