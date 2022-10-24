@@ -238,3 +238,16 @@ export async function removeAllPatientsData(id) {
     toast.error(error.message);
   }
 }
+
+export const getPatientDetails = async (doctorId, roomId) => {
+  return await db
+    .collection('dashboard')
+    .doc(doctorId)
+    .get()
+    .then((doc) => {
+      const patients = doc.data().count;
+      const patient = patients.filter((p) => p.room === roomId);
+      console.log(patient);
+      return patient[0];
+    });
+};

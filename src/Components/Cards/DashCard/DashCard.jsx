@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/no-array-index-key */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
-import { addAlert, toggleEmergency } from '../../../API/Api';
+import { addAlert, getPatientDetails, toggleEmergency } from '../../../API/Api';
 import { GlobalContext, ModalContext } from '../../../App';
 import RBtn from '../../Buttons/RBtn/RBtn';
 import './blinker.css';
@@ -36,6 +36,8 @@ const DashCard = (props) => {
     });
   };
 
+  console.log('==>>', data);
+
   const resetDashCard = () => {
     handler();
     apiCall();
@@ -56,6 +58,17 @@ const DashCard = (props) => {
       });
     }
   };
+
+  const [patientData, setPatientData] = useState({});
+
+  const getPatient = async () => {
+    const response = await getPatientDetails(data.id, room.name);
+    setPatientData(response);
+  };
+
+  useEffect(() => {
+    getPatient();
+  }, []);
 
   return (
     <div>
@@ -142,7 +155,13 @@ const DashCard = (props) => {
               <div>
                 <div className={styles.wrapper}>
                   {room.alert || 'Empty'} <br />{' '}
-                  <small style={{ color: 'blue' }}>Patient Name</small>{' '}
+                  <small style={{ color: 'blue' }}>
+                    {patientData?.patient
+                      ? patientData?.patient.split(', ')[1] +
+                        ' ' +
+                        patientData?.patient.split(', ')[0]
+                      : 'Patient Name'}
+                  </small>{' '}
                 </div>
               </div>
             </Card.Body>
