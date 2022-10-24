@@ -84,6 +84,26 @@ export async function addAlert(data) {
       console.log(objects);
       db.collection('dashboard').doc(data.docId).update({ rooms: objects });
 
+      const setOtherStatusForPatient = async () => {
+        const response = await db.collection('dashboard').doc(data.docId).get();
+
+        const allPatients = response.data().count;
+
+        const targetPatient = allPatients.find(
+          (p) => p.room === objectToupdate.id
+        );
+
+        if (targetPatient) {
+          // patientToUpdate.data().room = emptyPatient.room;
+          // patientToUpdate.data().status = 'Patient Ready';
+          db.collection('patientsData')
+            .doc(targetPatient.id)
+            .update({ status: data.alert });
+        } else {
+          console.log('Unable to update patient room status');
+        }
+      };
+
       const setRoomForPatient = async () => {
         const response = await db.collection('dashboard').doc(data.docId).get();
 
@@ -116,6 +136,9 @@ export async function addAlert(data) {
       };
       if (data.alert === 'Patient Ready') {
         setRoomForPatient();
+      }
+      if (data.alert !== 'Patient Ready') {
+        setOtherStatusForPatient();
       }
     });
 }
@@ -250,4 +273,12 @@ export const getPatientDetails = async (doctorId, roomId) => {
       console.log(patient);
       return patient[0];
     });
+};
+
+export const getStatus = async (roomId) => {
+  const response = await db.collection('rooms').doc(roomId).get();
+
+  console.log(response.data().alert.name);
+
+  return response.data().alert.name;
 };
