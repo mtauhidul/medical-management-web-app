@@ -84,6 +84,50 @@ export async function addAlert(data) {
       console.log(objects);
       db.collection('dashboard').doc(data.docId).update({ rooms: objects });
 
+      const completeTreatments = async () => {
+        const response = await db.collection('dashboard').doc(data.docId).get();
+
+        const allPatients = response.data().count;
+
+        const completingPatient = allPatients.find(
+          (p) => p.room === objectToupdate.id
+        );
+
+        if (completingPatient) {
+          const updatedPatients = allPatients.filter(
+            (patient) => patient !== completingPatient
+          );
+
+          db.collection('dashboard')
+            .doc(data.docId)
+            .update({ count: updatedPatients });
+
+          const patientToUpdate = await db
+            .collection('patientsData')
+            .doc(completingPatient.id)
+            .get();
+
+          const startTime = patientToUpdate.data().arrTime;
+          const endTime = new Date().toISOString();
+          let current = new Date(endTime).valueOf();
+          let previous = new Date(startTime).valueOf();
+          let diff = current - previous;
+          let mins = Math.round((diff % 3600000) / 60000);
+          let hours = Math.floor(diff / 3600000);
+          const duration = `${hours}:${mins}`;
+
+          console.log(duration);
+
+          // patientToUpdate.data().room = emptyPatient.room;
+          // patientToUpdate.data().status = 'Patient Ready';
+          db.collection('patientsData')
+            .doc(completingPatient.id)
+            .update({ room: '', status: 'Completed', duration: duration });
+        } else {
+          console.log('No empty patient');
+        }
+      };
+
       const setOtherStatusForPatient = async () => {
         const response = await db.collection('dashboard').doc(data.docId).get();
 
@@ -109,7 +153,9 @@ export async function addAlert(data) {
 
         const allPatients = response.data().count;
 
-        const emptyPatient = allPatients.find((p) => p.room === '');
+        const emptyPatient = allPatients.find(
+          (p) => p.room === '' && p.duration === ''
+        );
 
         if (emptyPatient) {
           emptyPatient.room = objectToupdate.id;
@@ -139,6 +185,9 @@ export async function addAlert(data) {
       }
       if (data.alert !== 'Patient Ready') {
         setOtherStatusForPatient();
+      }
+      if (data.alert === '') {
+        completeTreatments();
       }
     });
 }

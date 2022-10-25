@@ -220,13 +220,9 @@ const PatientsTable = ({ patientData }) => {
                             whiteSpace: 'nowrap',
                           }}
                           align='center'>
-                          {new Date(
-                            row.arrTime.seconds * 1000
-                          ).toLocaleTimeString('en-US') === 'Invalid Date'
-                            ? '-'
-                            : new Date(
-                                row.arrTime.seconds * 1000
-                              ).toLocaleTimeString('en-US')}
+                          {row.arrTime
+                            ? new Date(row.arrTime).toLocaleTimeString('en')
+                            : '-'}
                         </TableCell>
                         <TableCell
                           style={{
