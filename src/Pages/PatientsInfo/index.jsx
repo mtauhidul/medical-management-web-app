@@ -67,14 +67,49 @@ const PatientsInfo = () => {
   const getAllPatientsData = async () => {
     const response = await getPatientsData();
     if (response) {
-      setInitialData(response);
+      const groups = response.reduce((acc, item) => {
+        if (!acc[item?.date?.split(', ')[0]]) {
+          acc[item?.date?.split(', ')[0]] = [];
+        }
+
+        acc[item?.date?.split(', ')[0]].push(item);
+        return acc;
+      }, {});
+
+      // Loop through groups and push them tp an array of groups following the structure described below
+      // [
+      //   {
+      //     date: key,
+      //     patients: value,
+      //   }
+      // ]
+
+      for (const [key, value] of Object.entries(groups)) {
+        setPatientsInfo((prevData) => [
+          ...prevData,
+          { date: key, patients: groups[key] },
+        ]);
+      }
+
+      if (patientsInfo.length > 0) {
+        let uniqueData = [...new Set(patientsInfo)];
+        setPatientsInfo(uniqueData);
+      }
+
+      // for (const [key, value] of Object.entries(groups)) {
+      //   const newArray = [];
+      //   newArray.push({ date: key, patients: value });
+      //   return newArray;
+      // }
     } else {
       toast.error('Something went wrong');
     }
   };
 
   React.useEffect(() => {
-    getAllPatientsData();
+    if (PatientsInfo.length <= 0) {
+      getAllPatientsData();
+    }
   }, []);
 
   const uploadFile = (e) => {
@@ -95,7 +130,6 @@ const PatientsInfo = () => {
 
     patientData.then(async (data) => {
       data.patients.map(async (patient) => {
-        // console.log(patient);
         await addPatientsData({
           date: data.date,
           data: patient,
@@ -105,7 +139,6 @@ const PatientsInfo = () => {
           status: '',
           kiosk: {},
         });
-        // console.log(response.id);
       });
     });
     getAllPatientsData();
@@ -115,34 +148,24 @@ const PatientsInfo = () => {
     fileRef.current.click();
   };
 
+  React.useEffect(() => {}, []);
+
   const filteredByMonthAndYear = (selectedMonthAndYear) => {
-    const targetData = initialData.filter((item) => {
-      const getMonth = months[item.date?.split(', ')[0].split('/')[1] - 1];
-      const getYear = item.date?.split(', ')[0].split('/')[2];
-      let MonthAndYear = `${getMonth} ${getYear}`;
+    const filteredData = patientsInfo.filter((item) => {
+      const segment = item.date.split('/');
+      const month = months[segment[1] - 1];
+      const year = segment[2];
+      const MonthAndYear = `${month} ${year}`;
 
       return MonthAndYear === filteredBy || selectedMonthAndYear;
     });
 
-    const newArray = [];
-
-    // console.log({ specificData });
-
-    const newObject = {
-      date: targetData[0]?.date,
-      patients: targetData,
-    };
-
-    newArray.push(newObject);
-    setPatientsInfo(newArray);
-    setFilteredData(newArray);
+    setFilteredData(filteredData);
   };
 
-  // console.log({ filteredData });
-
   const removeData = async (info) => {
-    info.ids.map(async (id) => {
-      const response = await removeAllPatientsData(id);
+    info.patients.map(async (patient) => {
+      const response = await removeAllPatientsData(patient.id);
       if (response) {
         setPatientsInfo([]);
         setFilteredData([]);
@@ -260,8 +283,7 @@ const PatientsInfo = () => {
               />
             </Box>
           )}
-          {console.log({ filteredData })}
-          {!filteredData[0]?.date && !loading && (
+          {!patientsInfo && !loading && (
             <h1
               style={{
                 textAlign: 'center',
@@ -278,17 +300,15 @@ const PatientsInfo = () => {
           )}
 
           <Grid container spacing={3}>
-            {filteredData[0]?.date &&
+            {patientsInfo &&
               !loading &&
-              filteredData
-                ?.sort((a, b) => new Date(b.date) - new Date(a.date))
-                .map((item, index) => {
-                  return (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                      <Info index={index} item={item} removeData={removeData} />
-                    </Grid>
-                  );
-                })}
+              filteredData.map((item, index) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                    <Info index={index} item={item} removeData={removeData} />
+                  </Grid>
+                );
+              })}
           </Grid>
         </Box>
       </Container>

@@ -291,7 +291,7 @@ export async function getPatientsData() {
   snapshot.forEach((doc) => {
     data.push({ id: doc.id, ...doc.data() });
   });
-  console.log(data);
+
   return data;
 }
 
