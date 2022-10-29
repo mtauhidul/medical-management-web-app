@@ -1,78 +1,60 @@
-import { FormControl, MenuItem, Select } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import * as React from 'react';
-import AddBtn from '../../Components/Buttons/AddBtn/AddBtn';
+import * as React from "react";
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import AddBtn from "../../Components/Buttons/AddBtn/AddBtn";
+import readXlsxFile from "read-excel-file";
+import toast from "react-hot-toast";
 
-import * as FaIcons from 'react-icons/fa';
-import * as MdIcons from 'react-icons/md';
-import readXlsxFile from 'read-excel-file';
-
-import toast from 'react-hot-toast';
-import { LineWave } from 'react-loader-spinner';
-import { Link } from 'react-router-dom';
 import {
   addPatientsData,
   getPatientsData,
   removeAllPatientsData,
-} from '../../API/Api';
-import { usePatientInformationContext } from '../../context/PatientsInformationContext';
-import styles from './PatientsInfo.module.scss';
+} from "../../API/Api";
+import { usePatientInformationContext } from "../../context/PatientsInformationContext";
+import styles from "./PatientsInfo.module.scss";
+import Info from "./Info";
+import FilteredPatientsData from "./FilteredPatientsData";
+import ConditionalRendering from "./ConditionalRendering";
 
 const PatientsInfo = () => {
-  const year = new Date().getFullYear();
-  const listOfMonthWithYear = [
-    `January ${year}`,
-    `February ${year}`,
-    `March ${year}`,
-    `April ${year}`,
-    `May ${year}`,
-    `June ${year}`,
-    `July ${year}`,
-    `August ${year}`,
-    `September ${year}`,
-    `October ${year}`,
-    `November ${year}`,
-    `December ${year}`,
-  ];
-
   const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
-  const currentMonthAndYear = new Date().toLocaleString('default', {
-    month: 'long',
-    year: 'numeric',
+  const currentMonthAndYear = new Date().toLocaleString("default", {
+    month: "long",
+    year: "numeric",
   });
 
   const fileRef = React.useRef();
   const { patientsInfo, setPatientsInfo } = usePatientInformationContext();
   const [filteredBy, setFilteredBy] = React.useState(currentMonthAndYear);
   const [filteredData, setFilteredData] = React.useState([]);
-  const [initialData, setInitialData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [day, setDay] = React.useState(new Date().getDate());
+  const [filteredByDay, setFilteredByDay] = React.useState(false);
 
   const getAllPatientsData = async () => {
     const response = await getPatientsData();
     if (response) {
       const groups = response.reduce((acc, item) => {
-        if (!acc[item?.date?.split(', ')[0]]) {
-          acc[item?.date?.split(', ')[0]] = [];
+        if (!acc[item?.date?.split(", ")[0]]) {
+          acc[item?.date?.split(", ")[0]] = [];
         }
 
-        acc[item?.date?.split(', ')[0]].push(item);
+        acc[item?.date?.split(", ")[0]].push(item);
         return acc;
       }, {});
 
@@ -96,13 +78,16 @@ const PatientsInfo = () => {
         setPatientsInfo(uniqueData);
       }
 
+      setLoading(false);
+
       // for (const [key, value] of Object.entries(groups)) {
       //   const newArray = [];
       //   newArray.push({ date: key, patients: value });
       //   return newArray;
       // }
     } else {
-      toast.error('Something went wrong');
+      toast.error("Something went wrong");
+      setLoading(false);
     }
   };
 
@@ -115,8 +100,8 @@ const PatientsInfo = () => {
   const uploadFile = (e) => {
     const file = e.target.files[0];
 
-    if (file.name?.split('.')[1] !== 'xlsx')
-      return toast.error('Please upload a valid file');
+    if (file.name?.split(".")[1] !== "xlsx")
+      return toast.error("Please upload a valid file");
 
     const patientData = readXlsxFile(file).then((rows) => {
       const removeFirstArray = rows.slice(1);
@@ -133,10 +118,10 @@ const PatientsInfo = () => {
         await addPatientsData({
           date: data.date,
           data: patient,
-          arrTime: '',
-          duration: '',
-          room: '',
-          status: '',
+          arrTime: "",
+          duration: "",
+          room: "",
+          status: "",
           kiosk: {},
         });
       });
@@ -148,11 +133,17 @@ const PatientsInfo = () => {
     fileRef.current.click();
   };
 
-  React.useEffect(() => {}, []);
+  const filteredByDate = (date) => {
+    setFilteredByDay(true);
+    const filteredData = patientsInfo.filter((info) => {
+      return info.date.split("/")[0] === date;
+    });
+    setFilteredData(filteredData);
+  };
 
   const filteredByMonthAndYear = (selectedMonthAndYear) => {
     const filteredData = patientsInfo.filter((item) => {
-      const segment = item.date.split('/');
+      const segment = item.date.split("/");
       const month = months[segment[1] - 1];
       const year = segment[2];
       const MonthAndYear = `${month} ${year}`;
@@ -161,6 +152,8 @@ const PatientsInfo = () => {
     });
 
     setFilteredData(filteredData);
+    setDay(new Date().getDate());
+    setFilteredByDay(false);
   };
 
   const removeData = async (info) => {
@@ -175,23 +168,23 @@ const PatientsInfo = () => {
 
   React.useEffect(() => {
     filteredByMonthAndYear();
-  }, [filteredBy, initialData]);
+  }, [filteredBy]);
 
   React.useEffect(() => {
-    if (initialData) {
+    if (patientsInfo || filteredData) {
       setTimeout(() => {
         setLoading(false);
       }, 1500);
     }
-  }, []);
+  }, [filteredData, patientsInfo]);
 
   return (
     <section className={styles._wrapper}>
-      <Container maxWidth='xl'>
+      <Container maxWidth="xl">
         <input
-          type='file'
+          type="file"
           hidden
-          accept='.xlsx,.xls'
+          accept=".xlsx"
           ref={fileRef}
           onChange={uploadFile}
         />
@@ -200,64 +193,26 @@ const PatientsInfo = () => {
           <Box>
             <h1>Upload Your Patients Information</h1>
 
-            <Box
-              style={{
-                display: 'flex',
-                alignItems: 'stretch',
-                gap: '1rem',
-                justifyContent: 'flex-start',
-              }}>
-              <p
-                style={{
-                  marginTop: '0.5rem',
-                }}>
-                Filtered By Month:
-              </p>
-
-              <FormControl
-                style={{
-                  flex: '1 1 auto',
-                  backgroundColor: 'inherit',
-                }}>
-                <Select
-                  disabled={patientsInfo.length === 0}
-                  labelId='demo-simple-select-helper-label'
-                  id='demo-simple-select-helper'
-                  value={filteredBy}
-                  label={filteredBy}
-                  onChange={(e) => setFilteredBy(e.target.value)}
-                  style={{
-                    width: '100%',
-                    border: '1px solid #000000',
-                    padding: '0 0.5rem',
-                    backgroundColor: 'inherit',
-                  }}>
-                  {listOfMonthWithYear.map((month, index) => {
-                    return (
-                      <MenuItem
-                        key={index}
-                        value={month}
-                        style={{
-                          backgroundColor: 'inherit',
-                        }}
-                        onClick={() => filteredByMonthAndYear(month)}>
-                        {month}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Box>
+            <FilteredPatientsData
+              filteredByDay={filteredByDay}
+              day={day}
+              setDay={setDay}
+              patientsInfo={patientsInfo}
+              filteredByDate={filteredByDate}
+              filteredBy={filteredBy}
+              setFilteredBy={setFilteredBy}
+              filteredByMonthAndYear={filteredByMonthAndYear}
+            />
           </Box>
 
           <AddBtn
-            title='Import file'
+            title="Import file"
             makeStyle={{
-              whiteSpace: 'nowrap',
-              width: '170px',
-              textTransform: 'uppercase',
-              fontWeight: 'bold',
-              letterSpacing: '1px',
+              whiteSpace: "nowrap",
+              width: "170px",
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              letterSpacing: "1px",
             }}
             handleClick={getData}
           />
@@ -265,39 +220,14 @@ const PatientsInfo = () => {
 
         <Box
           style={{
-            marginTop: '2rem',
-          }}>
-          {loading && (
-            <Box sx={{ marginLeft: '38%' }}>
-              <LineWave
-                height='300'
-                width='300'
-                color='#212155'
-                ariaLabel='line-wave'
-                wrapperStyle={{}}
-                wrapperClass=''
-                visible={true}
-                firstLineColor=''
-                middleLineColor=''
-                lastLineColor=''
-              />
-            </Box>
-          )}
-          {!patientsInfo && !loading && (
-            <h1
-              style={{
-                textAlign: 'center',
-                marginTop: '5rem',
-              }}>
-              <FaIcons.FaExclamationTriangle
-                style={{
-                  color: '#F7C110',
-                  fontSize: '2rem',
-                }}
-              />{' '}
-              No information available
-            </h1>
-          )}
+            marginTop: "2rem",
+          }}
+        >
+          <ConditionalRendering
+            loading={loading}
+            patientsInfo={patientsInfo}
+            filteredData={filteredData}
+          />
 
           <Grid container spacing={3}>
             {patientsInfo &&
@@ -317,40 +247,3 @@ const PatientsInfo = () => {
 };
 
 export default PatientsInfo;
-
-const Info = ({ item, removeData, index }) => {
-  const [hovered, setHovered] = React.useState(false);
-  const slug = item.date?.split('/').join('-').split(' ').join('&');
-
-  return (
-    <Box
-      style={{
-        position: 'relative',
-      }}>
-      <Box className={styles._icon_box}>
-        <MdIcons.MdCancel
-          onClick={() => removeData(item)}
-          className={styles._icon}
-          title='Remove'
-        />
-      </Box>
-      <Link to={`/admin/patients/${slug}`} className={styles.hovered}>
-        <Box
-          className={`${styles._box} ${styles._data_box}`}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}>
-          {hovered ? (
-            <h3>
-              <FaIcons.FaEye /> View
-            </h3>
-          ) : (
-            <>
-              <h3>{item.date?.split(', ')[0]}</h3>
-              <p style={{ color: 'blue' }}>{item.patients?.length}</p>
-            </>
-          )}
-        </Box>
-      </Link>
-    </Box>
-  );
-};
