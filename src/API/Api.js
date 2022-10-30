@@ -47,9 +47,9 @@ export async function addAlert(data) {
       // Assing desired element of object to local javascript variable
       const objectToupdate = objects[data.arrIndex];
 
-      console.log('objectToupdate 1', JSON.stringify(objectToupdate, null, 4));
+      // console.log('objectToupdate 1', JSON.stringify(objectToupdate, null, 4));
 
-      console.log('objects 1', JSON.stringify(objects, null, 4));
+      // console.log('objects 1', JSON.stringify(objects, null, 4));
 
       // let checkAlert =  objectToupdate.alert !== data.alert ? objectToupdate.alert :
       objects.forEach((r, idx) => {
@@ -75,13 +75,13 @@ export async function addAlert(data) {
         (r) => r.alert === data.alert
       ).length;
 
-      console.log('objectToupdate 2', JSON.stringify(objectToupdate, null, 4));
+      // console.log('objectToupdate 2', JSON.stringify(objectToupdate, null, 4));
 
-      console.log('objects 2', JSON.stringify(objects, null, 4));
+      // console.log('objects 2', JSON.stringify(objects, null, 4));
 
       // Update complete array with update copy of element we have
       // created in local javascript variable.
-      console.log(objects);
+      // console.log(objects);
       db.collection('dashboard').doc(data.docId).update({ rooms: objects });
 
       const completeTreatments = async () => {
@@ -116,7 +116,7 @@ export async function addAlert(data) {
           let hours = Math.floor(diff / 3600000);
           const duration = `${hours}:${mins}`;
 
-          console.log(duration);
+          // console.log(duration);
 
           // patientToUpdate.data().room = emptyPatient.room;
           // patientToUpdate.data().status = 'Patient Ready';
@@ -153,9 +153,9 @@ export async function addAlert(data) {
 
         const allPatients = response.data().count;
 
-        const emptyPatient = allPatients.find(
-          (p) => p.room === '' && p.duration === ''
-        );
+        const emptyPatient = allPatients.find((p) => p.room === '');
+
+        console.log(emptyPatient);
 
         if (emptyPatient) {
           emptyPatient.room = objectToupdate.id;
@@ -164,12 +164,9 @@ export async function addAlert(data) {
             .doc(data.docId)
             .update({ count: allPatients });
 
-          const patientToUpdate = await db
-            .collection('patientsData')
-            .doc(emptyPatient.id)
-            .get();
+          await db.collection('patientsData').doc(emptyPatient.id).get();
 
-          console.log(patientToUpdate.data());
+          // console.log(patientToUpdate.data());
 
           // patientToUpdate.data().room = emptyPatient.room;
           // patientToUpdate.data().status = 'Patient Ready';
@@ -319,7 +316,7 @@ export const getPatientDetails = async (doctorId, roomId) => {
     .then((doc) => {
       const patients = doc.data().count;
       const patient = patients.filter((p) => p.room === roomId);
-      console.log(patient);
+      // console.log(patient);
       return patient[0];
     });
 };
@@ -327,7 +324,7 @@ export const getPatientDetails = async (doctorId, roomId) => {
 export const getStatus = async (roomId) => {
   const response = await db.collection('rooms').doc(roomId).get();
 
-  console.log(response.data().alert.name);
+  // console.log(response.data().alert.name);
 
   return response.data().alert.name;
 };

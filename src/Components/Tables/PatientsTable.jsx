@@ -40,7 +40,7 @@ const PatientsTable = ({ patientData }) => {
   const mobile = useMediaQuery('(max-width:600px)');
   const colSpan = desktop ? 7 : tablet ? 4 : mobile ? 2 : 5;
 
-  console.log(patientData);
+  // console.log(patientData);
 
   const { setPatientsInfo } = usePatientInformationContext();
   const [page, setPage] = React.useState(0);

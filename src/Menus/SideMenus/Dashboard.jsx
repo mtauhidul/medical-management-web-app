@@ -40,7 +40,7 @@ const Dashboard = () => {
           dr: item?.dr,
           email: item?.email,
           phone: item?.phone,
-          count: item?.count.length,
+          count: item?.count,
           role: item?.role,
           rooms: item?.rooms,
           id: doc.id,
@@ -126,7 +126,7 @@ const Dashboard = () => {
                     fontSize: '30px',
                     margin: '-9px 10px 10px 10px',
                   }}>
-                  {doc.count}
+                  {doc?.count?.length || 0}
                 </p>
                 <StopBtn handleClick={() => countDown(doc)} sign='Remove' />
               </div>
