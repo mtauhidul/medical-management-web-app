@@ -76,18 +76,23 @@ const PatientsInfo = ({ patientsData }) => {
 
       return patientsTodaysData;
     });
-
     patientData.then(async (data) => {
-      data.patients.map(async (patient) => {
-        await addPatientsData({
-          date: data.date,
-          data: patient,
-          arrTime: '',
-          duration: '',
-          room: '',
-          status: '',
-          kiosk: {},
-        });
+      data.patients.map(async (patient, index) => {
+        const lastIndex = patientData.length - 1;
+
+        await addPatientsData(
+          {
+            date: data.date,
+            data: patient,
+            arrTime: '',
+            duration: '',
+            room: '',
+            status: '',
+            kiosk: {},
+          },
+          index,
+          lastIndex
+        );
       });
     });
   };
@@ -105,12 +110,9 @@ const PatientsInfo = ({ patientsData }) => {
   };
 
   const removeData = async (info) => {
-    info.patients.map(async (patient) => {
-      const response = await removeAllPatientsData(patient.id);
-      if (response) {
-        setPatientsInfo([]);
-        setFilteredData([]);
-      }
+    info.patients.map(async (patient, index) => {
+      const lastIndex = info.patients.length - 1;
+      await removeAllPatientsData(patient.id, index, lastIndex);
     });
   };
 

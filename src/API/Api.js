@@ -262,12 +262,12 @@ export async function getKioskData() {
 // }
 
 // Add data to patientsData collection
-export async function addPatientsData(data) {
+export async function addPatientsData(data, index, lastIndex) {
   const ref = db.collection('patientsData');
   if (data) {
     try {
       const response = await ref.add(data);
-      if (response) {
+      if (response && index === lastIndex) {
         toast.dismiss();
         toast.success('Data added successfully');
         return response;
@@ -293,11 +293,11 @@ export async function getPatientsData() {
 }
 
 // Remove all data from patientsData
-export async function removeAllPatientsData(id) {
+export async function removeAllPatientsData(id, index, lastIndex) {
   const ref = db.collection('patientsData');
   try {
     const response = await ref.doc(id).delete();
-    if (response === undefined) {
+    if (response === undefined && index === lastIndex) {
       toast.dismiss();
       toast.success('Deleted successfully');
       return true;
@@ -312,19 +312,19 @@ export const getPatientDetails = async (doctorId, roomId) => {
   return await db
     .collection('dashboard')
     .doc(doctorId)
-    .get()
-    .then((doc) => {
+    .onSnapshot((doc) => {
       const patients = doc.data().count;
       const patient = patients.filter((p) => p.room === roomId);
-      // console.log(patient);
       return patient[0];
     });
 };
 
 export const getStatus = async (roomId) => {
-  const response = await db.collection('rooms').doc(roomId).get();
-
-  // console.log(response.data().alert.name);
-
-  return response.data().alert.name;
+  return await db
+    .collection('rooms')
+    .doc(roomId)
+    .onSnapshot((doc) => {
+      const status = doc.data().alert.name;
+      return status;
+    });
 };
