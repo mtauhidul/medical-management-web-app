@@ -1,4 +1,8 @@
 ._wrapper {
+  @media screen and (max-width: 600px) {
+    padding-top: 70px;
+  }
+
   ._box {
     display: flex;
     align-items: center;
