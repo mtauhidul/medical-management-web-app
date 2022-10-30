@@ -44,8 +44,7 @@ const PatientsInfo = ({ patientsData }) => {
 
   React.useEffect(() => {
     if (patientsData.length > 0) {
-      setPatientsInfo(patientsData);
-      const filteredData = patientsData.filter((item) => {
+      const fData = patientsData.filter((item) => {
         const segment = item.date.split('/');
         const month = months[segment[1] - 1];
         const year = segment[2];
@@ -54,7 +53,7 @@ const PatientsInfo = ({ patientsData }) => {
         return MonthAndYear === filteredBy;
       });
 
-      setFilteredData(filteredData);
+      setFilteredData(fData);
       setDay(new Date().getDate());
       setFilteredByDay(false);
       setLoading(false);
@@ -78,7 +77,7 @@ const PatientsInfo = ({ patientsData }) => {
     });
     patientData.then(async (data) => {
       data.patients.map(async (patient, index) => {
-        const lastIndex = patientData.length - 1;
+        const lastIndex = 0;
 
         await addPatientsData(
           {
@@ -111,7 +110,7 @@ const PatientsInfo = ({ patientsData }) => {
 
   const removeData = async (info) => {
     info.patients.map(async (patient, index) => {
-      const lastIndex = info.patients.length - 1;
+      const lastIndex = 0;
       await removeAllPatientsData(patient.id, index, lastIndex);
     });
   };

@@ -263,6 +263,7 @@ export async function getKioskData() {
 
 // Add data to patientsData collection
 export async function addPatientsData(data, index, lastIndex) {
+  console.log(data, index, lastIndex);
   const ref = db.collection('patientsData');
   if (data) {
     try {
@@ -294,6 +295,7 @@ export async function getPatientsData() {
 
 // Remove all data from patientsData
 export async function removeAllPatientsData(id, index, lastIndex) {
+  console.log(id, index, lastIndex);
   const ref = db.collection('patientsData');
   try {
     const response = await ref.doc(id).delete();
@@ -312,9 +314,11 @@ export const getPatientDetails = async (doctorId, roomId) => {
   return await db
     .collection('dashboard')
     .doc(doctorId)
-    .onSnapshot((doc) => {
+    .get()
+    .then((doc) => {
       const patients = doc.data().count;
       const patient = patients.filter((p) => p.room === roomId);
+
       return patient[0];
     });
 };

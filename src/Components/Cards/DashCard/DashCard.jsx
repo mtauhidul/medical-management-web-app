@@ -64,8 +64,9 @@ const DashCard = (props) => {
   const getPatient = async () => {
     const response = await getPatientDetails(data.id, room.name);
     setPatientData(response);
-    // console.log('==>>', data.id, room.name);
   };
+
+  console.log(patientData);
 
   useEffect(() => {
     getPatient();

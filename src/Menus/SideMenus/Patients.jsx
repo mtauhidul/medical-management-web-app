@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../API/firebase';
+import { usePatientInformationContext } from '../../context/PatientsInformationContext';
 import PatientsInfo from '../../Pages/PatientsInfo';
 // import MyTable from "../../Components/Tables/Table2/MyTable";
 
 const Patients = () => {
   const [files, setFiles] = useState([]);
+  const { patientsInfo, setPatientsInfo } = usePatientInformationContext();
 
   const getPatients = async () => {
     const patientsRef = await db.collection('patientsData');
@@ -24,11 +26,13 @@ const Patients = () => {
           return acc;
         }, {});
         if (groups) {
+          const newArray = [];
           for (const [key, value] of Object.entries(groups)) {
-            setFiles((prevData) => [
-              ...prevData,
-              { date: key, patients: groups[key] },
-            ]);
+            newArray.push({ date: key, patients: groups[key] });
+          }
+          if (newArray.length > 0) {
+            setFiles(newArray);
+            setPatientsInfo(newArray);
           }
         }
       }
