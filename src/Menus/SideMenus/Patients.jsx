@@ -7,16 +7,31 @@ const Patients = () => {
   const [files, setFiles] = useState([]);
 
   const getPatients = async () => {
-    const patientsRef = await db.collection('kiosk');
+    const patientsRef = await db.collection('patientsData');
 
     patientsRef.onSnapshot((querySnapshot) => {
       const patientsList = [];
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const dataWithId = { ...data, id: doc.id };
-        patientsList.push(dataWithId);
+        patientsList.push({ id: doc.id, ...doc.data() });
       });
-      setFiles(patientsList);
+      if (patientsList.length > 0) {
+        const groups = patientsList.reduce((acc, item) => {
+          if (!acc[item?.date?.split(', ')[0]]) {
+            acc[item?.date?.split(', ')[0]] = [];
+          }
+
+          acc[item?.date?.split(', ')[0]].push(item);
+          return acc;
+        }, {});
+        if (groups) {
+          for (const [key, value] of Object.entries(groups)) {
+            setFiles((prevData) => [
+              ...prevData,
+              { date: key, patients: groups[key] },
+            ]);
+          }
+        }
+      }
     });
   };
 
@@ -24,7 +39,9 @@ const Patients = () => {
     getPatients();
   }, []);
 
-  return <PatientsInfo />;
+  console.log('files', files);
+
+  return <PatientsInfo patientsData={files} />;
 };
 
 export default Patients;
