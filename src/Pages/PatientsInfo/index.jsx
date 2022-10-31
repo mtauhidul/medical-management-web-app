@@ -53,6 +53,8 @@ const PatientsInfo = ({ patientsData }) => {
         return MonthAndYear === filteredBy;
       });
 
+      fData.sort((a, b) => (a.date > b.date ? 1 : -1));
+
       setFilteredData(fData);
       setDay(new Date().getDate());
       setFilteredByDay(false);
