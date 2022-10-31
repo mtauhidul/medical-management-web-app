@@ -40,7 +40,7 @@ const PatientsTable = ({ patientData }) => {
   const mobile = useMediaQuery('(max-width:600px)');
   const colSpan = desktop ? 7 : tablet ? 4 : mobile ? 2 : 5;
 
-  // console.log(patientData);
+  // console.log('==>', patientData.patients);
 
   const { setPatientsInfo } = usePatientInformationContext();
   const [page, setPage] = React.useState(0);
@@ -81,8 +81,6 @@ const PatientsTable = ({ patientData }) => {
       return [...removeOldData, newPatientData];
     });
   };
-
-  console.log(patientData);
 
   return (
     <section className={styles._wrapper}>

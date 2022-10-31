@@ -1,14 +1,14 @@
-import * as React from "react";
-import { useParams, useHistory } from "react-router";
-import PatientsTable from "../../Components/Tables/PatientsTable";
-import { usePatientInformationContext } from "../../context/PatientsInformationContext";
-import Header from "./Header";
-import styles from "./PatientInfo.module.scss";
+import * as React from 'react';
+import { useHistory, useParams } from 'react-router';
+import PatientsTable from '../../Components/Tables/PatientsTable';
+import { usePatientInformationContext } from '../../context/PatientsInformationContext';
+import Header from './Header';
+import styles from './PatientInfo.module.scss';
 
 const PatientInfo = () => {
   const { patientsInfo } = usePatientInformationContext();
   const { date } = useParams();
-  const extractDateFromUrl = date.split("-").join("/").split("&").join(" ");
+  const extractDateFromUrl = date.split('-').join('/').split('&').join(' ');
 
   const patientData = patientsInfo?.find(
     (data) => data.date === extractDateFromUrl
@@ -18,7 +18,7 @@ const PatientInfo = () => {
 
   React.useEffect(() => {
     if (!patientData) {
-      history.push("/admin/patients");
+      history.push('/admin/patients');
     }
   }, [history, patientData]);
 
