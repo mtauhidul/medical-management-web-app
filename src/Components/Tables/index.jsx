@@ -1,21 +1,21 @@
-import * as React from "react";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import TableFooter from "@material-ui/core/TableFooter";
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableFooter from '@material-ui/core/TableFooter';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import * as React from 'react';
 
-import * as FaIcons from "react-icons/fa";
-import EditDialog from "./EditDataDialog";
+import * as FaIcons from 'react-icons/fa';
+import EditDialog from './EditDataDialog';
 
 const DateTable = ({ files }) => {
   const [open, setOpen] = React.useState(false);
-  const [scroll, setScroll] = React.useState("paper");
+  const [scroll, setScroll] = React.useState('paper');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [editableData, setEditableData] = React.useState({});
@@ -52,15 +52,14 @@ const DateTable = ({ files }) => {
       />
 
       <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow>
               <TableCell
                 style={{
-                  whiteSpace: "nowrap",
+                  whiteSpace: 'nowrap',
                 }}
-                align="center"
-              >
+                align='center'>
                 Action
               </TableCell>
 
@@ -74,11 +73,10 @@ const DateTable = ({ files }) => {
                           <TableCell
                             key={value}
                             style={{
-                              whiteSpace: "nowrap",
-                              fontWeight: key[1]?.priority ? "bold" : "normal",
+                              whiteSpace: 'nowrap',
+                              fontWeight: key[1]?.priority ? 'bold' : 'normal',
                             }}
-                            align="center"
-                          >
+                            align='center'>
                             {key[1]?.name}
                           </TableCell>
                         );
@@ -93,17 +91,16 @@ const DateTable = ({ files }) => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, i) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={i}>
+                  <TableRow hover role='checkbox' tabIndex={-1} key={i}>
                     <TableCell
                       style={{
-                        whiteSpace: "nowrap",
+                        whiteSpace: 'nowrap',
                       }}
-                      align="center"
-                    >
-                      <IconButton onClick={handleClickOpen("paper", row)}>
+                      align='center'>
+                      <IconButton onClick={handleClickOpen('paper', row)}>
                         <FaIcons.FaEdit
                           style={{
-                            fontSize: "1.2rem",
+                            fontSize: '1.2rem',
                           }}
                         />
                       </IconButton>
@@ -116,10 +113,9 @@ const DateTable = ({ files }) => {
                           <TableCell
                             key={value}
                             style={{
-                              whiteSpace: "nowrap",
+                              whiteSpace: 'nowrap',
                             }}
-                            align="center"
-                          >
+                            align='center'>
                             {key[1]?.value}
                           </TableCell>
                         );
@@ -132,14 +128,14 @@ const DateTable = ({ files }) => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 colSpan={5}
                 count={files.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
                   inputProps: {
-                    "aria-label": "rows per page",
+                    'aria-label': 'rows per page',
                   },
                   native: true,
                 }}

@@ -11,7 +11,7 @@ import 'react-responsive-modal/styles.css';
 import { db } from '../../API/firebase';
 import { DataContext } from '../../App';
 import SaveBtn from '../../Components/Buttons/SaveBtn/SaveBtn';
-import styles from '../Styles/Modal.Module.css';
+import styles from '../Styles/modal.module.css';
 import ValidateEmail from '../Validator/Validator';
 
 const Add = () => {
