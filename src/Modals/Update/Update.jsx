@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable import/no-cycle */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Modal } from 'react-responsive-modal';
@@ -18,6 +19,7 @@ const Update = () => {
   const [data, setData] = useState({});
   const [open, setOpen] = useState(false);
   const [colorName, setColorName] = useState(null);
+  const [activityType, setActivityType] = useState('');
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
@@ -95,6 +97,13 @@ const Update = () => {
   const handleChange = (e) => {
     e.preventDefault();
     setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleChangeActivityType = (e) => {
+    e.preventDefault();
+    setActivityType(e.target.value);
+
+    setData({ ...data, activityType: e.target.value });
   };
 
   const emailValidation = (e) => {
@@ -215,6 +224,22 @@ const Update = () => {
             </div>
           ) : (
             <div />
+          )}
+          {info.type === 'alert' && (
+            <FormControl fullWidth>
+              <InputLabel id='demo-select-small'>Activity Type</InputLabel>
+              <Select
+                labelId='demo-select-small'
+                id='demo-select-small'
+                value={activityType}
+                label='Activity Type'
+                name='activityType'
+                onChange={handleChangeActivityType}>
+                <MenuItem value='patient'>Patient</MenuItem>
+                <MenuItem value='doctor'>Doctor</MenuItem>
+                <MenuItem value='staff'>Staff</MenuItem>
+              </Select>
+            </FormControl>
           )}
           {info.type === 'doctor' && (
             <>
