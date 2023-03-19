@@ -31,8 +31,86 @@ export async function countUpdate(pass) {
   await countRef.update({ count: pass.value });
 }
 
+export const updateStatusAndTimestamp = async (data) => {
+  db.collection('dashboard')
+    .doc(data.docId)
+    .get()
+    // eslint-disable-next-line consistent-return
+    .then((doc) => {
+      // console.log(doc.data());
+      // Assign array to local javascript variable
+      const objects = doc.data().rooms;
+
+      // Assing desired element of object to local javascript variable
+      const objectToupdate = objects[data.arrIndex];
+      // console.log('objectToupdate 1', JSON.stringify(objectToupdate, null, 4));
+
+      const roomId = objectToupdate.id;
+
+      db.collection('patientsData')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            if (
+              doc.data().room === roomId &&
+              doc.data().status !== 'Completed' &&
+              doc.data().status !== ''
+            ) {
+              const kiosk = doc.data().kiosk;
+
+              const startTime = kiosk.timestamp;
+              const endTime = new Date().toISOString();
+
+              const date1 = new Date(startTime).valueOf();
+              const date2 = new Date(endTime).valueOf();
+
+              const durationMs = Math.abs(date2 - date1);
+              const durationSec = durationMs / 1000;
+              const durationMin = durationSec / 60;
+
+              console.log(typeof kiosk.activity_time.patient);
+
+              if (data.activityType === 'patient') {
+                kiosk.activity_time.patient =
+                  kiosk.activity_time.patient + durationMin;
+
+                kiosk.timestamp = new Date().toISOString();
+
+                // Update data
+                db.collection('patientsData').doc(doc.id).update({
+                  kiosk: kiosk,
+                });
+              } else if (data.activityType === 'doctor') {
+                kiosk.activity_time.doctor =
+                  kiosk.activity_time.doctor + durationMin;
+
+                kiosk.timestamp = new Date().toISOString();
+
+                // Update data
+                db.collection('patientsData').doc(doc.id).update({
+                  kiosk: kiosk,
+                });
+              } else if (data.activityType === 'staff') {
+                kiosk.activity_time.staff =
+                  kiosk.activity_time.staff + durationMin;
+
+                kiosk.timestamp = new Date().toISOString();
+
+                // Update data
+                db.collection('patientsData').doc(doc.id).update({
+                  kiosk: kiosk,
+                });
+              }
+            }
+          });
+        });
+    });
+};
+
 // Alert Add
 export async function addAlert(data) {
+  let targetObject = {};
+
   // console.log(data);
   // First data of the desired document
   db.collection('dashboard')
@@ -46,6 +124,7 @@ export async function addAlert(data) {
 
       // Assing desired element of object to local javascript variable
       const objectToupdate = objects[data.arrIndex];
+      targetObject = objectToupdate;
 
       // console.log('objectToupdate 1', JSON.stringify(objectToupdate, null, 4));
 
@@ -124,7 +203,7 @@ export async function addAlert(data) {
             .doc(completingPatient.id)
             .update({ room: '', status: 'Completed', duration: duration });
         } else {
-          console.log('No empty patient');
+          // console.log('No empty patient');
         }
       };
 
@@ -144,7 +223,7 @@ export async function addAlert(data) {
             .doc(targetPatient.id)
             .update({ status: data.alert });
         } else {
-          console.log('Unable to update patient room status');
+          // console.log('Unable to update patient room status');
         }
       };
 
@@ -155,7 +234,7 @@ export async function addAlert(data) {
 
         const emptyPatient = allPatients.find((p) => p.room === '');
 
-        console.log(emptyPatient);
+        // console.log(emptyPatient);
 
         if (emptyPatient) {
           emptyPatient.room = objectToupdate.id;
@@ -174,7 +253,7 @@ export async function addAlert(data) {
             .doc(emptyPatient.id)
             .update({ room: emptyPatient.room, status: 'Patient Ready' });
         } else {
-          console.log('No empty patient');
+          // console.log('No empty patient');
         }
       };
       if (data.alert === 'Patient Ready') {
@@ -231,7 +310,7 @@ export async function getKioskData() {
 
 // // Reset All
 // export async function resetAll(data) {
-//     console.log(data);
+//     // console.log(data);
 //     // First data of the desired document
 //     db.collection('dashboard')
 //         .doc(data.docId)
@@ -241,13 +320,13 @@ export async function getKioskData() {
 //             let objects = doc.data().rooms;
 
 //             // Assing desired element of object to local javascript variable
-//             console.log(objects);
+//             // console.log(objects);
 //             const objectToupdate = objects.map((room) => {
 //                 room.alert = '';
 //                 room.bg = '';
 //                 room.border = '';
 //             });
-//             console.log(objectToupdate);
+//             // console.log(objectToupdate);
 
 //             // Update field of the element assigned to local javascript variable
 
@@ -256,14 +335,14 @@ export async function getKioskData() {
 
 //             // Update complete array with update copy of element we have
 //             // created in local javascript variable.
-//             console.log(objects);
+//             // console.log(objects);
 //             db.collection('dashboard').doc(data.docId).update({ rooms: objects });
 //         });
 // }
 
 // Add data to patientsData collection
 export async function addPatientsData(data, index, lastIndex) {
-  console.log(data, index, lastIndex);
+  // console.log(data, index, lastIndex);
   const ref = db.collection('patientsData');
   if (data) {
     try {
@@ -295,7 +374,7 @@ export async function getPatientsData() {
 
 // Remove all data from patientsData
 export async function removeAllPatientsData(id, index, lastIndex) {
-  console.log(id, index, lastIndex);
+  // console.log(id, index, lastIndex);
   const ref = db.collection('patientsData');
   try {
     const response = await ref.doc(id).delete();
@@ -317,7 +396,7 @@ export const getPatientDetails = async (doctorId, roomId) => {
     .get()
     .then((doc) => {
       const patients = doc.data().count;
-      console.log('CHECK PATIENTS', patients);
+      // console.log('CHECK PATIENTS', patients);
       const patient = patients.filter((p) => p.room === roomId);
 
       return patient[0];
@@ -336,11 +415,11 @@ export const getStatus = async (roomId) => {
 
 // Delete a document from a collection patientsData by id
 export async function deletePatientData(id) {
-  console.log(id);
+  // console.log(id);
   const ref = db.collection('patientsData');
   try {
     const response = await ref.doc(id).delete();
-    console.log(response);
+    // console.log(response);
     if (response === undefined) {
       toast.dismiss();
       toast.success('Deleted successfully');
@@ -354,14 +433,14 @@ export async function deletePatientData(id) {
 
 // Manually login patient
 export const patientCheckIn = async (patient, id) => {
-  console.log(patient, id);
+  // console.log(patient, id);
   const data = {
     patient: patient,
-    timestamp: new Date().toLocaleString(),
+    timestamp: new Date().toISOString(),
     activity_time: {
-      doctor: '',
-      patient: '',
-      staff: '',
+      doctor: 0,
+      patient: 0,
+      staff: 0,
     },
     others: {
       appointment_date: {
@@ -712,7 +791,7 @@ export const patientCheckIn = async (patient, id) => {
 
     const fetchedData = docSnap.data();
 
-    console.log(fetchedData.data[45]);
+    // console.log(fetchedData.data[45]);
 
     if (fetchedData.data[45]) {
       if (fetchedData.data[41]) {
@@ -724,7 +803,7 @@ export const patientCheckIn = async (patient, id) => {
           return patientDoctor.toLowerCase().includes(d.id?.toLowerCase());
         });
 
-        console.log({ patientDoctor, doctor });
+        // console.log({ patientDoctor, doctor });
 
         // console.log(fetchedData.kiosk.others.Appointment_created_by.value);
 
@@ -734,7 +813,7 @@ export const patientCheckIn = async (patient, id) => {
           }`.includes(fetchedData.kiosk.others.Appointment_created_by.value);
         });
 
-        console.log({ isAvailable });
+        // console.log({ isAvailable });
 
         // console.log(isAvailable);
         if (isAvailable.length > 0) {
@@ -763,7 +842,7 @@ export const patientCheckIn = async (patient, id) => {
       }
     } else {
       // doc.data() will be undefined in this case
-      console.log('No such document!');
+      // console.log('No such document!');
     }
     doctors.length = 0;
   }

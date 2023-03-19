@@ -132,152 +132,146 @@ const PatientsTable = ({ patientData }) => {
             {patientData &&
               patientData?.patients
                 ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(
-                  (row, index) => (
-                    console.log({ row }),
-                    (
-                      <TableRow hover role='checkbox' tabIndex={-1} key={index}>
-                        <TableCell
+                .map((row, index) => (
+                  // console.log({ row }),
+                  <TableRow hover role='checkbox' tabIndex={-1} key={index}>
+                    <TableCell
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.1rem',
+                      }}>
+                      <IconButton
+                        disabled={row?.status === 'Completed' ? true : false}
+                        onClick={() => handleCheckIn(index)}>
+                        <FaIcons.FaSignInAlt
                           style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '0.1rem',
-                          }}>
-                          <IconButton
-                            disabled={
-                              row?.status === 'Completed' ? true : false
-                            }
-                            onClick={() => handleCheckIn(index)}>
-                            <FaIcons.FaSignInAlt
-                              style={{
-                                fontSize: '1.2rem',
-                              }}
-                            />
-                          </IconButton>
-                          <IconButton onClick={() => removeData(row.id)}>
-                            <FaIcons.FaTrashAlt
-                              style={{
-                                fontSize: '1.2rem',
-                              }}
-                            />
-                          </IconButton>
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
+                            fontSize: '1.2rem',
                           }}
-                          align='center'>
-                          {new Date(
-                            row?.data[0].seconds * 1000
-                          ).toLocaleDateString('en-US')}
-                        </TableCell>
-                        <TableCell
+                        />
+                      </IconButton>
+                      <IconButton onClick={() => removeData(row.id)}>
+                        <FaIcons.FaTrashAlt
                           style={{
-                            whiteSpace: 'nowrap',
+                            fontSize: '1.2rem',
                           }}
-                          align='center'>
-                          {new Date(
-                            row?.data[1].seconds * 1000
-                          ).toLocaleTimeString('en-US') || '-'}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[8]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[9]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[10]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[13]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[14]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[15]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[36]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[41]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[45]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row.arrTime
-                            ? new Date(row.arrTime).toLocaleTimeString('en')
-                            : '-'}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row.duration || '-'}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row.room || '-'}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row.status || '-'}
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )
-                )}
+                        />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {new Date(row?.data[0].seconds * 1000).toLocaleDateString(
+                        'en-US'
+                      )}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {new Date(row?.data[1].seconds * 1000).toLocaleTimeString(
+                        'en-US'
+                      ) || '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[8]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[9]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[10]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[13]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[14]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[15]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[36]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[41]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[45]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row.arrTime
+                        ? new Date(row.arrTime).toLocaleTimeString('en')
+                        : '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row.duration || '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row.room || '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row.status || '-'}
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
 
           <TableFooter>

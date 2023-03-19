@@ -37,7 +37,6 @@ const ConditionalRendering = ({ loading, patientsInfo, filteredData }) => {
           No information available
         </h1>
       )}
-      {console.log('filteredData', filteredData)}
       {filteredData.length === 0 && !loading && (
         <h1
           style={{

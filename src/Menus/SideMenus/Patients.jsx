@@ -43,7 +43,7 @@ const Patients = () => {
     getPatients();
   }, []);
 
-  console.log('files', files);
+  // console.log('files', files);
 
   return <PatientsInfo patientsData={files} />;
 };

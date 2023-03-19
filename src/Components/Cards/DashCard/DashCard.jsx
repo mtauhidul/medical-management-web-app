@@ -27,6 +27,7 @@ const DashCard = (props) => {
 
   const apiCall = () => {
     addAlert({
+      activityType: selectedAlert?.activityType,
       docId,
       arrIndex: idx,
       alert: '',
@@ -66,7 +67,7 @@ const DashCard = (props) => {
     setPatientData(response);
   };
 
-  console.log(patientData);
+  // console.log(patientData);
 
   useEffect(() => {
     getPatient();

@@ -71,6 +71,7 @@ const Dashboard = () => {
         id: room.id,
         name: room.id,
         blink: false,
+        activityType: '',
       };
       emptyRooms.push(rObj);
     });
