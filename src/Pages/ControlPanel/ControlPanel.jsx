@@ -5,6 +5,7 @@
 /* eslint-disable import/no-cycle */
 import {
   faBell,
+  faChartBar,
   faColumns,
   faFileMedical,
   faStethoscope,
@@ -38,6 +39,7 @@ import AssistantDashboard from '../../Menus/SideMenus/AssistantDashboard';
 import Dashboard from '../../Menus/SideMenus/Dashboard';
 import Doctors from '../../Menus/SideMenus/Doctors';
 import Patients from '../../Menus/SideMenus/Patients';
+import Reports from '../../Menus/SideMenus/Reports';
 import Sequence from '../../Menus/SideMenus/Sequence';
 import Stuff from '../../Menus/SideMenus/Stuff';
 import DoctorsSelf from '../../Menus/TabMenus/DoctorsSelf';
@@ -163,6 +165,17 @@ function ControlPanel(props) {
           icon={faFileMedical}
           size='2x'
           className={`${url}/patients` ? styles.activeIcon : styles.plusIcon}
+        />
+      ),
+    },
+    {
+      name: 'Reports',
+      url: `${url}/reports`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faChartBar}
+          size='2x'
+          className={`${url}/reports` ? styles.activeIcon : styles.plusIcon}
         />
       ),
     },
@@ -374,6 +387,9 @@ function ControlPanel(props) {
           <Switch>
             <Route path={`${path}/self-sequence`}>
               <DoctorsSelf />
+            </Route>
+            <Route path={`${path}/reports`}>
+              <Reports />
             </Route>
           </Switch>
         </div>
