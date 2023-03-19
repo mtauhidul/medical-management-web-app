@@ -144,7 +144,11 @@ const PatientsTable = ({ patientData }) => {
                             justifyContent: 'center',
                             gap: '0.1rem',
                           }}>
-                          <IconButton onClick={() => handleCheckIn(index)}>
+                          <IconButton
+                            disabled={
+                              row?.status === 'Completed' ? true : false
+                            }
+                            onClick={() => handleCheckIn(index)}>
                             <FaIcons.FaSignInAlt
                               style={{
                                 fontSize: '1.2rem',
