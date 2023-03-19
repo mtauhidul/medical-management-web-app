@@ -146,7 +146,11 @@ const PatientsTable = ({ patientData }) => {
                         gap: '0.1rem',
                       }}>
                       <IconButton
-                        disabled={row?.status === 'Completed' ? true : false}
+                        disabled={
+                          row?.status === 'Completed' || row?.arrTime !== ''
+                            ? true
+                            : false
+                        }
                         onClick={() => handleCheckIn(index)}>
                         <FaIcons.FaSignInAlt
                           style={{
