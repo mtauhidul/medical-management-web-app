@@ -357,6 +357,12 @@ export const patientCheckIn = async (patient, id) => {
   console.log(patient, id);
   const data = {
     patient: patient,
+    timestamp: new Date().toLocaleString(),
+    activity_time: {
+      doctor: '',
+      patient: '',
+      staff: '',
+    },
     others: {
       appointment_date: {
         value: new Date().toLocaleDateString(),
