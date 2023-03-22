@@ -1,439 +1,272 @@
-/* eslint-disable no-else-return */
-/* eslint-disable no-alert */
-/* eslint-disable array-callback-return */
-/* eslint-disable no-param-reassign */
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable no-undef */
-/* eslint-disable import/no-cycle */
-/* eslint-disable no-empty-function */
-/* eslint-disable import/prefer-default-export */
 import toast from 'react-hot-toast';
 import { db } from './firebase';
 
+// Define collection name as constant
+const DASHBOARD_COLLECTION = 'dashboard';
+const PATIENTS_COLLECTION = 'patientsData';
+
 // Add Dashboard Data to database
 export async function addDashData(data) {
-  const ref = db.collection('dashboard').doc(data.dr.id);
-  // console.log(data);
-
-  const res = await ref.set({
-    dr: data.dr.id,
-    email: data.dr.email,
-    phone: data.dr.phone,
-    count: data.dr.count,
-    rooms: data.rooms,
-  });
-
-  toast.success(`Sequence created successfully`);
-}
-
-export async function countUpdate(pass) {
-  const countRef = db.collection('dashboard').doc(pass.id);
-  await countRef.update({ count: pass.value });
-}
-
-export const updateStatusAndTimestamp = async (data) => {
-  db.collection('dashboard')
-    .doc(data.docId)
-    .get()
-    // eslint-disable-next-line consistent-return
-    .then((doc) => {
-      // console.log(doc.data());
-      // Assign array to local javascript variable
-      const objects = doc.data().rooms;
-
-      // Assing desired element of object to local javascript variable
-      const objectToupdate = objects[data.arrIndex];
-      // console.log('objectToupdate 1', JSON.stringify(objectToupdate, null, 4));
-
-      const roomId = objectToupdate.id;
-
-      db.collection('patientsData')
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            if (
-              doc.data().room === roomId &&
-              doc.data().status !== 'Completed' &&
-              doc.data().status !== ''
-            ) {
-              const kiosk = doc.data().kiosk;
-
-              const startTime = kiosk.timestamp;
-              const endTime = new Date().toISOString();
-
-              const date1 = new Date(startTime).valueOf();
-              const date2 = new Date(endTime).valueOf();
-
-              const durationMs = Math.abs(date2 - date1);
-              const durationSec = durationMs / 1000;
-              const durationMin = durationSec / 60;
-
-              console.log(typeof kiosk.activity_time.patient);
-
-              if (data.activityType === 'patient') {
-                kiosk.activity_time.patient =
-                  kiosk.activity_time.patient + durationMin;
-
-                kiosk.timestamp = new Date().toISOString();
-
-                // Update data
-                db.collection('patientsData').doc(doc.id).update({
-                  kiosk: kiosk,
-                });
-              } else if (data.activityType === 'doctor') {
-                kiosk.activity_time.doctor =
-                  kiosk.activity_time.doctor + durationMin;
-
-                kiosk.timestamp = new Date().toISOString();
-
-                // Update data
-                db.collection('patientsData').doc(doc.id).update({
-                  kiosk: kiosk,
-                });
-              } else if (data.activityType === 'staff') {
-                kiosk.activity_time.staff =
-                  kiosk.activity_time.staff + durationMin;
-
-                kiosk.timestamp = new Date().toISOString();
-
-                // Update data
-                db.collection('patientsData').doc(doc.id).update({
-                  kiosk: kiosk,
-                });
-              }
-            }
-          });
-        });
+  try {
+    const docRef = db.collection(DASHBOARD_COLLECTION).doc(data.dr.id);
+    await docRef.set({
+      dr: data.dr.id,
+      email: data.dr.email,
+      phone: data.dr.phone,
+      count: data.dr.count,
+      rooms: data.rooms,
     });
+    toast.success('Sequence created successfully!');
+  } catch (error) {
+    console.error('Error adding dashboard data', error);
+    toast.error('Error adding dashboard data');
+  }
+}
+
+// Update count in dashboard data
+export async function countUpdate(pass) {
+  try {
+    const docRef = db.collection(DASHBOARD_COLLECTION).doc(pass.id);
+    await docRef.update({ count: pass.value });
+  } catch (error) {
+    console.error('Error updating count', error);
+    toast.error('Error updating count');
+  }
+}
+
+// Update room status in dashboard data and update patient status in patient data collection in firebase database
+export const updateStatusAndTimestamp = async (data) => {
+  try {
+    const dashboardDocRef = db.collection(DASHBOARD_COLLECTION).doc(data.docId);
+    const dashboardDoc = await dashboardDocRef.get();
+    const rooms = dashboardDoc.data().rooms;
+    const roomToUpdate = rooms[data.arrIndex];
+    const roomId = roomToUpdate.id;
+
+    const patientsQuerySnapshot = await db
+      .collection(PATIENTS_COLLECTION)
+      .get();
+    patientsQuerySnapshot.forEach((patientDoc) => {
+      const patientData = patientDoc.data();
+      const patientRoomId = patientData.room;
+
+      if (
+        patientRoomId === roomId &&
+        patientData.status !== 'Completed' &&
+        patientData.status !== ''
+      ) {
+        const kiosk = patientData.kiosk;
+        const startTime = kiosk.timestamp;
+        const endTime = new Date().toISOString();
+
+        const date1 = new Date(startTime).valueOf();
+        const date2 = new Date(endTime).valueOf();
+        const durationMs = Math.abs(date2 - date1);
+        const durationSec = durationMs / 1000;
+        const durationMin = durationSec / 60;
+
+        if (data.activityType === 'patient') {
+          kiosk.activity_time.patient =
+            kiosk.activity_time.patient + durationMin;
+        } else if (data.activityType === 'doctor') {
+          kiosk.activity_time.doctor = kiosk.activity_time.doctor + durationMin;
+        } else if (data.activityType === 'staff') {
+          kiosk.activity_time.staff = kiosk.activity_time.staff + durationMin;
+        }
+
+        kiosk.timestamp = new Date().toISOString();
+
+        // Update patient data
+        db.collection(PATIENTS_COLLECTION).doc(patientDoc.id).update({ kiosk });
+      }
+    });
+  } catch (error) {
+    console.error('Error updating status and timestamp', error);
+  }
 };
 
-// Alert Add
+// Add alert to dashboard data
 export async function addAlert(data) {
-  let targetObject = {};
+  const doc = await db.collection(DASHBOARD_COLLECTION).doc(data.docId).get();
+  const objects = doc.data().rooms;
+  const objectToUpdate = objects[data.arrIndex];
 
-  // console.log(data);
-  // First data of the desired document
-  db.collection('dashboard')
+  // Decrease count of previous alert if it exists
+  objects.forEach((obj, idx) => {
+    if (
+      obj.alert === objectToUpdate.alert &&
+      objectToUpdate.count < obj.count
+    ) {
+      obj.count = obj.count > 1 ? obj.count - 1 : 1;
+    } else if (obj.alert === data.alert && data.count < obj.count) {
+      obj.count = obj.count > 1 ? obj.count - 1 : 1;
+    }
+  });
+
+  // Update the object with new alert information
+  objectToUpdate.alert = data.alert;
+  objectToUpdate.bg = data.bg;
+  objectToUpdate.border = data.border;
+  objects[data.arrIndex] = objectToUpdate;
+  objectToUpdate.count = objects.filter(
+    (obj) => obj.alert === data.alert
+  ).length;
+
+  // Update the entire array in the document
+  await db
+    .collection(DASHBOARD_COLLECTION)
     .doc(data.docId)
-    .get()
-    // eslint-disable-next-line consistent-return
-    .then((doc) => {
-      // console.log(doc.data());
-      // Assign array to local javascript variable
-      const objects = doc.data().rooms;
+    .update({ rooms: objects });
 
-      // Assing desired element of object to local javascript variable
-      const objectToupdate = objects[data.arrIndex];
-      targetObject = objectToupdate;
+  if (data.alert === 'Patient Ready') {
+    await setRoomForPatient();
+  } else if (data.alert !== '') {
+    await setOtherStatusForPatient();
+  }
 
-      // console.log('objectToupdate 1', JSON.stringify(objectToupdate, null, 4));
+  async function setOtherStatusForPatient() {
+    const response = await db
+      .collection(DASHBOARD_COLLECTION)
+      .doc(data.docId)
+      .get();
+    const allPatients = response.data().count;
+    const targetPatient = allPatients.find(
+      (patient) => patient.room === objectToUpdate.id
+    );
 
-      // console.log('objects 1', JSON.stringify(objects, null, 4));
+    if (targetPatient) {
+      await db
+        .collection(PATIENTS_COLLECTION)
+        .doc(targetPatient.id)
+        .update({ status: data.alert });
+    } else {
+      console.log('Unable to update patient room status');
+    }
+  }
 
-      // let checkAlert =  objectToupdate.alert !== data.alert ? objectToupdate.alert :
-      objects.forEach((r, idx) => {
-        if (
-          r.alert === objectToupdate.alert &&
-          objectToupdate.count < r.count
-        ) {
-          r.count = r.count && r.count > 1 ? r.count - 1 : 1;
-        } else if (r.alert === data.alert && data.count < r.count) {
-          r.count = r.count && r.count > 1 ? r.count - 1 : 1;
-        }
-      });
+  async function setRoomForPatient() {
+    const response = await db
+      .collection(DASHBOARD_COLLECTION)
+      .doc(data.docId)
+      .get();
+    const allPatients = response.data().count;
+    const emptyPatient = allPatients.find((patient) => patient.room === '');
 
-      // Update field of the element assigned to local javascript variable
-      objectToupdate.alert = data.alert;
-      objectToupdate.bg = data.bg;
-      objectToupdate.border = data.border;
+    if (emptyPatient) {
+      emptyPatient.room = objectToUpdate.id;
+      await db
+        .collection(DASHBOARD_COLLECTION)
+        .doc(data.docId)
+        .update({ count: allPatients });
+      await db
+        .collection(PATIENTS_COLLECTION)
+        .doc(emptyPatient.id)
+        .update({ room: emptyPatient.room, status: 'Patient Ready' });
+    } else {
+      console.log('No empty patient');
+    }
+  }
 
-      // reassign object to local array variable
-      objects[data.arrIndex] = objectToupdate;
-      // console.log('CHECK DATA', objects, data.alert);
-      objects[data.arrIndex].count = objects.filter(
-        (r) => r.alert === data.alert
-      ).length;
-
-      // console.log('objectToupdate 2', JSON.stringify(objectToupdate, null, 4));
-
-      // console.log('objects 2', JSON.stringify(objects, null, 4));
-
-      // Update complete array with update copy of element we have
-      // created in local javascript variable.
-      // console.log(objects);
-      db.collection('dashboard').doc(data.docId).update({ rooms: objects });
-
-      const completeTreatments = async () => {
-        const response = await db.collection('dashboard').doc(data.docId).get();
-
-        const allPatients = response.data().count;
-
-        const completingPatient = allPatients.find(
-          (p) => p.room === objectToupdate.id
-        );
-
-        if (completingPatient) {
-          const updatedPatients = allPatients.filter(
-            (patient) => patient !== completingPatient
-          );
-
-          db.collection('dashboard')
-            .doc(data.docId)
-            .update({ count: updatedPatients });
-
-          const patientToUpdate = await db
-            .collection('patientsData')
-            .doc(completingPatient.id)
-            .get();
-
-          const startTime = patientToUpdate.data().arrTime;
-          const endTime = new Date().toISOString();
-          let current = new Date(endTime).valueOf();
-          let previous = new Date(startTime).valueOf();
-          let diff = current - previous;
-          let mins = Math.round((diff % 3600000) / 60000);
-          let hours = Math.floor(diff / 3600000);
-          const duration = `${hours}:${mins}`;
-
-          // console.log(duration);
-
-          // patientToUpdate.data().room = emptyPatient.room;
-          // patientToUpdate.data().status = 'Patient Ready';
-          db.collection('patientsData')
-            .doc(completingPatient.id)
-            .update({ room: '', status: 'Completed', duration: duration });
-        } else {
-          // console.log('No empty patient');
-        }
-      };
-
-      const setOtherStatusForPatient = async () => {
-        const response = await db.collection('dashboard').doc(data.docId).get();
-
-        const allPatients = response.data().count;
-
-        const targetPatient = allPatients.find(
-          (p) => p.room === objectToupdate.id
-        );
-
-        if (targetPatient) {
-          // patientToUpdate.data().room = emptyPatient.room;
-          // patientToUpdate.data().status = 'Patient Ready';
-          db.collection('patientsData')
-            .doc(targetPatient.id)
-            .update({ status: data.alert });
-        } else {
-          // console.log('Unable to update patient room status');
-        }
-      };
-
-      const setRoomForPatient = async () => {
-        const response = await db.collection('dashboard').doc(data.docId).get();
-
-        const allPatients = response.data().count;
-
-        const emptyPatient = allPatients.find((p) => p.room === '');
-
-        // console.log(emptyPatient);
-
-        if (emptyPatient) {
-          emptyPatient.room = objectToupdate.id;
-
-          db.collection('dashboard')
-            .doc(data.docId)
-            .update({ count: allPatients });
-
-          await db.collection('patientsData').doc(emptyPatient.id).get();
-
-          // console.log(patientToUpdate.data());
-
-          // patientToUpdate.data().room = emptyPatient.room;
-          // patientToUpdate.data().status = 'Patient Ready';
-          db.collection('patientsData')
-            .doc(emptyPatient.id)
-            .update({ room: emptyPatient.room, status: 'Patient Ready' });
-        } else {
-          // console.log('No empty patient');
-        }
-      };
-      if (data.alert === 'Patient Ready') {
-        setRoomForPatient();
-      }
-      if (data.alert !== 'Patient Ready') {
-        setOtherStatusForPatient();
-      }
-      if (data.alert === '') {
-        completeTreatments();
-      }
-    });
+  const targetObject = objectToUpdate;
+  return targetObject;
 }
 
+// Toggle emergency status
 export async function toggleEmergency(data) {
-  // console.log(data);
-  // First data of the desired document
-  db.collection('dashboard')
-    .doc(data.docId)
-    .get()
-    .then((doc) => {
-      // console.log(doc.data());
-      // Assign array to local javascript variable
-      const objects = doc.data().rooms;
+  try {
+    const dashboardRef = db.collection(DASHBOARD_COLLECTION).doc(data.docId);
+    const doc = await dashboardRef.get();
 
-      // Assing desired element of object to local javascript variable
-      const objectToupdate = objects[data.idx];
+    if (!doc.exists) {
+      throw new Error(`Document with id ${data.docId} does not exist.`);
+    }
 
-      // Update field of the element assigned to local javascript variable
-      objectToupdate.blink = data.blink;
+    const rooms = doc.data().rooms;
+    const roomToUpdate = rooms[data.idx];
 
-      // reassign object to local array variable
-      objects[data.idx] = objectToupdate;
-      // console.log('CHECK DATA', objects, data.alert);
+    // Copy the room object to avoid modifying the original data
+    const updatedRoom = { ...roomToUpdate, blink: data.blink };
+    const updatedRooms = [...rooms];
+    updatedRooms[data.idx] = updatedRoom;
 
-      // Update complete array with update copy of element we have
-      // created in local javascript variable.
-      // console.log(objects);
-
-      db.collection('dashboard').doc(data.docId).update({ rooms: objects });
-    });
+    await dashboardRef.update({ rooms: updatedRooms });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // Get all kiosk data from database
 export async function getKioskData() {
-  const ref = db.collection('dashboard');
-  const snapshot = await ref.get();
-  const data = [];
-  snapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() });
-  });
+  const dashboardRef = db.collection(DASHBOARD_COLLECTION);
+  const snapshot = await dashboardRef.get();
+  const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   return data;
 }
 
-// // Reset All
-// export async function resetAll(data) {
-//     // console.log(data);
-//     // First data of the desired document
-//     db.collection('dashboard')
-//         .doc(data.docId)
-//         .get()
-//         .then((doc) => {
-//             // Assign array to local javascript variable
-//             let objects = doc.data().rooms;
-
-//             // Assing desired element of object to local javascript variable
-//             // console.log(objects);
-//             const objectToupdate = objects.map((room) => {
-//                 room.alert = '';
-//                 room.bg = '';
-//                 room.border = '';
-//             });
-//             // console.log(objectToupdate);
-
-//             // Update field of the element assigned to local javascript variable
-
-//             // reassign object to local array variable
-//             objects = objectToupdate;
-
-//             // Update complete array with update copy of element we have
-//             // created in local javascript variable.
-//             // console.log(objects);
-//             db.collection('dashboard').doc(data.docId).update({ rooms: objects });
-//         });
-// }
-
 // Add data to patientsData collection
-export async function addPatientsData(data, index, lastIndex) {
-  // console.log(data, index, lastIndex);
-  const ref = db.collection('patientsData');
-  if (data) {
-    try {
-      const response = await ref.add(data);
-      if (response && index === lastIndex) {
-        toast.dismiss();
-        toast.success('Data added successfully');
-        return response;
-      }
-    } catch (error) {
-      toast.dismiss();
-      toast.error(error.message);
-      return error;
-    }
+export async function addPatientsData(data) {
+  try {
+    const response = await db.collection(PATIENTS_COLLECTION).add(data);
+    toast.dismiss();
+    toast.success('Data added successfully');
+    return response;
+  } catch (error) {
+    toast.dismiss();
+    toast.error(error.message);
+    return error;
   }
 }
 
 // Get all data from patientsData collection
 export async function getPatientsData() {
-  const ref = db.collection('patientsData');
+  const ref = db.collection(PATIENTS_COLLECTION);
   const snapshot = await ref.get();
-  const data = [];
-  snapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() });
+  const data = snapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() };
   });
-
   return data;
 }
 
-// Remove all data from patientsData
-export async function removeAllPatientsData(id, index, lastIndex) {
-  // console.log(id, index, lastIndex);
-  const ref = db.collection('patientsData');
+// Remove data from patientsData collection
+export async function removePatientsData(id) {
+  const ref = db.collection(PATIENTS_COLLECTION).doc(id);
   try {
-    const response = await ref.doc(id).delete();
-    if (response === undefined && index === lastIndex) {
-      toast.dismiss();
-      toast.success('Deleted successfully');
-      return true;
-    }
+    await ref.delete();
+    return true;
   } catch (error) {
-    toast.dismiss();
-    toast.error(error.message);
+    console.error(error);
+    return false;
   }
 }
 
 export const getPatientDetails = async (doctorId, roomId) => {
-  return await db
-    .collection('dashboard')
-    .doc(doctorId)
-    .get()
-    .then((doc) => {
-      const patients = doc.data().count;
-      // console.log('CHECK PATIENTS', patients);
-      const patient = patients.filter((p) => p.room === roomId);
-
-      return patient[0];
-    });
+  const doc = await db.collection(DASHBOARD_COLLECTION).doc(doctorId).get();
+  const patients = doc.data().count;
+  const patient = patients.find((p) => p.room === roomId);
+  return patient;
 };
 
 export const getStatus = async (roomId) => {
-  return await db
-    .collection('rooms')
-    .doc(roomId)
-    .onSnapshot((doc) => {
-      const status = doc.data().alert.name;
-      return status;
-    });
+  const doc = await db.collection('rooms').doc(roomId).get();
+  const status = doc.data().alert.name;
+  return status;
 };
 
-// Delete a document from a collection patientsData by id
 export async function deletePatientData(id) {
-  // console.log(id);
-  const ref = db.collection('patientsData');
+  const ref = db.collection(PATIENTS_COLLECTION).doc(id);
   try {
-    const response = await ref.doc(id).delete();
-    // console.log(response);
-    if (response === undefined) {
-      toast.dismiss();
-      toast.success('Deleted successfully');
-      return true;
-    }
+    await ref.delete();
+    toast.dismiss();
+    toast.success('Deleted successfully');
+    return true;
   } catch (error) {
     toast.dismiss();
     toast.error(error.message);
+    return error;
   }
 }
 
-// Manually login patient
 export const patientCheckIn = async (patient, id) => {
-  // console.log(patient, id);
   const data = {
     patient: patient,
     timestamp: new Date().toISOString(),
@@ -534,13 +367,7 @@ export const patientCheckIn = async (patient, id) => {
         priority: false,
       },
       patient_dob: {
-        value: `${
-          patient.userInfo.day +
-          ' ' +
-          patient.userInfo.month +
-          ',' +
-          patient.userInfo.year
-        }`,
+        value: `${patient.userInfo.day} ${patient.userInfo.month},${patient.userInfo.year}`,
         name: 'Patient DOB',
         priority: true,
       },
@@ -763,87 +590,71 @@ export const patientCheckIn = async (patient, id) => {
     },
   };
 
-  const patientsDataRef = db.collection('patientsData');
+  const patientsDataRef = db.collection(PATIENTS_COLLECTION);
 
-  const response = await patientsDataRef.doc(id).update({
+  const updateResult = await patientsDataRef.doc(id).update({
     kiosk: data,
     arrTime: new Date().toISOString(),
   });
 
-  if (response === undefined) {
-    const doctors = [];
+  if (updateResult !== undefined) {
+    return;
+  }
 
-    const newRef = db.collection('dashboard');
-    const newSnapshot = await newRef.get();
+  const doctorsRef = db.collection(DASHBOARD_COLLECTION);
+  const doctorsSnap = await doctorsRef.get();
 
-    newSnapshot.forEach((doc) => {
-      const data = doc.data();
-      data.id = doc.id;
-      doctors.push(data);
+  const doctors = doctorsSnap.docs.map((doc) => {
+    const data = doc.data();
+    data.id = doc.id;
+    return data;
+  });
 
-      return doctors;
+  const patientRef = db.collection(PATIENTS_COLLECTION).doc(id);
+  const patientSnap = await patientRef.get();
+  const patientData = patientSnap.data();
+
+  if (patientData.data[45] && patientData.data[41]) {
+    const patientDoctor = `${patientData.data[41].split(', ')[0]} ${
+      patientData.data[41].split(', ')[1]
+    }`;
+    const doctor = doctors.find((d) => {
+      return patientDoctor.toLowerCase().includes(d.id?.toLowerCase());
     });
 
-    // console.log({ doctors });
+    const isAvailable = doctor.count.filter((p) => {
+      return `${p.patient.split(', ')[1]} ${p.patient.split(', ')[0]}`.includes(
+        patientData.kiosk.others.Appointment_created_by.value
+      );
+    });
 
-    const patientRef = db.collection('patientsData');
-    const docSnap = await patientRef.doc(id).get();
-
-    const fetchedData = docSnap.data();
-
-    // console.log(fetchedData.data[45]);
-
-    if (fetchedData.data[45]) {
-      if (fetchedData.data[41]) {
-        const patientDoctor = `${fetchedData.data[41].split(', ')[0]} ${
-          fetchedData.data[41].split(', ')[1]
-        }`;
-
-        const doctor = doctors.find((d) => {
-          return patientDoctor.toLowerCase().includes(d.id?.toLowerCase());
-        });
-
-        // console.log({ patientDoctor, doctor });
-
-        // console.log(fetchedData.kiosk.others.Appointment_created_by.value);
-
-        const isAvailable = doctor.count.filter((p) => {
-          return `${p.patient.split(', ')[1]} ${
-            p.patient.split(', ')[0]
-          }`.includes(fetchedData.kiosk.others.Appointment_created_by.value);
-        });
-
-        // console.log({ isAvailable });
-
-        // console.log(isAvailable);
-        if (isAvailable.length > 0) {
-          const returnPatient = {
-            id: docSnap.id,
-            status: 'Already checked-in',
-          };
-          return returnPatient;
-        } else {
-          const updateRef = db.collection('dashboard').doc(doctor.id);
-          doctor.count.push({
-            patient: docSnap.data().data[13],
-            id: docSnap.id,
-            appointment: docSnap.data().data[1],
-            room: '',
-          });
-
-          const updateRes = await updateRef.update({
-            count: doctor.count,
-          });
-          if (updateRes === undefined) {
-            const returnPatient = { id: docSnap.id, status: 'success' };
-            return returnPatient;
-          }
-        }
-      }
+    if (isAvailable.length > 0) {
+      return {
+        id: patientSnap.id,
+        status: 'Already checked-in',
+      };
     } else {
-      // doc.data() will be undefined in this case
-      // console.log('No such document!');
+      doctor.count.push({
+        patient: patientData.data[13],
+        id: patientSnap.id,
+        appointment: patientData.data[1],
+        room: '',
+      });
+
+      const updateResult = await doctorsRef.doc(doctor.id).update({
+        count: doctor.count,
+      });
+
+      if (updateResult !== undefined) {
+        return;
+      }
+
+      return {
+        id: patientSnap.id,
+        status: 'success',
+      };
     }
-    doctors.length = 0;
+  } else {
+    return;
   }
 };
