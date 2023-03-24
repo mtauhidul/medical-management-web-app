@@ -59,12 +59,14 @@ const PatientsTable = ({ patientData }) => {
     setPage(0);
   };
 
-  const handleCheckIn = async (idx) => {
+  const handleCheckIn = async (id) => {
     // Add confirm alert here before check in
     const opinion = window.confirm('Are you sure you want to check in?');
 
     if (opinion) {
-      const getPatientData = await patientData.patients[idx];
+      const getPatientData = patientData.patients.find(
+        (patient) => patient.id === id
+      );
 
       const neededData = {
         userInfo: {
@@ -151,7 +153,9 @@ const PatientsTable = ({ patientData }) => {
                             ? true
                             : false
                         }
-                        onClick={() => handleCheckIn(index)}>
+                        onClick={() => {
+                          handleCheckIn(row?.id);
+                        }}>
                         <FaIcons.FaSignInAlt
                           style={{
                             fontSize: '1.2rem',

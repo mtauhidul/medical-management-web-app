@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import readXlsxFile from 'read-excel-file';
 import AddBtn from '../../Components/Buttons/AddBtn/AddBtn';
 
-import { addPatientsData, removePatientsData } from '../../API/Api';
+import { addPatientsData, removeAllPatientsData } from '../../API/Api';
 import { usePatientInformationContext } from '../../context/PatientsInformationContext';
 import ConditionalRendering from './ConditionalRendering';
 import FilteredPatientsData from './FilteredPatientsData';
@@ -111,8 +111,9 @@ const PatientsInfo = ({ patientsData }) => {
   };
 
   const removeData = async (info) => {
-    info.patients.map(async (patient) => {
-      await removePatientsData(patient.id);
+    info.patients.map(async (patient, index) => {
+      const lastIndex = 0;
+      await removeAllPatientsData(patient.id, index, lastIndex);
     });
   };
 

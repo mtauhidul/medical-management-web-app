@@ -4,7 +4,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
-import { addAlert, getPatientDetails, toggleEmergency } from '../../../API/Api';
+import {
+  addAlert,
+  getPatientDetails,
+  toggleEmergency,
+  updateStatusAndTimestamp,
+} from '../../../API/Api';
 import { GlobalContext, ModalContext } from '../../../App';
 import RBtn from '../../Buttons/RBtn/RBtn';
 import './blinker.css';
@@ -27,6 +32,16 @@ const DashCard = (props) => {
 
   const apiCall = () => {
     addAlert({
+      activityType: selectedAlert?.activityType,
+      docId,
+      arrIndex: idx,
+      alert: '',
+      bg: '',
+      border: '',
+      blink: false,
+    });
+
+    updateStatusAndTimestamp({
       activityType: selectedAlert?.activityType,
       docId,
       arrIndex: idx,
