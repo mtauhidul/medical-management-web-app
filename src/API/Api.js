@@ -50,25 +50,63 @@ export const updateStatusAndTimestamp = async (data) => {
               doc.data().status !== ''
             ) {
               const kiosk = doc.data().kiosk;
+              const now = new Date();
+              const ISOString = now.toISOString();
 
-              const startTime = kiosk.timestamp;
-              const endTime = new Date().toISOString();
+              const startTime = new Date(kiosk.timestamp);
 
-              const date1 = new Date(startTime).valueOf();
-              const date2 = new Date(endTime).valueOf();
+              const endTime = new Date(ISOString);
+              console.log(startTime, '||', endTime);
 
-              const durationMs = Math.abs(date2 - date1);
-              const durationSec = durationMs / 1000;
-              const durationMin = durationSec / 60;
+              const durationMs = endTime.getTime() - startTime.getTime();
+              const durationMin = Math.floor(durationMs / 60000);
+              const durationSec = Math.floor((durationMs % 60000) / 1000);
+              const durationStr = `${durationMin}:${durationSec
+                .toString()
+                .padStart(2, '0')}`;
+
+              const sumTime = (a, b) => {
+                console.log(a, b);
+                // Set the two times to be added
+                const time1 = a || '0:00';
+                const time2 = b;
+
+                // Convert each time to seconds
+                const time1Sec =
+                  Number(time1.split(':')[0]) * 60 +
+                  Number(time1.split(':')[1]);
+                const time2Sec =
+                  Number(time2.split(':')[0]) * 60 +
+                  Number(time2.split(':')[1]);
+
+                // Calculate the total time in seconds
+                const totalTimeSec = time1Sec + time2Sec;
+
+                // Convert the total time back to minutes:seconds format
+                const totalTimeMin = Math.floor(totalTimeSec / 60);
+                const totalTimeSecFormatted = (totalTimeSec % 60)
+                  .toString()
+                  .padStart(2, '0');
+                const totalTimeFormatted = `${totalTimeMin}:${totalTimeSecFormatted}`;
+
+                console.log(totalTimeFormatted);
+
+                return totalTimeFormatted;
+              };
 
               console.log(typeof kiosk.activity_time.patient);
 
-              types.unshift(data.activityType);
+              types.unshift({
+                id: roomId,
+                type: data.activityType,
+              });
               console.log(types);
 
-              if (types.length === 1) {
-                kiosk.activity_time.patient =
-                  kiosk.activity_time.patient + durationMin;
+              if (types.filter((type) => type.id === roomId).length === 1) {
+                kiosk.activity_time.patient = sumTime(
+                  kiosk.activity_time.patient,
+                  durationStr
+                );
 
                 kiosk.timestamp = new Date().toISOString();
 
@@ -76,9 +114,17 @@ export const updateStatusAndTimestamp = async (data) => {
                 db.collection('patientsData').doc(doc.id).update({
                   kiosk: kiosk,
                 });
-              } else if (types.length === 2) {
-                kiosk.activity_time[types[1]] =
-                  kiosk.activity_time[types[1]] + durationMin;
+              } else if (
+                types.filter((type) => type.id === roomId).length === 2
+              ) {
+                kiosk.activity_time[
+                  types.filter((type) => type.id === roomId)[1].type
+                ] = sumTime(
+                  kiosk.activity_time[
+                    types.filter((type) => type.id === roomId)[1].type
+                  ],
+                  durationStr
+                );
 
                 kiosk.timestamp = new Date().toISOString();
 
@@ -88,13 +134,23 @@ export const updateStatusAndTimestamp = async (data) => {
                 });
 
                 if (data.alert === '') {
-                  types = [];
+                  const newTypes = types.filter((type) => type.id !== roomId);
+
+                  types = newTypes;
 
                   return types;
                 }
-              } else if (types.length === 3) {
-                kiosk.activity_time[types[1]] =
-                  kiosk.activity_time[types[1]] + durationMin;
+              } else if (
+                types.filter((type) => type.id === roomId).length >= 3
+              ) {
+                kiosk.activity_time[
+                  types.filter((type) => type.id === roomId)[1].type
+                ] = sumTime(
+                  kiosk.activity_time[
+                    types.filter((type) => type.id === roomId)[1].type
+                  ],
+                  durationStr
+                );
 
                 kiosk.timestamp = new Date().toISOString();
 
@@ -104,11 +160,17 @@ export const updateStatusAndTimestamp = async (data) => {
                 });
 
                 if (data.alert === '') {
-                  types = [];
+                  const newTypes = types.filter((type) => type.id !== roomId);
+
+                  types = newTypes;
 
                   return types;
                 } else {
-                  types.pop();
+                  types.pop(
+                    types.filter((type) => type.id === roomId)[
+                      types.filter((type) => type.id === roomId).length - 1
+                    ]
+                  );
 
                   return types;
                 }
@@ -445,10 +507,12 @@ export async function deletePatientData(id) {
 
 // Manually login patient
 export const patientCheckIn = async (patient, id) => {
-  // console.log(patient, id);
+  const now = new Date();
+  const isoString = now.toISOString();
+
   const data = {
     patient: patient,
-    timestamp: new Date().toISOString(),
+    timestamp: isoString,
     activity_time: {
       doctor: 0,
       patient: 0,

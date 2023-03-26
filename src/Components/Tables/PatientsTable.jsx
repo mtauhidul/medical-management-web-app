@@ -289,9 +289,7 @@ const PatientsTable = ({ patientData }) => {
                       }}
                       align='center'>
                       {row?.kiosk?.activity_time?.doctor
-                        ? parseFloat(row?.kiosk?.activity_time?.doctor).toFixed(
-                            3
-                          ) + 'm'
+                        ? row?.kiosk?.activity_time?.doctor + 'm'
                         : '-'}
                     </TableCell>
                     <TableCell
@@ -300,9 +298,7 @@ const PatientsTable = ({ patientData }) => {
                       }}
                       align='center'>
                       {row?.kiosk?.activity_time?.staff
-                        ? parseFloat(row?.kiosk?.activity_time?.staff).toFixed(
-                            3
-                          ) + 'm'
+                        ? row?.kiosk?.activity_time?.staff + 'm'
                         : '-'}
                     </TableCell>
                     <TableCell
@@ -311,9 +307,7 @@ const PatientsTable = ({ patientData }) => {
                       }}
                       align='center'>
                       {row?.kiosk?.activity_time?.patient
-                        ? parseFloat(
-                            row?.kiosk?.activity_time?.patient
-                          ).toFixed(3) + 'm'
+                        ? row?.kiosk?.activity_time?.patient + 'm'
                         : '-'}
                     </TableCell>
                   </TableRow>

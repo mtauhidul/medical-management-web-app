@@ -9,8 +9,20 @@ const Reports = () => {
   const [avgStaffActivity, setAvgStaffActivity] = useState(0);
   const [avgPatientActivity, setAvgPatientActivity] = useState(0);
   const [avgDoctorActivity, setAvgDoctorActivity] = useState(0);
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [startTime, setStartTime] = useState(
+    new Date(new Date().setMonth(new Date().getMonth() - 1))
+      .toISOString()
+      .slice(0, 10)
+  );
+  const [endTime, setEndTime] = useState(
+    // Set the end time one day ahead of the current date
+    new Date(new Date().setDate(new Date().getDate() + 1))
+      .toISOString()
+      .slice(0, 10)
+  );
+
+  // console.log('Starting date: ', startTime);
+  // console.log('Ending date: ', endTime);
 
   const getData = () => {
     const search = '/';
@@ -65,21 +77,45 @@ const Reports = () => {
       });
   };
 
-  const calculateAverage = (data) => {
-    let sum = 0;
-    data.forEach((item) => {
-      sum += item.value;
-    });
-    return sum / data.length;
-  };
-
   // A function that will find out object dates fall between two dates
 
-  const filterByDate = (data, start, end) => {
+  const filterByDate = (data, startDate, endDate) => {
     const filteredData = data.filter((item) => {
-      return item.date >= start && item.date <= end;
+      const date = item.date.split('-');
+      const newDate = `${date[2]}-${date[1]}-${date[0]}`;
+      const itemDate = new Date(newDate);
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      return itemDate >= start && itemDate <= end;
     });
+    console.log('Filtered data: ', filteredData);
     return filteredData;
+  };
+
+  const calculateAverage = (data) => {
+    const filteredData = filterByDate(data, startTime, endTime);
+    // An array of times in "15:30" format
+    const times = filteredData;
+
+    // console.log(times);
+
+    // Convert each time to seconds and add them up
+    const totalSeconds = times.reduce((acc, time) => {
+      const [minutes, seconds] = time.value.split(':');
+      return acc + Number(minutes) * 60 + Number(seconds);
+    }, 0);
+
+    // Calculate the average number of seconds
+    const averageSeconds = totalSeconds / times.length;
+
+    // Convert the average number of seconds back to "15:30" format
+    const minutes = Math.floor(averageSeconds / 60);
+    const seconds = Math.floor(averageSeconds % 60);
+    const averageTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+    // console.log(averageTime);
+    return averageTime;
   };
 
   useEffect(() => {
@@ -105,12 +141,12 @@ const Reports = () => {
   }, [doctorData]);
 
   useEffect(() => {
-    console.log(staffData);
-    console.log(doctorData);
-    console.log(patientData);
-    console.log('----------');
-    console.log(startTime);
-    console.log(endTime);
+    // console.log(staffData);
+    // console.log(doctorData);
+    // console.log(patientData);
+    // console.log('----------');
+    // console.log(startTime);
+    // console.log(endTime);
   }, [staffData, patientData, doctorData, startTime, endTime]);
 
   return (
@@ -136,7 +172,7 @@ const Reports = () => {
                 value={startTime}
                 onChange={(e) => {
                   const date = e.target.value.split('-');
-                  const newDate = `${date[2]}-${date[1]}-${date[0]}`;
+                  const newDate = `${date[0]}-${date[1]}-${date[2]}`;
                   setStartTime(newDate);
                 }}
               />
@@ -151,7 +187,7 @@ const Reports = () => {
                 value={endTime}
                 onChange={(e) => {
                   const date = e.target.value.split('-');
-                  const newDate = `${date[2]}-${date[1]}-${date[0]}`;
+                  const newDate = `${date[0]}-${date[1]}-${date[2]}`;
                   setEndTime(newDate);
                 }}
               />
@@ -166,10 +202,9 @@ const Reports = () => {
               </label>
               <br />
               <button
+                className={styles.reportsBodyFilterItemButton}
                 onClick={() => {
-                  setStaffData(filterByDate(staffData, startTime, endTime));
-                  setPatientData(filterByDate(patientData, startTime, endTime));
-                  setDoctorData(filterByDate(doctorData, startTime, endTime));
+                  getData();
                 }}>
                 Filter
               </button>
@@ -179,15 +214,23 @@ const Reports = () => {
           <div className={styles.reportsBodyContent}>
             <div className={styles.reportsBodyContentItem}>
               <h3>Average Staff Activity Time</h3>
-              <p>{(avgStaffActivity / 60).toFixed(3)} minutes</p>
+              <p>
+                {avgStaffActivity !== 'NaN:NaN' ? avgStaffActivity : 0} minutes
+              </p>
             </div>
             <div className={styles.reportsBodyContentItem}>
               <h3>Average Patient Activity Time</h3>
-              <p>{(avgPatientActivity / 60).toFixed(3)} minutes</p>
+              <p>
+                {avgPatientActivity !== 'NaN:NaN' ? avgPatientActivity : 0}{' '}
+                minutes
+              </p>
             </div>
             <div className={styles.reportsBodyContentItem}>
               <h3>Average Doctor Activity Time</h3>
-              <p>{(avgDoctorActivity / 60).toFixed(3)} minutes</p>
+              <p>
+                {avgDoctorActivity !== 'NaN:NaN' ? avgDoctorActivity : 0}{' '}
+                minutes
+              </p>
             </div>
           </div>
         </div>
