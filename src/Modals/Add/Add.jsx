@@ -97,6 +97,7 @@ const Add = () => {
         [e.target.name]: e.target.value,
         count: [],
         rooms: [],
+        waiting: 0,
       });
     } else if (info.type === 'assistant') {
       setData({ ...data, [e.target.name]: e.target.value, dr: '' });

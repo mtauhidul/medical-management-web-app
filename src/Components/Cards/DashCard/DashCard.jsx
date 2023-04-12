@@ -12,9 +12,9 @@ import {
 } from '../../../API/Api';
 import { GlobalContext, ModalContext } from '../../../App';
 import RBtn from '../../Buttons/RBtn/RBtn';
-import './blinker.css';
 import styles from './DashCard.module.css';
 import MyStopwatch from './MyStopWatch';
+import './blinker.css';
 
 const DashCard = (props) => {
   const {

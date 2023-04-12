@@ -19,16 +19,16 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import React, { useState } from 'react';
 import {
   Link,
-  matchPath,
   Route,
   Switch,
+  matchPath,
   useHistory,
   useRouteMatch,
 } from 'react-router-dom';
@@ -123,6 +123,28 @@ function ControlPanel(props) {
       ),
     },
     {
+      name: 'Patients',
+      url: `${url}/patients`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faFileMedical}
+          size='2x'
+          className={`${url}/patients` ? styles.activeIcon : styles.plusIcon}
+        />
+      ),
+    },
+    {
+      name: 'Reports',
+      url: `${url}/reports`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faChartBar}
+          size='2x'
+          className={`${url}/reports` ? styles.activeIcon : styles.plusIcon}
+        />
+      ),
+    },
+    {
       name: 'Roles',
       url: `${url}/stuff/doctors`,
       Icon: (
@@ -154,28 +176,6 @@ function ControlPanel(props) {
           icon={faWaveSquare}
           size='2x'
           className={`${url}/sequence` ? styles.activeIcon : styles.plusIcon}
-        />
-      ),
-    },
-    {
-      name: 'Patients',
-      url: `${url}/patients`,
-      Icon: (
-        <FontAwesomeIcon
-          icon={faFileMedical}
-          size='2x'
-          className={`${url}/patients` ? styles.activeIcon : styles.plusIcon}
-        />
-      ),
-    },
-    {
-      name: 'Reports',
-      url: `${url}/reports`,
-      Icon: (
-        <FontAwesomeIcon
-          icon={faChartBar}
-          size='2x'
-          className={`${url}/reports` ? styles.activeIcon : styles.plusIcon}
         />
       ),
     },

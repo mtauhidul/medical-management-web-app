@@ -102,8 +102,14 @@ const Reports = () => {
 
     // Convert each time to seconds and add them up
     const totalSeconds = times.reduce((acc, time) => {
-      const [minutes, seconds] = time.value.split(':');
-      return acc + Number(minutes) * 60 + Number(seconds);
+      console.log('Time: ', time);
+
+      if (time.value === 0) {
+        return acc;
+      } else {
+        const [minutes, seconds] = time.value.split(':');
+        return acc + Number(minutes) * 60 + Number(seconds);
+      }
     }, 0);
 
     // Calculate the average number of seconds
@@ -166,6 +172,7 @@ const Reports = () => {
               <label htmlFor='start'>Start Date</label>
               <br />
               <input
+                className={styles.reportsBodyFilterItemInput}
                 type='date'
                 id='start'
                 name='trip-start'
@@ -181,6 +188,7 @@ const Reports = () => {
               <label htmlFor='end'>End Date</label>
               <br />
               <input
+                className={styles.reportsBodyFilterItemInput}
                 type='date'
                 id='end'
                 name='trip-end'

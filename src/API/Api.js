@@ -12,6 +12,7 @@ export async function addDashData(data) {
     phone: data.dr.phone,
     count: data.dr.count,
     rooms: data.rooms,
+    waiting: data.dr.waiting,
   });
 
   toast.success(`Sequence created successfully`);
@@ -20,6 +21,14 @@ export async function addDashData(data) {
 export async function countUpdate(pass) {
   const countRef = db.collection('dashboard').doc(pass.id);
   await countRef.update({ count: pass.value });
+}
+
+export async function waitingUpdate(pass) {
+  const countRef = db.collection('dashboard').doc(pass.id);
+  const res = await countRef.get();
+  const data = res.data();
+  const waiting = data.waiting;
+  await countRef.update({ waiting: waiting - 1 });
 }
 
 let types = [];
@@ -909,6 +918,7 @@ export const patientCheckIn = async (patient, id) => {
 
           const updateRes = await updateRef.update({
             count: doctor.count,
+            waiting: doctor.waiting + 1,
           });
           if (updateRes === undefined) {
             const returnPatient = { id: docSnap.id, status: 'success' };
@@ -921,5 +931,16 @@ export const patientCheckIn = async (patient, id) => {
       // console.log('No such document!');
     }
     doctors.length = 0;
+  }
+};
+
+export const countDown = (doc) => {
+  if (doc.count === 0) {
+    toast.error("Patients can't be less than zero");
+  } else {
+    countUpdate({
+      id: doc.id,
+      value: doc.count - 1,
+    });
   }
 };

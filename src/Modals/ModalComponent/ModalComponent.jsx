@@ -4,7 +4,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
-import { addAlert, countUpdate, updateStatusAndTimestamp } from '../../API/Api';
+import {
+  addAlert,
+  countUpdate,
+  updateStatusAndTimestamp,
+  waitingUpdate,
+} from '../../API/Api';
 import { db } from '../../API/firebase';
 import { GlobalContext, ModalContext } from '../../App';
 import sound from '../../Assets/beep.mp3';
@@ -35,6 +40,13 @@ const ModalComponent = ({ open, setOpen, items, detail, setDetail }) => {
     setOpen(false);
   };
 
+  const countDown = () => {
+    countUpdate({
+      id: globalData.docId,
+      value: globalData.count - 1,
+    });
+  };
+
   const onCloseModal = (item) => {
     setMod({ ...mod, item });
     if (item !== null) {
@@ -57,13 +69,14 @@ const ModalComponent = ({ open, setOpen, items, detail, setDetail }) => {
         bg: item?.bg,
         border: item?.border,
       });
+
+      if (item?.name === 'Patient Ready') {
+        waitingUpdate({
+          id: globalData.docId,
+        });
+      }
     }
-    const countDown = () => {
-      countUpdate({
-        id: globalData.docId,
-        value: globalData.count - 1,
-      });
-    };
+
     if (globalData.count > 0 && item?.name === counterAlert) {
       countDown();
     }
