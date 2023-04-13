@@ -269,14 +269,59 @@ export async function addAlert(data) {
             .doc(completingPatient.id)
             .get();
 
-          const startTime = patientToUpdate.data().arrTime;
-          const endTime = new Date().toISOString();
-          let current = new Date(endTime).valueOf();
-          let previous = new Date(startTime).valueOf();
-          let diff = current - previous;
-          let mins = Math.round((diff % 3600000) / 60000);
-          let hours = Math.floor(diff / 3600000);
-          const duration = `${hours}:${mins}`;
+          // const startTime = patientToUpdate.data().arrTime;
+          // const endTime = new Date().toISOString();
+          // let current = new Date(endTime).valueOf();
+          // let previous = new Date(startTime).valueOf();
+          // let diff = current - previous;
+          // let mins = Math.round((diff % 3600000) / 60000);
+          // let hours = Math.floor(diff / 3600000);
+          // const duration = `${hours}:${mins}`;
+
+          const kiosk = patientToUpdate.data().kiosk;
+          const now = new Date();
+          const ISOString = now.toISOString();
+
+          const startTime = new Date(patientToUpdate.data().arrTime);
+
+          const endTime = new Date(ISOString);
+          console.log(startTime, '||', endTime);
+
+          const durationMs = endTime.getTime() - startTime.getTime();
+          const durationMin = Math.floor(durationMs / 60000);
+          const durationSec = Math.floor((durationMs % 60000) / 1000);
+          const durationStr = `${durationMin}:${durationSec
+            .toString()
+            .padStart(2, '0')}`;
+
+          const sumTime = (a, b) => {
+            console.log(a, b);
+            // Set the two times to be added
+            const time1 = a || '0:00';
+            const time2 = b;
+
+            // Convert each time to seconds
+            const time1Sec =
+              Number(time1.split(':')[0]) * 60 + Number(time1.split(':')[1]);
+            const time2Sec =
+              Number(time2.split(':')[0]) * 60 + Number(time2.split(':')[1]);
+
+            // Calculate the total time in seconds
+            const totalTimeSec = time1Sec + time2Sec;
+
+            // Convert the total time back to minutes:seconds format
+            const totalTimeMin = Math.floor(totalTimeSec / 60);
+            const totalTimeSecFormatted = (totalTimeSec % 60)
+              .toString()
+              .padStart(2, '0');
+            const totalTimeFormatted = `${totalTimeMin}:${totalTimeSecFormatted}`;
+
+            console.log(totalTimeFormatted);
+
+            return totalTimeFormatted;
+          };
+
+          kiosk.activity_time.patient = durationStr;
 
           // console.log(duration);
 
@@ -284,7 +329,7 @@ export async function addAlert(data) {
           // patientToUpdate.data().status = 'Patient Ready';
           db.collection('patientsData')
             .doc(completingPatient.id)
-            .update({ room: '', status: 'Completed', duration: duration });
+            .update({ room: '', status: 'Completed', kiosk: kiosk });
         } else {
           // console.log('No empty patient');
         }

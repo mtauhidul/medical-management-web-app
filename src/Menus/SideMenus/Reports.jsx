@@ -98,11 +98,11 @@ const Reports = () => {
     // An array of times in "15:30" format
     const times = filteredData;
 
-    // console.log(times);
+    console.log(times);
 
     // Convert each time to seconds and add them up
     const totalSeconds = times.reduce((acc, time) => {
-      console.log('Time: ', time);
+      // console.log('Time: ', time);
 
       if (time.value === 0) {
         return acc;
@@ -111,6 +111,8 @@ const Reports = () => {
         return acc + Number(minutes) * 60 + Number(seconds);
       }
     }, 0);
+
+    console.log(totalSeconds);
 
     // Calculate the average number of seconds
     const averageSeconds = totalSeconds / times.length;
@@ -142,6 +144,7 @@ const Reports = () => {
 
   useEffect(() => {
     if (doctorData.length > 0) {
+      console.log(doctorData);
       setAvgDoctorActivity(calculateAverage(doctorData));
     }
   }, [doctorData]);
@@ -227,16 +230,16 @@ const Reports = () => {
               </p>
             </div>
             <div className={styles.reportsBodyContentItem}>
-              <h3>Average Patient Activity Time</h3>
+              <h3>Average Doctor Activity Time</h3>
               <p>
-                {avgPatientActivity !== 'NaN:NaN' ? avgPatientActivity : 0}{' '}
+                {avgDoctorActivity !== 'NaN:NaN' ? avgDoctorActivity : 0}{' '}
                 minutes
               </p>
             </div>
             <div className={styles.reportsBodyContentItem}>
-              <h3>Average Doctor Activity Time</h3>
+              <h3>Average Patient Activity Time</h3>
               <p>
-                {avgDoctorActivity !== 'NaN:NaN' ? avgDoctorActivity : 0}{' '}
+                {avgPatientActivity !== 'NaN:NaN' ? avgPatientActivity : 0}{' '}
                 minutes
               </p>
             </div>
