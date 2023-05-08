@@ -523,9 +523,9 @@ export const getPatientDetails = async (doctorId, roomId) => {
     .doc(doctorId)
     .get()
     .then((doc) => {
-      const patients = doc.data().count;
+      const patients = doc.data()?.count;
       // console.log('CHECK PATIENTS', patients);
-      const patient = patients.filter((p) => p.room === roomId);
+      const patient = patients?.filter((p) => p?.room === roomId);
 
       return patient[0];
     });
