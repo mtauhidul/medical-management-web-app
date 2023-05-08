@@ -103,7 +103,7 @@ export const updateStatusAndTimestamp = async (data) => {
                 return totalTimeFormatted;
               };
 
-              // console.log(typeof kiosk.activity_time.patient);
+              console.log(kiosk.activity_time.patient);
 
               types.unshift({
                 id: roomId,

@@ -153,6 +153,7 @@ const Dashboard = () => {
                   data={doc}
                   openAlertModal={openAlertModal}
                   doc={doc}
+                  waiting={doc.waiting}
                 />
               ))}
             </CardDeck>
