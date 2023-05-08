@@ -89,7 +89,7 @@ const Reports = () => {
 
       return itemDate >= start && itemDate <= end;
     });
-    // console.log('Filtered data: ', filteredData);
+    console.log('Filtered data: ', filteredData);
     return filteredData;
   };
 
@@ -98,7 +98,7 @@ const Reports = () => {
     // An array of times in "15:30" format
     const times = filteredData;
 
-    // console.log(times);
+    console.log(times);
 
     // Convert each time to seconds and add them up
     const totalSeconds = times.reduce((acc, time) => {
@@ -144,7 +144,7 @@ const Reports = () => {
 
   useEffect(() => {
     if (doctorData.length > 0) {
-      // console.log(doctorData);
+      console.log(doctorData);
       setAvgDoctorActivity(calculateAverage(doctorData));
     }
   }, [doctorData]);

@@ -26,7 +26,6 @@ const DashCard = (props) => {
     docId,
     handler,
     idx,
-    waiting,
   } = props;
   const [globalData, updateGlobalData] = useContext(GlobalContext);
   const [mod, setMod] = useContext(ModalContext);
@@ -87,7 +86,7 @@ const DashCard = (props) => {
 
   useEffect(() => {
     getPatient();
-  }, [room.alert]);
+  }, []);
 
   return (
     <div>
@@ -115,9 +114,7 @@ const DashCard = (props) => {
             </Card.Header>
             <Card.Body className={styles.roomCardMid}>
               <div
-                onClick={() =>
-                  waiting === 0 && alert === 'Empty' ? null : openAlertModal()
-                }
+                onClick={() => openAlertModal()}
                 style={{
                   backgroundColor: `${room.bg}`,
                   borderColor: `${room.border}`,
@@ -160,11 +157,7 @@ const DashCard = (props) => {
             </Card.Header>
             <Card.Body className={styles.roomCardMid}>
               <div
-                onClick={() =>
-                  waiting === 0 && (room.alert === '' || room.alert === 'Empty')
-                    ? null
-                    : openAlertModal()
-                }
+                onClick={() => openAlertModal()}
                 style={{
                   backgroundColor: `${room.bg}`,
                   borderColor: `${room.border}`,

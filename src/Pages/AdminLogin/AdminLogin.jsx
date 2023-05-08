@@ -40,7 +40,7 @@ const AdminLogin = () => {
 
   historyCheck();
 
-  // console.log(auth);
+  console.log(auth);
 
   const pageRedirect = () => {
     history.push(`${auth.address}`);
