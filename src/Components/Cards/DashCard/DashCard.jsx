@@ -4,17 +4,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
-import {
-  addAlert,
-  getPatientDetails,
-  toggleEmergency,
-  updateStatusAndTimestamp,
-} from '../../../API/Api';
+import { addAlert, getPatientDetails, toggleEmergency } from '../../../API/Api';
 import { GlobalContext, ModalContext } from '../../../App';
 import RBtn from '../../Buttons/RBtn/RBtn';
+import './blinker.css';
 import styles from './DashCard.module.css';
 import MyStopwatch from './MyStopWatch';
-import './blinker.css';
 
 const DashCard = (props) => {
   const {
@@ -32,17 +27,6 @@ const DashCard = (props) => {
 
   const apiCall = () => {
     addAlert({
-      activityType: selectedAlert?.activityType,
-      docId,
-      arrIndex: idx,
-      alert: '',
-      bg: '',
-      border: '',
-      blink: false,
-    });
-
-    updateStatusAndTimestamp({
-      activityType: selectedAlert?.activityType,
       docId,
       arrIndex: idx,
       alert: '',
@@ -82,7 +66,7 @@ const DashCard = (props) => {
     setPatientData(response);
   };
 
-  // console.log(patientData);
+  console.log(patientData);
 
   useEffect(() => {
     getPatient();

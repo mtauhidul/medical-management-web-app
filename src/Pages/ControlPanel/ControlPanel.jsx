@@ -5,70 +5,68 @@
 /* eslint-disable import/no-cycle */
 import {
   faBell,
-  faChartBar,
   faColumns,
   faFileMedical,
   faStethoscope,
   faWaveSquare,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import React, { useState } from 'react';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import MenuIcon from "@material-ui/icons/Menu";
+import React, { useState } from "react";
 import {
   Link,
   Route,
   Switch,
-  matchPath,
   useHistory,
   useRouteMatch,
-} from 'react-router-dom';
-import useViewportSizes from 'use-viewport-sizes';
-import SignOutBtn from '../../Components/Buttons/SignOutBtn/SignOutBtn';
-import Alerts from '../../Menus/SideMenus/Alerts';
-import AssistantDashboard from '../../Menus/SideMenus/AssistantDashboard';
-import Dashboard from '../../Menus/SideMenus/Dashboard';
-import Doctors from '../../Menus/SideMenus/Doctors';
-import Patients from '../../Menus/SideMenus/Patients';
-import Reports from '../../Menus/SideMenus/Reports';
-import Sequence from '../../Menus/SideMenus/Sequence';
-import Stuff from '../../Menus/SideMenus/Stuff';
-import DoctorsSelf from '../../Menus/TabMenus/DoctorsSelf';
-import PatientInfo from '../PatientsInfo/PatientInfo';
-import styles from './ControlPanel.module.css';
+  matchPath,
+} from "react-router-dom";
+import useViewportSizes from "use-viewport-sizes";
+import SignOutBtn from "../../Components/Buttons/SignOutBtn/SignOutBtn";
+import Alerts from "../../Menus/SideMenus/Alerts";
+import AssistantDashboard from "../../Menus/SideMenus/AssistantDashboard";
+import Dashboard from "../../Menus/SideMenus/Dashboard";
+import Doctors from "../../Menus/SideMenus/Doctors";
+import Patients from "../../Menus/SideMenus/Patients";
+import Sequence from "../../Menus/SideMenus/Sequence";
+import Stuff from "../../Menus/SideMenus/Stuff";
+import DoctorsSelf from "../../Menus/TabMenus/DoctorsSelf";
+import PatientInfo from "../PatientsInfo/PatientInfo";
+import styles from "./ControlPanel.module.css";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: drawerWidth,
       flexShrink: 0,
     },
   },
 
   appBar: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
   },
   menuButton: {
     marginRight: theme.spacing(1),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
     },
   },
   // necessary for content to be below app bar
@@ -106,51 +104,29 @@ function ControlPanel(props) {
 
   const logOut = () => {
     sessionStorage.clear();
-    history.push('/');
+    history.push("/");
     // location.reload();
   };
 
   const navList = [
     {
-      name: 'Dashboard',
+      name: "Dashboard",
       url: `${url}/dashboard`,
       Icon: (
         <FontAwesomeIcon
           icon={faColumns}
-          size='2x'
+          size="2x"
           className={`${url}/dashboard` ? styles.activeIcon : styles.plusIcon}
         />
       ),
     },
     {
-      name: 'Patients',
-      url: `${url}/patients`,
-      Icon: (
-        <FontAwesomeIcon
-          icon={faFileMedical}
-          size='2x'
-          className={`${url}/patients` ? styles.activeIcon : styles.plusIcon}
-        />
-      ),
-    },
-    {
-      name: 'Reports',
-      url: `${url}/reports`,
-      Icon: (
-        <FontAwesomeIcon
-          icon={faChartBar}
-          size='2x'
-          className={`${url}/reports` ? styles.activeIcon : styles.plusIcon}
-        />
-      ),
-    },
-    {
-      name: 'Roles',
+      name: "Roles",
       url: `${url}/stuff/doctors`,
       Icon: (
         <FontAwesomeIcon
           icon={faStethoscope}
-          size='2x'
+          size="2x"
           className={
             `${url}/stuff/doctors` ? styles.activeIcon : styles.plusIcon
           }
@@ -158,24 +134,35 @@ function ControlPanel(props) {
       ),
     },
     {
-      name: 'Status',
+      name: "Alerts",
       url: `${url}/alerts`,
       Icon: (
         <FontAwesomeIcon
           icon={faBell}
-          size='2x'
+          size="2x"
           className={`${url}/alerts` ? styles.activeIcon : styles.plusIcon}
         />
       ),
     },
     {
-      name: 'Resources',
+      name: "Resources",
       url: `${url}/sequence`,
       Icon: (
         <FontAwesomeIcon
           icon={faWaveSquare}
-          size='2x'
+          size="2x"
           className={`${url}/sequence` ? styles.activeIcon : styles.plusIcon}
+        />
+      ),
+    },
+    {
+      name: "Patients",
+      url: `${url}/patients`,
+      Icon: (
+        <FontAwesomeIcon
+          icon={faFileMedical}
+          size="2x"
+          className={`${url}/patients` ? styles.activeIcon : styles.plusIcon}
         />
       ),
     },
@@ -201,7 +188,8 @@ function ControlPanel(props) {
                         path: `${item.url}`,
                         exact: true,
                       }) && styles.active
-                    }>
+                    }
+                  >
                     <span>{item.Icon}</span>
                     <span className={styles.navText}>{item.name}</span>
                   </Link>
@@ -298,27 +286,28 @@ function ControlPanel(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position='fixed' id={styles.appBar} className={classes.appBar}>
-        <Toolbar style={{ backgroundColor: 'var(--color4)' }}>
-          <Typography variant='h6'>Care Sync</Typography>
+      <AppBar position="fixed" id={styles.appBar} className={classes.appBar}>
+        <Toolbar style={{ backgroundColor: "var(--color4)" }}>
+          <Typography variant="h6">Logo</Typography>
           <IconButton
-            style={{ marginLeft: 'auto' }}
-            color='inherit'
-            aria-label='open drawer'
-            edge='start'
+            style={{ marginLeft: "auto" }}
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
             onClick={handleDrawerToggle}
-            className={classes.menuButton}>
+            className={classes.menuButton}
+          >
             <MenuIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer} aria-label='mailbox folders'>
+      <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation='css'>
+        <Hidden smUp implementation="css">
           <Drawer
             container={container}
-            variant='temporary'
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            variant="temporary"
+            anchor={theme.direction === "rtl" ? "right" : "left"}
             open={mobileOpen}
             onClose={handleDrawerToggle}
             classes={{
@@ -326,17 +315,19 @@ function ControlPanel(props) {
             }}
             ModalProps={{
               keepMounted: true, // Better open performance on mobile.
-            }}>
+            }}
+          >
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation='css'>
+        <Hidden xsDown implementation="css">
           <Drawer
             classes={{
               paper: classes.drawerPaper,
             }}
-            variant='permanent'
-            open>
+            variant="permanent"
+            open
+          >
             {drawer}
           </Drawer>
         </Hidden>
@@ -387,9 +378,6 @@ function ControlPanel(props) {
           <Switch>
             <Route path={`${path}/self-sequence`}>
               <DoctorsSelf />
-            </Route>
-            <Route path={`${path}/reports`}>
-              <Reports />
             </Route>
           </Switch>
         </div>
