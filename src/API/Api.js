@@ -65,7 +65,7 @@ export const updateStatusAndTimestamp = async (data) => {
               const startTime = new Date(kiosk.timestamp);
 
               const endTime = new Date(ISOString);
-              console.log(startTime, '||', endTime);
+              // console.log(startTime, '||', endTime);
 
               const durationMs = endTime.getTime() - startTime.getTime();
               const durationMin = Math.floor(durationMs / 60000);
@@ -75,7 +75,7 @@ export const updateStatusAndTimestamp = async (data) => {
                 .padStart(2, '0')}`;
 
               const sumTime = (a, b) => {
-                console.log(a, b);
+                // console.log(a, b);
                 // Set the two times to be added
                 const time1 = a || '0:00';
                 const time2 = b;
@@ -98,18 +98,18 @@ export const updateStatusAndTimestamp = async (data) => {
                   .padStart(2, '0');
                 const totalTimeFormatted = `${totalTimeMin}:${totalTimeSecFormatted}`;
 
-                console.log(totalTimeFormatted);
+                // console.log(totalTimeFormatted);
 
                 return totalTimeFormatted;
               };
 
-              console.log(typeof kiosk.activity_time.patient);
+              // console.log(typeof kiosk.activity_time.patient);
 
               types.unshift({
                 id: roomId,
                 type: data.activityType,
               });
-              console.log(types);
+              // console.log(types);
 
               if (types.filter((type) => type.id === roomId).length === 1) {
                 kiosk.activity_time.patient = sumTime(
@@ -285,7 +285,7 @@ export async function addAlert(data) {
           const startTime = new Date(patientToUpdate.data().arrTime);
 
           const endTime = new Date(ISOString);
-          console.log(startTime, '||', endTime);
+          // console.log(startTime, '||', endTime);
 
           const durationMs = endTime.getTime() - startTime.getTime();
           const durationMin = Math.floor(durationMs / 60000);
@@ -295,7 +295,7 @@ export async function addAlert(data) {
             .padStart(2, '0')}`;
 
           const sumTime = (a, b) => {
-            console.log(a, b);
+            // console.log(a, b);
             // Set the two times to be added
             const time1 = a || '0:00';
             const time2 = b;
@@ -316,7 +316,7 @@ export async function addAlert(data) {
               .padStart(2, '0');
             const totalTimeFormatted = `${totalTimeMin}:${totalTimeSecFormatted}`;
 
-            console.log(totalTimeFormatted);
+            // console.log(totalTimeFormatted);
 
             return totalTimeFormatted;
           };

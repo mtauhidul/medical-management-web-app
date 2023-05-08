@@ -86,7 +86,7 @@ const DashCard = (props) => {
 
   useEffect(() => {
     getPatient();
-  }, []);
+  }, [room.alert]);
 
   return (
     <div>
