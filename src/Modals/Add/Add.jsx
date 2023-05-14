@@ -4,6 +4,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable import/no-cycle */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Modal } from 'react-responsive-modal';
@@ -11,7 +12,7 @@ import 'react-responsive-modal/styles.css';
 import { db } from '../../API/firebase';
 import { DataContext } from '../../App';
 import SaveBtn from '../../Components/Buttons/SaveBtn/SaveBtn';
-import styles from '../Styles/Modal.Module.css';
+import styles from '../Styles/modal.module.css';
 import ValidateEmail from '../Validator/Validator';
 
 const Add = () => {
@@ -19,6 +20,7 @@ const Add = () => {
   const [data, setData] = useState({});
   const [open, setOpen] = useState(false);
   const [colorName, setColorName] = useState(null);
+  const [activityType, setActivityType] = useState('');
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
@@ -95,6 +97,7 @@ const Add = () => {
         [e.target.name]: e.target.value,
         count: [],
         rooms: [],
+        waiting: 0,
       });
     } else if (info.type === 'assistant') {
       setData({ ...data, [e.target.name]: e.target.value, dr: '' });
@@ -112,6 +115,11 @@ const Add = () => {
     } else {
       setData({ ...data, [e.target.name]: e.target.value });
     }
+  };
+
+  const handleChangeActivityType = (e) => {
+    setActivityType(e.target.value);
+    setData({ ...data, activityType: e.target.value });
   };
 
   const emailValidation = (e) => {
@@ -213,6 +221,21 @@ const Add = () => {
             </div>
           ) : (
             <div />
+          )}
+          {info.type === 'alert' && (
+            <FormControl fullWidth>
+              <InputLabel id='demo-select-small'>Activity Type</InputLabel>
+              <Select
+                labelId='demo-select-small'
+                id='demo-select-small'
+                value={activityType}
+                label='Activity Type'
+                onChange={handleChangeActivityType}>
+                <MenuItem value='patient'>Patient</MenuItem>
+                <MenuItem value='doctor'>Doctor</MenuItem>
+                <MenuItem value='staff'>Staff</MenuItem>
+              </Select>
+            </FormControl>
           )}
           {info.type === 'doctor' && (
             <>

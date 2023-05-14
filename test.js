@@ -7,4 +7,4 @@ let mins = Math.round((diff % 3600000) / 60000);
 let hours = Math.floor(diff / 3600000);
 const duration = `${hours}:${mins}`;
 
-console.log(duration);
+// console.log(duration);

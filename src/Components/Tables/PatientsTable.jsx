@@ -12,6 +12,7 @@ import * as FaIcons from 'react-icons/fa';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+import { deletePatientData, patientCheckIn } from '../../API/Api';
 import { usePatientInformationContext } from '../../context/PatientsInformationContext';
 import styles from './PatientsTable.module.scss';
 
@@ -29,9 +30,12 @@ const headerData = [
   'Appointment Provider Name',
   'Resource Provider Name',
   'Arr Time',
-  'Duration',
+  // 'Duration',
   'Room',
   'Status',
+  'Doc. time',
+  'Staff time',
+  'Pat. time',
 ];
 
 const PatientsTable = ({ patientData }) => {
@@ -55,31 +59,59 @@ const PatientsTable = ({ patientData }) => {
     setPage(0);
   };
 
-  const editData = (idx) => {
-    const getPatientData = patientData.patients[idx];
+  const handleCheckIn = async (id) => {
+    // Add confirm alert here before check in
+    const opinion = window.confirm('Are you sure you want to check in?');
 
-    console.log(
-      '🚀 ~ file: PatientsTable.jsx ~ line 55 ~ editData ~ getPatientData',
-      getPatientData
-    );
+    if (opinion) {
+      const getPatientData = patientData.patients.find(
+        (patient) => patient.id === id
+      );
+
+      const neededData = {
+        userInfo: {
+          fullName: getPatientData.data[15] + ' ' + getPatientData.data[14],
+        },
+        demographicsInfo: {
+          address: getPatientData.data[25],
+          address2: getPatientData.data[25],
+          city: getPatientData.data[22],
+          state: getPatientData.data[23],
+          zipcode: getPatientData.data[24],
+          phone: getPatientData.data[28],
+          email: getPatientData.data[31],
+        },
+        primaryInsurance: {
+          insuranceName: getPatientData.data[53],
+          memberId: getPatientData.data[54],
+        },
+      };
+
+      await patientCheckIn(neededData, getPatientData.id);
+    } else {
+      return;
+    }
   };
 
-  const removeData = (idx) => {
-    const getPatientData = patientData.patients[idx];
+  const removeData = async (idx) => {
+    const delStatus = await deletePatientData(idx);
+    if (delStatus) {
+      const getPatientData = patientData.patients[idx];
 
-    const removePatientData = patientData.patients.filter(
-      (patient) => patient !== getPatientData
-    );
+      const removePatientData = patientData.patients.filter(
+        (patient) => patient !== getPatientData
+      );
 
-    const newPatientData = {
-      date: patientData.date,
-      patients: removePatientData,
-    };
+      const newPatientData = {
+        date: patientData.date,
+        patients: removePatientData,
+      };
 
-    setPatientsInfo((prevData) => {
-      const removeOldData = prevData.filter((data) => data !== patientData);
-      return [...removeOldData, newPatientData];
-    });
+      setPatientsInfo((prevData) => {
+        const removeOldData = prevData.filter((data) => data !== patientData);
+        return [...removeOldData, newPatientData];
+      });
+    }
   };
 
   return (
@@ -105,148 +137,181 @@ const PatientsTable = ({ patientData }) => {
             {patientData &&
               patientData?.patients
                 ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(
-                  (row, index) => (
-                    console.log({ row }),
-                    (
-                      <TableRow hover role='checkbox' tabIndex={-1} key={index}>
-                        <TableCell
+                .map((row, index) => (
+                  // console.log({ row }),
+                  <TableRow hover role='checkbox' tabIndex={-1} key={index}>
+                    <TableCell
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.1rem',
+                      }}>
+                      <IconButton
+                        disabled={
+                          row?.status === 'Completed' || row?.arrTime !== ''
+                            ? true
+                            : false
+                        }
+                        onClick={() => {
+                          handleCheckIn(row?.id);
+                        }}>
+                        <FaIcons.FaSignInAlt
                           style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '0.1rem',
-                          }}>
-                          <IconButton onClick={() => editData(index)}>
-                            <FaIcons.FaRegEdit
-                              style={{
-                                fontSize: '1.2rem',
-                              }}
-                            />
-                          </IconButton>
-                          <IconButton onClick={() => removeData(index)}>
-                            <FaIcons.FaTrashAlt
-                              style={{
-                                fontSize: '1.2rem',
-                              }}
-                            />
-                          </IconButton>
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
+                            fontSize: '1.2rem',
                           }}
-                          align='center'>
-                          {new Date(
-                            row?.data[0].seconds * 1000
-                          ).toLocaleDateString('en-US')}
-                        </TableCell>
-                        <TableCell
+                        />
+                      </IconButton>
+                      <IconButton onClick={() => removeData(row.id)}>
+                        <FaIcons.FaTrashAlt
                           style={{
-                            whiteSpace: 'nowrap',
+                            fontSize: '1.2rem',
                           }}
-                          align='center'>
-                          {new Date(
-                            row?.data[1].seconds * 1000
-                          ).toLocaleTimeString('en-US') || '-'}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[8]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[9]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[10]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[13]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[14]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[15]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[36]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[41]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row?.data[45]}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row.arrTime
-                            ? new Date(row.arrTime).toLocaleTimeString('en')
-                            : '-'}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row.duration || '-'}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row.room || '-'}
-                        </TableCell>
-                        <TableCell
-                          style={{
-                            whiteSpace: 'nowrap',
-                          }}
-                          align='center'>
-                          {row.status || '-'}
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )
-                )}
+                        />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {new Date(row?.data[0].seconds * 1000).toLocaleDateString(
+                        'en-US'
+                      )}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {new Date(row?.data[1].seconds * 1000).toLocaleTimeString(
+                        'en-US'
+                      ) || '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[8]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[9]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[10]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[13]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[14]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[15]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[36]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[41]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.data[45]}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row.arrTime
+                        ? new Date(row.arrTime).toLocaleTimeString('en')
+                        : '-'}
+                    </TableCell>
+                    {/* <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row.duration || '-'}
+                    </TableCell> */}
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row.room || '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                        fontWeight: 'bold',
+                        color: 'orange',
+                      }}
+                      align='center'>
+                      {row.status || '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.kiosk?.activity_time?.doctor
+                        ? row?.kiosk?.activity_time?.doctor + 'm'
+                        : '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.kiosk?.activity_time?.staff
+                        ? row?.kiosk?.activity_time?.staff + 'm'
+                        : '-'}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        whiteSpace: 'nowrap',
+                      }}
+                      align='center'>
+                      {row?.kiosk?.activity_time?.patient
+                        ? row?.kiosk?.activity_time?.patient + 'm'
+                        : '-'}
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
 
           <TableFooter>

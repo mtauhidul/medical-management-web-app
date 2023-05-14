@@ -44,6 +44,7 @@ const Dashboard = () => {
           role: item?.role,
           rooms: item?.rooms,
           id: doc.id,
+          waiting: item?.waiting,
         };
         drList.push(appObj);
       });
@@ -71,6 +72,7 @@ const Dashboard = () => {
         id: room.id,
         name: room.id,
         blink: false,
+        activityType: '',
       };
       emptyRooms.push(rObj);
     });
@@ -126,7 +128,7 @@ const Dashboard = () => {
                     fontSize: '30px',
                     margin: '-9px 10px 10px 10px',
                   }}>
-                  {doc?.count?.length || 0}
+                  {doc?.waiting}
                 </p>
                 <StopBtn handleClick={() => countDown(doc)} sign='Remove' />
               </div>
@@ -150,6 +152,8 @@ const Dashboard = () => {
                   room={room}
                   data={doc}
                   openAlertModal={openAlertModal}
+                  doc={doc}
+                  waiting={doc.waiting}
                 />
               ))}
             </CardDeck>
