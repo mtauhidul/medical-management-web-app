@@ -128,7 +128,7 @@ const Dashboard = () => {
                     fontSize: '30px',
                     margin: '-9px 10px 10px 10px',
                   }}>
-                  {doc?.waiting}
+                  {doc?.count}
                 </p>
                 <StopBtn handleClick={() => countDown(doc)} sign='Remove' />
               </div>
@@ -153,7 +153,8 @@ const Dashboard = () => {
                   data={doc}
                   openAlertModal={openAlertModal}
                   doc={doc}
-                  waiting={doc.waiting}
+                  waiting={doc.count}
+                  countDown={() => countDown(doc)}
                 />
               ))}
             </CardDeck>

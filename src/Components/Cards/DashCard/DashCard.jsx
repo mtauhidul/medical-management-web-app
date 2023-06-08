@@ -27,6 +27,7 @@ const DashCard = (props) => {
     handler,
     idx,
     waiting,
+    countDown,
   } = props;
   const [globalData, updateGlobalData] = useContext(GlobalContext);
   const [mod, setMod] = useContext(ModalContext);

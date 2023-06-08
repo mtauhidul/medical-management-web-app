@@ -67,6 +67,11 @@ const ModalComponent = ({ open, setOpen, items, detail, setDetail }) => {
     if (item?.sound === true) {
       new Audio(sound).play();
     }
+    if (item?.name === 'Patient Ready') {
+      waitingUpdate({
+        id: globalData.docId,
+      });
+    }
   };
 
   const onCloseModal = (item) => {

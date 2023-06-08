@@ -15,6 +15,7 @@ export default function ModeSwitch() {
       setChecked(true);
     } else {
       setChecked(false);
+      handleChange({ target: { checked: false } });
     }
   }, []);
 

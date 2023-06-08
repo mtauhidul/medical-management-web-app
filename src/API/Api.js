@@ -25,11 +25,12 @@ export async function countUpdate(pass) {
 }
 
 export async function waitingUpdate(pass) {
+  console.log(pass);
   const countRef = db.collection('dashboard').doc(pass.id);
   const res = await countRef.get();
   const data = res.data();
-  const waiting = data.waiting;
-  await countRef.update({ waiting: waiting - 1 });
+  const count = data.count;
+  await countRef.update({ count: count - 1 });
 }
 
 let types = [];
