@@ -43,7 +43,7 @@ const ModalComponent = ({ open, setOpen, items, detail, setDetail }) => {
   const countDown = () => {
     countUpdate({
       id: globalData.docId,
-      value: globalData.count - 1,
+      value: globalData.count.length - 1,
     });
   };
 
@@ -63,11 +63,13 @@ const ModalComponent = ({ open, setOpen, items, detail, setDetail }) => {
         border: item?.border,
       });
     }
+    countDown();
     apiCall();
     if (item?.sound === true) {
       new Audio(sound).play();
     }
-    if (item?.name === 'Patient Ready') {
+
+    if (item?.name === 'Patient Ready || Patient In') {
       waitingUpdate({
         id: globalData.docId,
       });
@@ -97,14 +99,14 @@ const ModalComponent = ({ open, setOpen, items, detail, setDetail }) => {
         border: item?.border,
       });
 
-      if (item?.name === 'Patient Ready') {
+      if (item?.name === 'Patient Ready || Patient In') {
         waitingUpdate({
           id: globalData.docId,
         });
       }
     }
 
-    if (globalData.count > 0 && item?.name === counterAlert) {
+    if (globalData.count.length > 0 && item?.name === counterAlert) {
       countDown();
     }
     apiCall();

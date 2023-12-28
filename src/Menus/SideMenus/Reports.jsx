@@ -32,6 +32,7 @@ const Reports = () => {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+          console.log(doc.id, ' => ', doc.data());
           setStaffData((prev) => [
             ...prev,
             {

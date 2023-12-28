@@ -33,6 +33,7 @@ const DashCard = (props) => {
   const [mod, setMod] = useContext(ModalContext);
 
   const apiCall = () => {
+    console.log('apiCall', selectedAlert);
     addAlert({
       activityType: selectedAlert?.activityType,
       docId,

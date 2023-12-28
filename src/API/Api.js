@@ -21,7 +21,29 @@ export async function addDashData(data) {
 
 export async function countUpdate(pass) {
   const countRef = db.collection('dashboard').doc(pass.id);
-  await countRef.update({ count: pass.value });
+  const res = await countRef.get();
+  const data = res.data();
+  const count = data.count;
+  if (pass.value > count.length) {
+    count.push({
+      appointment: '',
+      patient: '',
+      id: '',
+      room: '',
+    });
+    await countRef.update({ count: count });
+  } else if (pass.value < count.length) {
+    const removingItem = count.find(
+      (item) =>
+        item.id === '' &&
+        item.appointment === '' &&
+        item.patient === '' &&
+        item.room === ''
+    );
+    const index = count.indexOf(removingItem);
+    count.splice(index, 1);
+    await countRef.update({ count: count });
+  }
 }
 
 export async function waitingUpdate(pass) {
@@ -30,7 +52,7 @@ export async function waitingUpdate(pass) {
   const res = await countRef.get();
   const data = res.data();
   const count = data.count;
-  await countRef.update({ count: count - 1 });
+  await countRef.update({ waiting: count.length - 1 });
 }
 
 let types = [];
@@ -323,9 +345,13 @@ export async function addAlert(data) {
             return totalTimeFormatted;
           };
 
-          kiosk.activity_time.patient = durationStr;
+          console.log(kiosk);
 
-          // console.log(duration);
+          if (kiosk && kiosk.activity_time) {
+            kiosk.activity_time.patient = durationStr;
+          } else {
+            console.error('Error: kiosk or activity_time is not defined');
+          }
 
           // patientToUpdate.data().room = emptyPatient.room;
           // patientToUpdate.data().status = 'Patient Ready';
@@ -366,7 +392,7 @@ export async function addAlert(data) {
 
         // console.log(emptyPatient);
 
-        if (emptyPatient) {
+        if (emptyPatient?.id) {
           emptyPatient.room = objectToupdate.id;
 
           db.collection('dashboard')

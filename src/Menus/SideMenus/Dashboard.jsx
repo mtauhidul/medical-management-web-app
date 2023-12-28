@@ -1,9 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable no-else-return */
-/* eslint-disable no-shadow */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable import/no-cycle */
 import React, { useContext, useEffect, useState } from 'react';
 import { CardDeck, Col, Container, Row } from 'react-bootstrap';
 import toast from 'react-hot-toast';
@@ -19,63 +13,32 @@ import styles from './Dashboard.module.css';
 const Dashboard = () => {
   const [mod, setMod] = useContext(ModalContext);
   const [globalData, updateGlobalData] = useContext(GlobalContext);
-  const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [state, setState] = useState({});
-
-  const myFunction = () => {
-    setState({
-      name: 'Jhon',
-      surname: 'Doe',
-    });
-  };
 
   useEffect(() => {
     const citiesRef = db.collection('dashboard');
     citiesRef.onSnapshot((querySnapshot) => {
-      const drList = [];
-      querySnapshot.forEach((doc) => {
-        const item = doc.data();
-        const appObj = {
-          dr: item?.dr,
-          email: item?.email,
-          phone: item?.phone,
-          count: item?.count,
-          role: item?.role,
-          rooms: item?.rooms,
-          id: doc.id,
-          waiting: item?.waiting,
-        };
-        drList.push(appObj);
-      });
+      const drList = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setData(drList);
     });
   }, []);
 
-  const onOpenModal = () => {
-    setOpen(true);
-  };
-
-  const openAlertModal = () => {
-    setMod({
-      onOpenModal,
-    });
-  };
+  const onOpenModal = () => setMod({ onOpenModal: true });
 
   const reset = (doc) => {
-    const emptyRooms = [];
-    const newRooms = doc.rooms.map((room) => {
-      const rObj = {
-        alert: '',
-        bg: '',
-        border: '',
-        id: room.id,
-        name: room.id,
-        blink: false,
-        activityType: '',
-      };
-      emptyRooms.push(rObj);
-    });
+    const emptyRooms = doc.rooms.map((room) => ({
+      alert: '',
+      bg: '',
+      border: '',
+      id: room.id,
+      name: room.id,
+      blink: false,
+      activityType: '',
+    }));
+
     addDashData({
       dr: {
         dr: doc.dr,
@@ -91,17 +54,17 @@ const Dashboard = () => {
   const countUp = (doc) => {
     countUpdate({
       id: doc.id,
-      value: doc.count + 1,
+      value: doc.count.length + 1,
     });
   };
 
   const countDown = (doc) => {
-    if (doc.count === 0) {
+    if (doc.count.length === 0) {
       toast.error("Patients can't be less than zero");
     } else {
       countUpdate({
         id: doc.id,
-        value: doc.count - 1,
+        value: doc.count.length - 1,
       });
     }
   };
@@ -128,7 +91,7 @@ const Dashboard = () => {
                     fontSize: '30px',
                     margin: '-9px 10px 10px 10px',
                   }}>
-                  {doc?.count}
+                  {doc?.count?.length}
                 </p>
                 <StopBtn handleClick={() => countDown(doc)} sign='Remove' />
               </div>
@@ -151,7 +114,7 @@ const Dashboard = () => {
                   idx={index}
                   room={room}
                   data={doc}
-                  openAlertModal={openAlertModal}
+                  openAlertModal={onOpenModal}
                   doc={doc}
                   waiting={doc.count}
                   countDown={() => countDown(doc)}
